@@ -24,7 +24,7 @@ namespace Wind {
 
 		// This is essentially a concurrent map...
 		//NOTE: All std::map<> interface are _not_ protected! Use only the member functions wrapped below.
-		class CallbackRegistry : public std::map<::WQID, std::string> {
+		class CallbackRegistry : private std::map<::WQID, std::string> {
 		public:
 			std::string& operator[](::WQID qid) {
 				lock_guard guard(lock_);
@@ -59,17 +59,20 @@ namespace Wind {
 			::WQID qid = 0;
 			int recvd = ::recv(sock, reinterpret_cast<char*>(&qid), sizeof(::WQID), 0);
 			RECV_CHECK(sizeof(::WQID), "WQID incomplete");
-			J len = 0;
-			recvd = ::recv(sock, reinterpret_cast<char*>(&len), sizeof(J), 0);
-			RECV_CHECK(sizeof(J), "size incomplete");
-			std::vector<char> buffer(static_cast<std::size_t>(len), 0);
-			recvd = ::recv(sock, &buffer[0], buffer.size(), 0);
+			std::size_t len = 0;
+			recvd = ::recv(sock, reinterpret_cast<char*>(&len), sizeof(len), 0);
+			RECV_CHECK(sizeof(len), "size incomplete");
+			if (len > static_cast<std::size_t>(std::numeric_limits<int>::max())) {
+				std::cerr << "<recv> serialized data (" << len << ") > 2G" << std::endl;
+				return K_NIL;
+			}
+			q::K_ptr serialized(ktn(KB, len));
+			std::memset(kG(serialized.get()), 0, len);
+			recvd = ::recv(sock, reinterpret_cast<char*>(kG(serialized.get())), len, 0);
 			RECV_CHECK(len, "data incomplete");
 #			undef RECV_CHECK
 
 			// Deserialize K object
-			q::K_ptr serialized(ktn(KB, len));
-			std::memcpy(kG(serialized.get()), &buffer[0], buffer.size());
 #			if 0	//TODO: okx(K) will only be available in q.lib 3.2... to check back...
 			if (!okx(serialized.get())) {
 				std::cerr << "<recv> invalid data: ";
@@ -128,10 +131,14 @@ namespace Wind {
 			}
 			int sent = ::send(*socks[SERVER], reinterpret_cast<char const*>(&event.RequestID), sizeof(::WQID), 0);
 			SEND_CHECK(sizeof(::WQID), "WQID incomplete");
-			std::vector<char> buffer(kG(serialized.get()), kG(serialized.get()) + serialized->n);
-			sent = ::send(*socks[SERVER], reinterpret_cast<char const*>(&(serialized->n)), sizeof(serialized->n), 0);
-			SEND_CHECK(sizeof(serialized->n), "size incomplete");
-			sent = ::send(*socks[SERVER], &buffer[0], buffer.size(), 0);
+			std::size_t const len = static_cast<std::size_t>(serialized->n);
+			if (len > static_cast<std::size_t>(std::numeric_limits<int>::max())) {
+				std::cerr << "<send> serialized data (" << len << ") > 2G" << std::endl;
+				return false;
+			}
+			sent = ::send(*socks[SERVER], reinterpret_cast<char const*>(&len), sizeof(len), 0);
+			SEND_CHECK(sizeof(len), "size incomplete");
+			sent = ::send(*socks[SERVER], reinterpret_cast<char const*>(kG(serialized.get())), len, 0);
 			SEND_CHECK(serialized->n, "data incomplete");
 #			undef SEND_CHECK
 

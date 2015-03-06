@@ -24,8 +24,8 @@
   * Initial version to support most APIs in `WindQuantData.dll`
 * [2015.03.06](./packaged/q_Wind-2015.03.06.zip)
   * Initial merge into Github
-  * Added missing support for WST function
-  * Fixed problem with WSQ subscribers that cannot modify global data in q
+  * Added missing support for `WST` function
+  * Fixed problem with `WSQ` subscribers that cannot modify global data in q
 
 ### References
 

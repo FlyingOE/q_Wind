@@ -23,7 +23,7 @@
 * [2015.02.27](./packaged/CE.kdb+-2015.02.27.zip)
   * Initial version to support most APIs in `WindQuantData.dll`
 * [2015.03.06](./packaged/q_Wind-2015.03.06.zip)
-  * Initial merge into Github
+  * Initial merge into GitHub
   * Added missing support for `WST` function
   * Fixed problem with `WSQ` subscribers that cannot modify global data in q
 

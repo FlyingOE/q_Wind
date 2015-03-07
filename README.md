@@ -33,6 +33,7 @@
 
 * 公司：http://www.wind.com.cn
 * 大奖章：http://www.dajiangzhang.com
+* http://www.dajiangzhang.com/q?32571fd0-4861-4f5b-b8e4-5d4e26b06036
 
 #### 关于kdb+/q
 

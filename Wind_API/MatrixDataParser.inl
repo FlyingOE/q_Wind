@@ -2,12 +2,13 @@
 static_assert(0, "Include Wind_API/MatrixDataParser.h instead!");
 #endif
 
+#include "util.h"
+
 #include "kdb+.util/type_convert.h"
 #include "kdb+.util/type_traits.h"
 #include "kdb+.util/multilang.h"
 #include <cassert>
 #include <sstream>
-#include <iomanip>
 
 
 template <typename T>
@@ -80,10 +81,7 @@ struct Wind::MatrixDataParser::qTypeTraits<::VARIANT> : q::type_traits<void> {
 			return kp(const_cast<S>(ml::convert(q::DEFAULT_CP, x.bstrVal).c_str()));
 		default: {
 				std::ostringstream buffer;
-				buffer << "unsupported VARIANT type: 0x"
-					<< std::setiosflags(std::ios::uppercase)
-					<< std::setfill('0') << std::setw(sizeof(::VARTYPE) * 2) << std::hex
-					<< x.vt;
+				buffer << "unsupported VARIANT type: 0x" << util::hexBytes(x.vt);
 				return q::error2q(buffer.str());
 			}
 		}

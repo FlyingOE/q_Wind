@@ -2,6 +2,7 @@
 #define __WIND_API__UTIL_H__
 #pragma comment(lib, "WindQuantData.lib")
 
+#include <iosfwd>
 #include <string>
 #include <vector>
 
@@ -51,6 +52,15 @@ namespace Wind {
 
 		template <typename qSrcTraits, typename qDstTraits>
 		K qConvertArray3D(K array) throw();
+
+		template <typename It>
+		struct hexByteGenerator;
+		template <typename It>
+		hexByteGenerator<It> hexBytes(It begin, It end);
+		template <typename T>
+		hexByteGenerator<char const*> hexBytes(T const& x);
+		template <typename Char, typename Traits, typename It>
+		std::basic_ostream<Char, Traits>& operator<<(std::basic_ostream<Char, Traits>& os, hexByteGenerator<It> const& hex);
 
 	}//namespace Wind::util
 }//namespace Wind

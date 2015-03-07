@@ -2,7 +2,7 @@
 static_assert(0, "Include Wind_API/WindEvent.h instead!");
 #endif
 
-#include <iomanip>
+#include "util.h"
 
 template <typename Char, typename Traits>
 std::basic_ostream<Char, Traits>& Wind::operator<<(std::basic_ostream<Char, Traits>& os, ::WQEvent const& event) {
@@ -13,8 +13,6 @@ std::basic_ostream<Char, Traits>& Wind::operator<<(std::basic_ostream<Char, Trai
 	if (event.ErrCode != WQERR_OK) {
 		os << "Err:[" << event.ErrCode << ']' << util::error2Text(event.ErrCode) << ',';
 	}
-	return os << "Data:*" << std::setiosflags(std::ios::uppercase) << std::hex
-		<< std::setfill('0') << std::setw(sizeof(event.pQuantData) * 2)
-		<< event.pQuantData
-		<< '}';
+	os << "Data:*" << util::hexBytes(event.pQuantData) << '}';
+	return os;
 }

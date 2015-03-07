@@ -36,10 +36,7 @@ K Wind::MatrixDataParser::parse() const throw() {
 		return parseSafeArray<::VARIANT>(*array);
 	default: {
 			std::ostringstream buffer;
-			buffer << "unsupported VARIANT SAFEARRAY type: 0x"
-				<< std::setiosflags(std::ios::uppercase)
-				<< std::setfill('0') << std::setw(sizeof(::VARTYPE) / 2) << std::hex
-				<< data_.vt;
+			buffer << "unsupported VARIANT SAFEARRAY type: 0x" << util::hexBytes(data_.vt);
 			return q::error2q(buffer.str());
 		}
 	}

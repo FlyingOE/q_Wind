@@ -73,17 +73,12 @@ namespace Wind {
 #			undef RECV_CHECK
 
 			// Deserialize K object
-#			if 0	//TODO: okx(K) will only be available in q.lib 3.2... to check back...
 			if (!okx(serialized.get())) {
-				std::cerr << "<recv> invalid data: ";
-				for (auto p = buffer.begin(); p != buffer.end(); ++p) {
-					std::cerr << std::setiosflags(std::ios::uppercase)
-						<< std::setfill('0') << std::setw(2) << std::hex << static_cast<int>(*p);
-				}
-				std::cerr << std::endl;
+				std::cerr << "<recv> invalid data: "
+					<< util::hexBytes(kG(serialized.get()), kG(serialized.get()) + serialized->n)
+					<< std::endl;
 				return K_NIL;
 			}
-#			endif
 			q::K_ptr result(d9(serialized.get()));
 
 			// Identify the origial query and callback

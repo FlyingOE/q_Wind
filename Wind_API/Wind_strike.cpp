@@ -6,7 +6,7 @@
 
 #include "kdb+.util/util.h"
 #include "kdb+.util/type_convert.h"
-#include <memory>	//C++11: std::shared_ptr<>
+#include <memory>	//C++11: std::shared_ptr<>, std::unique_ptr<>
 #include <future>	//C++11
 #include <sstream>
 
@@ -18,10 +18,10 @@ namespace Wind {
 		public:
 			typedef std::shared_ptr<std::promise<::WQEvent*> > pointer;
 
-			Result() : result_(new pointer(new pointer::element_type)) {}
+			Result() : result_(std::make_shared<pointer::element_type>()) {}
 
 			pointer* dup() const {
-				return new pointer(*result_);
+				return new pointer(result_);
 			}
 			
 			K waitFor(::WQID qid, std::chrono::milliseconds const& timeout = Wind::ASYNC_TIMEOUT) {
@@ -34,13 +34,13 @@ namespace Wind {
 					return q::error2q(buffer.str());
 				}
 
-				assert(result_.get() != NULL);
-				std::future<::WQEvent*> outcome = (*result_)->get_future();
+				assert(result_);
+				std::future<::WQEvent*> outcome = result_->get_future();
 				switch (outcome.wait_for(timeout)) {
 				case std::future_status::ready:
 					try {
-						std::auto_ptr<Event> event(static_cast<Event*>(outcome.get()));
-						assert(event.get() != NULL);
+						std::unique_ptr<Event> event(static_cast<Event*>(outcome.get()));
+						assert(event.get());
 						return event->parse();
 					}
 					catch (std::string const& error) {
@@ -54,23 +54,25 @@ namespace Wind {
 			}
 
 		private:
-			std::auto_ptr<pointer> result_;
+			pointer result_;
 		};
 
 		int WINAPI strike(::WQEvent* pEvent, LPVOID lpUserParam) {
-			std::auto_ptr<Result::pointer> result(static_cast<Result::pointer*>(lpUserParam));
-			assert(result.get() != NULL);
+			std::unique_ptr<Result::pointer> pResult(static_cast<Result::pointer*>(lpUserParam));
+			assert(pResult);
+			Result::pointer& result(*pResult);
+			assert(result);
 
 			assert(pEvent != NULL);
 			switch (pEvent->EventType) {
 			case eWQResponse:
 			case eWQErrorReport:
-				(*result)->set_value(new Wind::Event(*pEvent));
+				result->set_value(new Wind::Event(*pEvent));
 				return true;
 			default: {
 					std::ostringstream buffer;
 					buffer << "<WQ> unsupported strike response: " << *pEvent;
-					(*result)->set_exception(std::make_exception_ptr(buffer.str()));
+					result->set_exception(std::make_exception_ptr(buffer.str()));
 					return false;
 				}
 			}

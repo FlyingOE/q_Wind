@@ -46,7 +46,7 @@ void Wind::Data::clear() {
 K Wind::Data::parse() const throw() {
 #	define PARSE_AND_VERIFY(var, expr)	\
 		q::K_ptr (var)((expr).parse());	\
-		assert((var).get() != K_NIL);	\
+		assert((var));	\
 		if ((var)->t == -128) return (var).release()
 	PARSE_AND_VERIFY(dateTimes, static_cast<DateTimeArray const&>(this->ArrDateTime));
 	PARSE_AND_VERIFY(windCodes, static_cast<WindCodeArray const&>(this->ArrWindCode));

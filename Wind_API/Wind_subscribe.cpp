@@ -73,12 +73,14 @@ namespace Wind {
 #			undef RECV_CHECK
 
 			// Deserialize K object
+#			if KX_HAS_OKX
 			if (!okx(serialized.get())) {
-				std::cerr << "<recv> invalid data: "
-					<< util::hexBytes(kG(serialized.get()), kG(serialized.get()) + serialized->n)
-					<< std::endl;
+				std::cerr << "<recv> bad data: ["
+					<< util::hexBytes(kG(serialized.get()), static_cast<std::size_t>(serialized->n))
+					<< ']' << std::endl;
 				return K_NIL;
 			}
+#			endif
 			q::K_ptr result(d9(serialized.get()));
 
 			// Identify the origial query and callback
@@ -115,7 +117,8 @@ namespace Wind {
 
 			// Serialize K object into bytes
 			static_assert(std::is_same<::WQID, J>::value, "WQID data type mismatch");
-			q::K_ptr serialized(b9(-1, data.get()));
+			//q::K_ptr serialized(b9(-1, data.get()));	//TODO: Why does -1 generate 'badmsg?!
+			q::K_ptr serialized(b9(1, data.get()));
 			assert((serialized->t == KG) && (serialized->n > 0));
 
 			// Send tuple (WQID, len, serialized_K) over to the main thread

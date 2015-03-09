@@ -140,8 +140,12 @@ Wind::util::hexByteGenerator<It> Wind::util::hexBytes(It begin, It end) {
 
 template <typename T>
 Wind::util::hexByteGenerator<char const*> Wind::util::hexBytes(T const& x) {
-	char const* const p = reinterpret_cast<char const*>(&x);
-	return hexBytes(p, p + sizeof(x));
+	return hexBytes(reinterpret_cast<char const*>(&x), sizeof(x));
+}
+
+template <typename T>
+Wind::util::hexByteGenerator<T const*> Wind::util::hexBytes(T const* p, std::size_t n) {
+	return hexByteGenerator<T const*>(p, p + n);
 }
 
 template <typename Char, typename Traits, typename It>

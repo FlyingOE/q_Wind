@@ -16,12 +16,12 @@ namespace Wind {
 		// A manager to take care of memory management for Wind's asynchronous callbacks
 		class Result {
 		public:
-			typedef std::shared_ptr<std::promise<::WQEvent*> > pointer;
+			typedef std::shared_ptr<std::promise<::WQEvent*> > promise_ptr;
 
-			Result() : result_(std::make_shared<pointer::element_type>()) {}
+			Result() : result_(new promise_ptr::element_type) {}
 
-			pointer* dup() const {
-				return new pointer(result_);
+			promise_ptr* dup() const {
+				return new promise_ptr(result_);
 			}
 			
 			K waitFor(::WQID qid, std::chrono::milliseconds const& timeout = Wind::ASYNC_TIMEOUT) {
@@ -43,7 +43,10 @@ namespace Wind {
 						assert(event.get());
 						return event->parse();
 					}
-					catch (std::string const& error) {
+					catch (std::runtime_error& error) {	// Error from Wind::Callback::strike(...)
+						return q::error2q(error.what());
+					}
+					catch (std::string const& error) {	// Error from Wind::Event::parse()
 						return q::error2q(error);
 					}
 				case std::future_status::timeout:
@@ -54,13 +57,13 @@ namespace Wind {
 			}
 
 		private:
-			pointer result_;
+			promise_ptr result_;
 		};
 
 		int WINAPI strike(::WQEvent* pEvent, LPVOID lpUserParam) {
-			std::unique_ptr<Result::pointer> pResult(static_cast<Result::pointer*>(lpUserParam));
+			std::unique_ptr<Result::promise_ptr> pResult(static_cast<Result::promise_ptr*>(lpUserParam));
 			assert(pResult);
-			Result::pointer& result(*pResult);
+			Result::promise_ptr& result(*pResult);
 			assert(result);
 
 			assert(pEvent != NULL);
@@ -72,7 +75,7 @@ namespace Wind {
 			default: {
 					std::ostringstream buffer;
 					buffer << "<WQ> unsupported strike response: " << *pEvent;
-					result->set_exception(std::make_exception_ptr(buffer.str()));
+					result->set_exception(std::make_exception_ptr(std::runtime_error(buffer.str())));
 					return false;
 				}
 			}

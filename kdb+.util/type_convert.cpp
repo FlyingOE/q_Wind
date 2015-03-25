@@ -8,7 +8,7 @@
 #include <ctime>
 #include "Cookbook.inl"
 
-int q::UTC_OFFSET = 8;
+int q::UTC_OFFSET = 0;
 
 long long q::q2Dec(K data) throw(std::string) {
 	if (data == K_NIL) {
@@ -306,7 +306,7 @@ F q::DATE2q(::DATE date) throw(std::string) {
 	// # days since 0000.01.01
 	J const nDaysAbs = nDays1899 + 693959L;
 	// Known: 0000.01.01 was a Saturday
-	tm.tm_wday = static_cast<int>((nDaysAbs - 1) % 7L) + 1;
+	tm.tm_wday = static_cast<int>((nDaysAbs - 1) % 7L);
 	
 	// # 400-year blocks since 0000.01.01
 	J const n400Years = static_cast<J>(nDaysAbs / 146097L);
@@ -369,7 +369,8 @@ F q::DATE2q(::DATE date) throw(std::string) {
 
 	// Shortcut for integral (date-only) DATEs
 	if (nSecs == 0) {
-		tm.tm_hour = tm.tm_min = tm.tm_sec = 0;
+		tm.tm_hour = UTC_OFFSET;
+		tm.tm_min = tm.tm_sec = 0;
 	}
 	else {
 		tm.tm_sec = static_cast<int>(nSecs % 60L);

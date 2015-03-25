@@ -9,6 +9,7 @@ std::chrono::milliseconds Wind::ASYNC_TIMEOUT(30 * 1000L);	//30 seconds
 
 BOOL Wind::prepare() {
 	bool status = true;
+	q::UTC_OFFSET = 8;	// Wind API return all timestamps in UTC+8
 	status = status && Wind::pubsub::prepare();
 	return status;
 }

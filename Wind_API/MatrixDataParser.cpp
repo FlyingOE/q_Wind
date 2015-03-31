@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "MatrixDataParser.h"
 
-#include "util.h"
+#include "win32.util/util.h"
 
 
 Wind::MatrixDataParser::MatrixDataParser(::VARIANT const& array) : data_(array) {
@@ -36,7 +36,7 @@ K Wind::MatrixDataParser::parse() const throw() {
 		return parseSafeArray<::VARIANT>(*array);
 	default: {
 			std::ostringstream buffer;
-			buffer << "unsupported VARIANT SAFEARRAY type: 0x" << util::hexBytes(data_.vt);
+			buffer << "unsupported VARIANT SAFEARRAY type: 0x" << ::util::hexBytes(data_.vt);
 			return q::error2q(buffer.str());
 		}
 	}

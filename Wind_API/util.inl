@@ -12,7 +12,6 @@ static_assert(0, "Include Wind_API/util.h instead!");
 #include <memory>	//C++11: std::unique_ptr<>
 #include <vector>
 #include <sstream>
-#include <iomanip>
 
 template <typename It, typename Delim>
 std::wstring Wind::util::join(Delim const& delim, It begin, It end) {
@@ -125,34 +124,4 @@ K Wind::util::qConvertArray3D(K array) throw() {
 	}
 
 	return result.release();
-}
-
-template <typename It>
-struct Wind::util::hexByteGenerator {
-	It begin_, end_;
-	hexByteGenerator(It begin, It end) : begin_(begin), end_(end) {}
-};
-
-template <typename It>
-Wind::util::hexByteGenerator<It> Wind::util::hexBytes(It begin, It end) {
-	return hexByteGenerator<It>(begin, end);
-}
-
-template <typename T>
-Wind::util::hexByteGenerator<char const*> Wind::util::hexBytes(T const& x) {
-	return hexBytes(reinterpret_cast<char const*>(&x), sizeof(x));
-}
-
-template <typename T>
-Wind::util::hexByteGenerator<T const*> Wind::util::hexBytes(T const* p, std::size_t n) {
-	return hexByteGenerator<T const*>(p, p + n);
-}
-
-template <typename Char, typename Traits, typename It>
-std::basic_ostream<Char, Traits>& Wind::util::operator<<(std::basic_ostream<Char, Traits>& os, Wind::util::hexByteGenerator<It> const& hex) {
-	for (It p = hex.begin_; p != hex.end_; ++p) {
-		os << std::setiosflags(std::ios::uppercase) << std::setfill('0') << std::setw(2)
-			<< std::hex << static_cast<int>(*p);
-	}
-	return os;
 }

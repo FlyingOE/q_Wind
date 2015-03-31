@@ -4,7 +4,9 @@
 #include "util.h"
 
 #include "kdb+.util/util.h"
+#include "kdb+.util/multilang.h"
 #include "kdb+.util/type_convert.h"
+#include <iostream>
 
 
 WIND_API K K_DECL Wind_login(K username, K password) {
@@ -33,7 +35,14 @@ WIND_API K K_DECL Wind_login(K username, K password) {
 #	endif
 
 	::WQErr const error = ::WDataAuthorize(&login);
-	return (error == WQERR_OK) ? K_NIL : q::error2q(Wind::util::error2Text(error));
+	if (error == WQERR_OK) {
+		std::string const u = ml::convert(q::DEFAULT_CP, uid.c_str());
+		std::cerr << "<Wind> logged in as " << u << std::endl;
+		return ks(const_cast<S>(u.c_str()));
+	}
+	else {
+		return q::error2q(Wind::util::error2Text(error));
+	}
 }
 
 WIND_API K K_DECL Wind_logout(K _) {

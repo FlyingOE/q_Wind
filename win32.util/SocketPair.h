@@ -1,5 +1,6 @@
 #ifndef __SOCKETPAIR_H__
 #define __SOCKETPAIR_H__
+#pragma comment(lib, "win32.util.lib")
 
 #include <WS2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")

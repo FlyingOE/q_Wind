@@ -51,7 +51,10 @@
     <ClInclude Include="MatrixDataParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SocketPair.h">
+    <ClInclude Include="util.inl">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WindEvent.inl">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -95,17 +98,8 @@
     <ClCompile Include="Wind_subscribe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SocketPair.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="util.inl">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="WindEvent.inl">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="MatrixDataParser.inl">
       <Filter>Source Files</Filter>
     </None>

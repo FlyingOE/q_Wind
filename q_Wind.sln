@@ -12,8 +12,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kdb+.util", "kdb+.util\kdb+
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Wind_API", "Wind_API\Wind_API.vcxproj", "{FF4C0297-4686-4F23-B461-499F583AA3EA}"
 	ProjectSection(ProjectDependencies) = postProject
+		{7609463A-AF49-4D74-9BBB-51C144514573} = {7609463A-AF49-4D74-9BBB-51C144514573}
 		{15DC0B83-55C7-466E-9A76-FD5D54598F4A} = {15DC0B83-55C7-466E-9A76-FD5D54598F4A}
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32.util", "win32.util\win32.util.vcxproj", "{7609463A-AF49-4D74-9BBB-51C144514573}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +36,10 @@ Global
 		{FF4C0297-4686-4F23-B461-499F583AA3EA}.Debug|Win32.Build.0 = Debug|Win32
 		{FF4C0297-4686-4F23-B461-499F583AA3EA}.Release|Win32.ActiveCfg = Release|Win32
 		{FF4C0297-4686-4F23-B461-499F583AA3EA}.Release|Win32.Build.0 = Release|Win32
+		{7609463A-AF49-4D74-9BBB-51C144514573}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7609463A-AF49-4D74-9BBB-51C144514573}.Debug|Win32.Build.0 = Debug|Win32
+		{7609463A-AF49-4D74-9BBB-51C144514573}.Release|Win32.ActiveCfg = Release|Win32
+		{7609463A-AF49-4D74-9BBB-51C144514573}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,10 +3,10 @@
 
 #include "util.h"
 #include "WindEvent.h"
-#include "SocketPair.h"
 
 #include "kdb+.util/K_ptr.h"
 #include "kdb+.util/type_convert.h"
+#include "win32.util/SocketPair.h"
 #include <iostream>
 #include <mutex>	//C++11
 #include <map>

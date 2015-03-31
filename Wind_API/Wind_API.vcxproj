@@ -114,7 +114,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MatrixDataParser.h" />
-    <ClInclude Include="SocketPair.h" />
     <ClInclude Include="WindCodeArray.h" />
     <ClInclude Include="WindDateTimeArray.h" />
     <ClInclude Include="WindData.h" />
@@ -135,7 +134,6 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MatrixDataParser.cpp" />
-    <ClCompile Include="SocketPair.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -153,7 +151,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="MatrixDataParser.inl" />
-    <None Include="util.inl" />
+    <ClInclude Include="util.inl">
+      <FileType>Document</FileType>
+    </ClInclude>
     <Text Include="Wind.q">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </DeploymentContent>
@@ -161,7 +161,9 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </DeploymentContent>
     </Text>
-    <None Include="WindEvent.inl" />
+    <ClInclude Include="WindEvent.inl">
+      <FileType>Document</FileType>
+    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

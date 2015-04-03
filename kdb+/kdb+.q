@@ -24,7 +24,10 @@ utf8_gb18030:impl.lineOrList[;.CPPlib.DLL 2:(`utf8_gb18030;1)];
 \d .math
 
 // Exponential average
-ema:{{(y*z)+(x*1-z)}[;;2%1+x]\[y]};
+/@ref http://www.timestored.com/b/exponential-moving-average-ema-kdb/
+ema:$[(.z.K>=3.1)and(.z.k>=2013.07.07);
+	{first[y](1-x)\x*y};	/ Weird specialization of `\', but much more efficient!
+	{{z+x*y}\[first y;1-x;x*y]}];
 
 \d .
 /==============================================================================

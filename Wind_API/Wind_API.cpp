@@ -3,7 +3,6 @@
 
 #include "kdb+.util/util.h"
 #include "kdb+.util/type_convert.h"
-#include <chrono>	//C++11
 
 std::chrono::milliseconds Wind::ASYNC_TIMEOUT(30 * 1000L);	//30 seconds
 

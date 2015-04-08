@@ -61,7 +61,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);D:\q\c;D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>FOR %%p IN ("$(SolutionDir)..\arbitrage\" "$(SolutionDir)..\CHF\") DO (
+      <Command>FOR %%p IN ("$(SolutionDir)..\arbitrage\" "$(SolutionDir)..\CHF.proj\") DO (
   @FOR %%f IN ("$(TargetPath)" "$(TargetDir)Wind.q") DO (
     @XCOPY %%f %%p /F /Y
   )
@@ -95,7 +95,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);D:\q\c;D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>FOR %%p IN ("$(SolutionDir)..\arbitrage\" "$(SolutionDir)..\CHF\") DO (
+      <Command>FOR %%p IN ("$(SolutionDir)..\arbitrage\" "$(SolutionDir)..\CHF.proj\") DO (
   @FOR %%f IN ("$(TargetPath)" "$(TargetDir)Wind.q") DO (
     @XCOPY %%f %%p /F /Y
   )

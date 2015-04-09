@@ -59,6 +59,8 @@ template <>
 struct Wind::MatrixDataParser::qTypeTraits<::VARIANT> : q::type_traits<void> {
 	static K convert(::VARIANT const& x) {
 		switch (x.vt) {
+		case ::VT_EMPTY:
+			return ktn(0, 0);	// Not ideal, but since we don't know the expected data type here...
 		case ::VT_I2:
 			static_assert(std::is_same<H, SHORT>::value, "Mismatched data types: H vs SHORT");
 			return kh(x.iVal);
@@ -70,6 +72,17 @@ struct Wind::MatrixDataParser::qTypeTraits<::VARIANT> : q::type_traits<void> {
 		case ::VT_I8:
 			static_assert(std::is_same<J, LONGLONG>::value, "Mismatched data types: J vs LONGLONG");
 			return kj(x.llVal);
+		case ::VT_UI2:
+			static_assert(sizeof(I) > sizeof(USHORT), "No suitable data types: I vs USHORT");
+			return ki(x.uiVal);
+		case ::VT_UI4:
+			static_assert(sizeof(J) > sizeof(ULONG), "No suitable data types: J vs ULONG");
+			return kj(x.ulVal);
+		case ::VT_UI8:
+			static_assert(sizeof(J) >= sizeof(ULONGLONG), "No suitable data types: J vs ULONGLONG");
+			return (x.ullVal <= static_cast<ULONGLONG>(std::numeric_limits<J>::max()))
+				? kj(x.ullVal)
+				: q::error2q("ULONGLONG out of bounds of J");
 		case ::VT_R4:
 			static_assert(std::is_same<E, FLOAT>::value, "Mismatched data types: E vs FLOAT");
 			return ke(x.fltVal);

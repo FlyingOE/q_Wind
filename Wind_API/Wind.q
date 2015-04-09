@@ -51,10 +51,33 @@ WST:intradayTicks:{[F;c;i;b;e;p]
 
 /q) .wind.WSET[`SectorConstituent;`date`sector!(2015.02.13;"全部A股")]
 /q) .wind.WSET[`IndexConstituent;`date`windcode!(2015.02.13;`000300.SH)]
+/q) .wind.WSET["PublicOpinions";`windcode`startdate`enddate!`600000.SH,2015.01.09 2015.04.09]
+/q) .wind.WSET["Top10ShareHolders";`windcode`year`period!(`600000.SH;2014;"年报")]
+/q) .wind.WSET["StockWEST";`startdate`enddate`windcode`orgname`field!(2012.04.09;2015.04.09;`600000.SH;"全部";`date`organization`researcher`EPSA0`EPSE1`EPSE2`EPSE3`netProfitA0`netProfitE1`netProfitE2`netProfitE3`incomeA0`incomeE1`incomeE2`incomeE3)]
+/q) .wind.WSET["GuaranteedBond";`windcode`startdate`enddate!`1380274.IB,2014.04.09 2015.04.09]
+/q) .wind.WSET["CTD";`windcode`startdate`enddate!`TF1506.CFE,2015.01.09 2015.04.09]
+/q) .wind.WSET["FutureOI";`startdate`enddate`varity`wind_code`member_name`order_by!(2014.04.09;2015.04.09;"铝";"全部";"全部";"多")]
+/q) .wind.WSET["OptionChain";`date`us_code`position_var`month`call_put!(2015.04.09;`0001.HK;`;"全部";"全部")]
+/q) .wind.WSET["ETFConstituent";`date`windcode!2015.04.09,`159901.OF]
+/q) .wind.WSET["LeveragedFundInfo";`date`windcode!2015.04.09,`161812.OF]
+/q) .wind.WSET["FundMarketSizeChange";`startdate`enddate`frequency!(2014.04.09;2015.04.09;"日")]
 WSET:dataSet:{[F;r;p]
-    delete wind_code,sec_name from
-        update"J"$code,sym:`$wind_code,name:`$sec_name from
-            impl.quantData2Table F[r;impl.dict2Strings p]
+    / Field data types normalization logic
+    mapping:([]
+        C:`code`enddate`wind_code`sec_name,syms;
+        a:`code`enddate`sym`name,syms;
+        e:(("J"$;`code);('["M"$;'[ssr[;"月";""]';ssr[;"年";"-"]']];`enddate)),
+            (`$),/:`wind_code`sec_name,
+                syms:`name`type`organization`researcher,
+                    `ctd_ib`ctd_sh`ctd_sz,`member_name`us_code`us_name`cash_substitution_mark,
+                    `option_var`option_code`option_name`exe_type`call_put`settle_method,
+                    `fund_type`class_a_code`class_a_name`class_b_code`class_b_name);
+    /NOTE: Need to handle VT_EMPTY fields...
+    (cols[t]inter exec C except a from mapping)_
+    ![;();0b;exec a!e from mapping where C in cols t]
+        t:flip{$[(not 0h=type x)or(10h=type first x);x;
+            {$[0h=type y;x;y]}[((^/)?[0h=t;0Nh;t:type'[x]])$"";]each x
+            ]}peach flip impl.quantData2Table F[r;impl.dict2Strings p]
     }DLL 2:(`Wind_wset;2);
 
 /q) cb:.wind.rtCallback{show(x;.z.P;y);show z};
@@ -108,6 +131,8 @@ impl.dict2Strings:{
     :key[x]!{
         $[10h=t:type x;
             x;
+          11h=t;
+            ","sv string x;
           0h<=t;
             '"nyi - complex type";
           -1h=t;

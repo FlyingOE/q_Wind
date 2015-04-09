@@ -10,6 +10,9 @@
 
 int q::UTC_OFFSET = 0;
 
+#define KSemin	(20)
+#define KSemax	(76)
+
 long long q::q2Dec(K data) throw(std::string) {
 	if (data == K_NIL) {
 		throw std::string("nil decimal");
@@ -124,13 +127,18 @@ std::string q::q2String(K data) throw(std::string) {
 		throw std::string("nil string or symbol");
 	}
 	switch (data->t) {
-	case KC:
+	case KC:												// char list (a.k.a. string)
 		assert(data->n >= 0);
 		return std::string(kC(data), kC(data) + data->n);
-	case -KS:
+	case -KS:												// symbol
 		return std::string(data->s);
 	default:
-		throw std::string("not a char list or symbol");
+		if ((-KSemax <= data->t) && (data->t <= -KSemin)) {	// enumerated symbol
+			return std::string(data->s);
+		}
+		else {
+			throw std::string("not a char list or symbol");
+		}
 	}
 }
 
@@ -140,22 +148,31 @@ std::vector<std::string> q::qList2String(K data) throw(std::string) {
 	}
 	std::vector<std::string> result;
 	switch (data->t) {
-	case KS:
-		assert(data->n >= 0);
-		result.reserve(static_cast<std::size_t>(data->n));
-		for (J i = 0; i < data->n; ++i) {
-			result.push_back(kS(data)[i]);
-		}
-		break;
-	case 0:
+	case 0:													// char list list (a.k.a. string list)
 		assert(data->n >= 0);
 		result.reserve(static_cast<std::size_t>(data->n));
 		for (J i = 0; i < data->n; ++i) {
 			result.push_back(q2String(kK(data)[i]));
 		}
 		break;
+	case KS:												// symbol list
+		assert(data->n >= 0);
+		result.reserve(static_cast<std::size_t>(data->n));
+		for (J i = 0; i < data->n; ++i) {
+			result.push_back(kS(data)[i]);
+		}
+		break;
 	default:
-		throw std::string("not a string or symbol list");
+		if ((KSemin <= data->t) && (data->t <= KSemax)) {	// enumerated symbol list
+			assert(data->n >= 0);
+			result.reserve(static_cast<std::size_t>(data->n));
+			for (J i = 0; i < data->n; ++i) {
+				result.push_back(kS(data)[i]);
+			}
+		}
+		else {
+			throw std::string("not a string or symbol list");
+		}
 	}
 	assert(result.size() == data->n);
 	return result;
@@ -300,19 +317,19 @@ F q::DATE2q(::DATE date) throw(std::string) {
 
 	std::tm tm;
 	// # days since 1899.12.30
-	J const nDays1899 = static_cast<J>(date);
+	J nDays1899 = static_cast<J>(date);
 	// Seconds since midnight
-	J const nSecs = static_cast<J>((date - std::floor(date)) * (60L * 60 * 24));
+	J nSecs = static_cast<J>((date - std::floor(date)) * (60L * 60 * 24));
 	// # days since 0000.01.01
-	J const nDaysAbs = nDays1899 + 693959L;
+	J nDaysAbs = nDays1899 + 693959L;
 	// Known: 0000.01.01 was a Saturday
 	tm.tm_wday = static_cast<int>((nDaysAbs - 1) % 7L);
 	
 	// # 400-year blocks since 0000.01.01
-	J const n400Years = static_cast<J>(nDaysAbs / 146097L);
-	J const nDaysIn400Year = nDaysAbs % 146097L;
+	J n400Years = static_cast<J>(nDaysAbs / 146097L);
+	J nDaysIn400Year = nDaysAbs % 146097L;
 	// # century since beginning of the 400-year block (1st century had an extra day)
-	J const nCenturyIn400Year = static_cast<J>((nDaysIn400Year - 1) / 36524L);
+	J nCenturyIn400Year = static_cast<J>((nDaysIn400Year - 1) / 36524L);
 	
 	// If a 4-year block contains a leap year
 	bool leapIn4Year = true;
@@ -324,12 +341,12 @@ F q::DATE2q(::DATE date) throw(std::string) {
 	}
 	else {
 		// Day within the century
-		J const nDaysInCentury = (nDaysIn400Year - 1) % 36524L;
+		J nDaysInCentury = (nDaysIn400Year - 1) % 36524L;
 		// 1st 4-year increment had only 1460 days
-		n4Years = static_cast<J>((nDaysIn400Year + 1) / 1461L);
+		n4Years = static_cast<J>((nDaysInCentury + 1) / 1461L);
 		leapIn4Year = (n4Years != 0);
 		// Day within 4-year block (yr1.01.01 => 0; yr4.12.31 => 1460)
-		nDaysIn4Year = leapIn4Year ? static_cast<J>((nDaysIn400Year + 1) % 1461L) : nDaysIn400Year;
+		nDaysIn4Year = leapIn4Year ? static_cast<J>((nDaysInCentury + 1) % 1461L) : nDaysInCentury;
 	}
 
 	J nYearsIn4Year, nDaysInYear;

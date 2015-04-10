@@ -60,6 +60,7 @@ struct Wind::MatrixDataParser::qTypeTraits<::VARIANT> : q::type_traits<void> {
 	static K convert(::VARIANT const& x) {
 		switch (x.vt) {
 		case ::VT_EMPTY:
+		case ::VT_NULL:
 			return ktn(0, 0);	// Not ideal, but since we don't know the expected data type here...
 		case ::VT_I2:
 			static_assert(std::is_same<H, SHORT>::value, "Mismatched data types: H vs SHORT");

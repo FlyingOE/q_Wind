@@ -72,7 +72,7 @@ WSET:dataSet:{[F;r;p]
                     `ctd_ib`ctd_sh`ctd_sz,`member_name`us_code`us_name`cash_substitution_mark,
                     `option_var`option_code`option_name`exe_type`call_put`settle_method,
                     `fund_type`class_a_code`class_a_name`class_b_code`class_b_name);
-    /NOTE: Need to handle VT_EMPTY fields...
+    /NOTE: Need to handle VT_EMPTY/VT_NULL fields...
     (cols[t]inter exec C except a from mapping)_
     ![;();0b;exec a!e from mapping where C in cols t]
         t:flip{$[(not 0h=type x)or(10h=type first x);x;

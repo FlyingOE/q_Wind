@@ -66,7 +66,7 @@ WSET:dataSet:{[F;r;p]
     mapping:([]
         C:`code`enddate`wind_code`sec_name,syms;
         a:`code`enddate`sym`name,syms;
-        e:(("J"$;`code);('["M"$;'[ssr[;"月";""]';ssr[;"年";"-"]']];`enddate)),
+        e:(("J"$;`code);(('[;]/)("M"$;ssr[;"月";""]';ssr[;"年";"-"]');`enddate)),
             (`$),/:`wind_code`sec_name,
                 syms:`name`type`organization`researcher,
                     `ctd_ib`ctd_sh`ctd_sz,`member_name`us_code`us_name`cash_substitution_mark,

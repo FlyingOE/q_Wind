@@ -80,7 +80,7 @@ WSET:dataSet:{[F;r;p]
             ]}peach flip impl.quantData2Table F[r;impl.dict2Strings p]
     }DLL 2:(`Wind_wset;2);
 
-/q) cb:.wind.rtCallback{show(x;.z.P;y);show z};
+/q) cb:.wind.rtCallback{show(x;.z.P;y)};
 /q) qid:.wind.WSQ[`000001.SZ`000002.SZ`000003.SZ;`rt_date`rt_time`rt_last`rt_vol;();`cb]
 WSQ:rtQuotes:{[F;c;i;p;f]
 	F[(),c;(),i;impl.dict2Strings$[p~();()!();p],(1#`REALTIME)!1#1b;f]

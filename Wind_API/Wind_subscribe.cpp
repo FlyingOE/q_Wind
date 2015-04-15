@@ -57,10 +57,10 @@ namespace Wind {
 				return K_NIL;	\
 			}
 			::WQID qid = 0;
-			int recvd = ::recv(sock, reinterpret_cast<char*>(&qid), sizeof(::WQID), 0);
+			int recvd = ::recv(sock, reinterpret_cast<char*>(&qid), sizeof(::WQID), MSG_WAITALL);
 			RECV_CHECK(sizeof(::WQID), "WQID incomplete");
 			std::size_t len = 0;
-			recvd = ::recv(sock, reinterpret_cast<char*>(&len), sizeof(len), 0);
+			recvd = ::recv(sock, reinterpret_cast<char*>(&len), sizeof(len), MSG_WAITALL);
 			RECV_CHECK(sizeof(len), "size incomplete");
 			if (len > static_cast<std::size_t>(std::numeric_limits<int>::max())) {
 				std::cerr << "<recv> serialized data (" << len << ") > 2G" << std::endl;
@@ -68,7 +68,7 @@ namespace Wind {
 			}
 			q::K_ptr serialized(ktn(KB, len));
 			std::memset(kG(serialized.get()), 0, len);
-			recvd = ::recv(sock, reinterpret_cast<char*>(kG(serialized.get())), len, 0);
+			recvd = ::recv(sock, reinterpret_cast<char*>(kG(serialized.get())), len, MSG_WAITALL);
 			RECV_CHECK(len, "data incomplete");
 #			undef RECV_CHECK
 

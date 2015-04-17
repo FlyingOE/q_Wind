@@ -3,6 +3,7 @@
 
 #include "util.h"
 #include "multilang.h"
+#include "K_ptr.h"
 #include <cassert>
 #include <algorithm>
 #include <ctime>
@@ -10,8 +11,8 @@
 
 int q::UTC_OFFSET = 0;
 
-#define KSemin	(20)
-#define KSemax	(76)
+#define ENUMmin	(20)
+#define ENUMmax	(76)
 
 long long q::q2Dec(K data) throw(std::string) {
 	if (data == K_NIL) {
@@ -133,8 +134,10 @@ std::string q::q2String(K data) throw(std::string) {
 	case -KS:												// symbol
 		return std::string(data->s);
 	default:
-		if ((-KSemax <= data->t) && (data->t <= -KSemin)) {	// enumerated symbol
-			return std::string(data->s);
+		if ((-ENUMmax <= data->t) && (data->t <= -ENUMmin)) {	// enumerated symbol
+			K_ptr sym(k(0, "value", r1(data), K_NIL));
+			assert(sym);
+			return std::string(sym->s);
 		}
 		else {
 			throw std::string("not a char list or symbol");
@@ -163,11 +166,13 @@ std::vector<std::string> q::qList2String(K data) throw(std::string) {
 		}
 		break;
 	default:
-		if ((KSemin <= data->t) && (data->t <= KSemax)) {	// enumerated symbol list
-			assert(data->n >= 0);
-			result.reserve(static_cast<std::size_t>(data->n));
+		if ((ENUMmin <= data->t) && (data->t <= ENUMmax)) {	// enumerated symbol list
+			K_ptr syms(k(0, "value", r1(data), K_NIL));
+			assert(syms && (syms->n == data->n));
+			assert(syms->n >= 0);
+			result.reserve(static_cast<std::size_t>(syms->n));
 			for (J i = 0; i < data->n; ++i) {
-				result.push_back(kS(data)[i]);
+				result.push_back(kS(syms)[i]);
 			}
 		}
 		else {

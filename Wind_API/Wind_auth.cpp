@@ -35,13 +35,13 @@ WIND_API K K_DECL Wind_login(K username, K password) {
 #	endif
 
 #	ifndef NDEBUG
-	std::cerr << ">>> WDataAuthorize({\""
-		<< login.strUserName << "\", \"" << login.strPassword
-		<< "\"})" << std::endl;
+	std::wcerr << L">>> WDataAuthorize({\""
+		<< login.strUserName << L"\", \"" << login.strPassword
+		<< L"\"})" << std::endl;
 #	endif
 	::WQErr const error = ::WDataAuthorize(&login);
 #	ifndef NDEBUG
-	std::cerr << "<<< WDataAuthorize = " << error << std::endl;
+	std::wcerr << L"<<< WDataAuthorize = " << error << std::endl;
 #	endif
 	if (error == WQERR_OK) {
 		std::string const u = ml::convert(q::DEFAULT_CP, uid.c_str());

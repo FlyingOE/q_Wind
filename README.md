@@ -28,7 +28,7 @@
   * Initial merge into GitHub
   * Added missing support for `WST` function
   * Fixed problem with `WSQ` subscribers being not able to modify global data in q
-* 2015.03--04
+* 2015.03&ndash;04
   * Various bug fixes
 
 ### References

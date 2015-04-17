@@ -103,5 +103,7 @@
     <None Include="MatrixDataParser.inl">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="..\README.md" />
+    <None Include="..\LICENSE" />
   </ItemGroup>
 </Project>

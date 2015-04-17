@@ -150,6 +150,8 @@
     <ClCompile Include="Wind_subscribe.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\LICENSE" />
+    <None Include="..\README.md" />
     <None Include="MatrixDataParser.inl" />
     <ClInclude Include="util.inl">
       <FileType>Document</FileType>

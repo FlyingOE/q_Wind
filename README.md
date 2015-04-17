@@ -2,11 +2,13 @@
 
 ## kdb+/q interface for Wind API (non-COM version)
 
+[Wind Quant API](http://www.dajiangzhang.com/download) is developed by [Wind Info](http://www.wind.com.cn/En/Default.aspx), a Chinese financial information and solutions provider.
+
 ## Wind 万得 kdb+/q 数据接口（non-COM version）
 
 这是一个[Wind Quant API](http://www.dajiangzhang.com/download)的kdb+接口。
 
-本项目是使用Visual Studio 2013编译的工程。与[zwz](http://www.dajiangzhang.com/u?4bf215b5-2c07-4b70-91ec-09d8269e48e2)的《[WindKdb+数据及交易接口V1.1](http://www.dajiangzhang.com/q?fc42e518-3ced-4b97-833e-5f6673a7127b)》不同，本工程直接使用`WindQuantData.dll`的API而不须使用基于COM的`WAPIWrapperCpp.dll`。虽然没有使用`WAPIWrapperCpp.dll`，不过本接口已经把所有接数的函数封装为同步函数（`.wind.wsq`除外），以方便在q程序内使用。
+本项目是使用Visual Studio 2013编译的工程。与[zwz](http://www.dajiangzhang.com/u?4bf215b5-2c07-4b70-91ec-09d8269e48e2)的《[WindKdb+数据及交易接口V1.1](http://www.dajiangzhang.com/q?fc42e518-3ced-4b97-833e-5f6673a7127b)》不同，本工程直接使用`WindQuantData.dll`的API而不须使用基于COM的`WAPIWrapperCpp.dll`。虽然没有使用`WAPIWrapperCpp.dll`，不过本接口已经把所有接数的函数封装为同步函数（`.wind.WSQ`除外），以方便在q程序内使用。
 
 ### License
 
@@ -25,19 +27,22 @@
 * [2015.03.06](./packaged/q_Wind-2015.03.06.zip)
   * Initial merge into GitHub
   * Added missing support for `WST` function
-  * Fixed problem with `WSQ` subscribers that cannot modify global data in q
+  * Fixed problem with `WSQ` subscribers being not able to modify global data in q
+* 2015.03--04
+  * Various bug fixes
 
 ### References
 
-#### 关于Wind万得
+#### About Wind万得
 
 * 公司：http://www.wind.com.cn
 * 大奖章：http://www.dajiangzhang.com
-* http://www.dajiangzhang.com/q?32571fd0-4861-4f5b-b8e4-5d4e26b06036
+  * http://www.dajiangzhang.com/q?32571fd0-4861-4f5b-b8e4-5d4e26b06036
 
-#### 关于kdb+/q
+#### About kdb+/q
 
 * 公司：http://www.kx.com
+  * Wikipedia: http://en.wikipedia.org/wiki/Q_(programming_language_from_Kx_Systems)
+  * 中文介绍：http://itfin.f3322.org/opt/cgi/wiki.pl/KdbPlus
 * 开源：http://code.kx.com
-* 中文介绍：http://itfin.f3322.org/opt/cgi/wiki.pl/KdbPlus
-* 维基主题：http://en.wikipedia.org/wiki/Q_(programming_language_from_Kx_Systems)
+* GitHub: https://kxsystems.github.io

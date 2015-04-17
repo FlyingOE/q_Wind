@@ -16,9 +16,9 @@
 
 ### Build
 
-如果您使用正版的Visual Studio 2013，则本工程只需要[Kx][]的[`k.h`](http://code.kx.com/wsvn/code/kx/kdb%2B/c/c/k.h)和[`q.lib`](http://code.kx.com/wsvn/code/kx/kdb%2B/w32/q.lib)即可编译通过。
+如果您使用正版的Visual Studio 2013，则本工程只需要[Kx][]的[`k.h`][k.h]和[`q.lib`][q.lib]即可编译通过。
 
-如果您使用的是免费版的Visual Studio Express 2013，则本工程还额外需要[Windows Driver Kit (WDK) v7.1.0](http://www.microsoft.com/en-us/download/details.aspx?id=11800)中的头文件和库方可编译。为方便直接使用，[压缩包](./packaged/)里还包括了工程编译后生成的DLL（在Release目录中）。
+如果您使用的是免费版的Visual Studio Express 2013，则本工程还额外需要[Windows Driver Kit (WDK) v7.1.0][WDK]中的头文件和库方可编译。为方便直接使用，[压缩包](./packaged/)里还包括了工程编译后生成的DLL（在Release目录中）。
 
 ### Change Log
 
@@ -33,22 +33,25 @@
 
 ### References
 
-[Kx]:             http://www.kx.com
+[Kx]:    http://www.kx.com
+[k.h]:   http://code.kx.com/wsvn/code/kx/kdb%2B/c/c/k.h
+[q.lib]: http://code.kx.com/wsvn/code/kx/kdb%2B/w32/q.lib
+[WDK]:   http://www.microsoft.com/en-us/download/details.aspx?id=11800
 [Wind Info]:      http://www.wind.com.cn/En/
 [Wind Quant API]: http://www.dajiangzhang.com/download
-[WindKdb+]:       http://www.dajiangzhang.com/q?fc42e518-3ced-4b97-833e-5f6673a7127b
 [zwz]:            http://www.dajiangzhang.com/u?4bf215b5-2c07-4b70-91ec-09d8269e48e2
+[WindKdb+]:       http://www.dajiangzhang.com/q?fc42e518-3ced-4b97-833e-5f6673a7127b
 
 #### About Wind万得
 
-* 公司：http://www.wind.com.cn
-* 大奖章：http://www.dajiangzhang.com
-  * http://www.dajiangzhang.com/q?32571fd0-4861-4f5b-b8e4-5d4e26b06036
+* 公司：<http://www.wind.com.cn>
+* 大奖章：<http://www.dajiangzhang.com>
+  * <http://www.dajiangzhang.com/q?32571fd0-4861-4f5b-b8e4-5d4e26b06036>
 
 #### About kdb+/q
 
-* 公司：http://www.kx.com
-  * Wikipedia: http://en.wikipedia.org/wiki/Q_(programming_language_from_Kx_Systems)
-  * 中文介绍：http://itfin.f3322.org/opt/cgi/wiki.pl/KdbPlus
-* 开源：http://code.kx.com
-* GitHub: https://kxsystems.github.io
+* 公司：<http://www.kx.com>
+  * Wikipedia: <http://en.wikipedia.org/wiki/Q_(programming_language_from_Kx_Systems)>
+  * 中文介绍：<http://itfin.f3322.org/opt/cgi/wiki.pl/KdbPlus>
+* 开源：<http://code.kx.com>
+* GitHub: <https://kxsystems.github.io>

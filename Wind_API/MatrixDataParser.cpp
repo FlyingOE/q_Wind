@@ -7,6 +7,7 @@
 Wind::MatrixDataParser::MatrixDataParser(::VARIANT const& array) : data_(array) {
 }
 
+//@ref struct Wind::MatrixDataParser::qTypeTraits<::VARIANT>
 K Wind::MatrixDataParser::parse() const throw() {
 	if ((data_.vt & ::VT_ARRAY) != ::VT_ARRAY) {
 		return q::error2q("Wind MatrixData is not an array");
@@ -21,8 +22,11 @@ K Wind::MatrixDataParser::parse() const throw() {
 	case ::VT_I2:
 		return parseSafeArray<H>(*array);
 	case ::VT_I4:
+	case ::VT_UI2:
 		return parseSafeArray<I>(*array);
 	case ::VT_I8:
+	case ::VT_UI4:
+	case ::VT_UI8:
 		return parseSafeArray<J>(*array);
 	case ::VT_R4:
 		return parseSafeArray<E>(*array);
@@ -32,6 +36,8 @@ K Wind::MatrixDataParser::parse() const throw() {
 			q::K_ptr result(parseSafeArray<DATE>(*array));
 			return util::qConvertArray3D<q::type_traits<F>, util::qDateTypeTraits>(result.get());
 		}
+	case ::VT_BSTR:
+		return parseSafeArray<::BSTR>(*array);
 	case ::VT_VARIANT:
 		return parseSafeArray<::VARIANT>(*array);
 	default: {

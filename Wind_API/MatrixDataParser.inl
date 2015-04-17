@@ -40,10 +40,10 @@ namespace Wind {
 		template <typename T>
 		struct PrimitiveTypeTraits {
 			static T convert(T x) { return x; }
-			static K getError(T) { return K_NIL; }
+			static K checkError(T) { return K_NIL; }
 		};
 
-		struct qDateTypeTraits : q::type_traits < I > {
+		struct qDateTypeTraits : q::type_traits <I> {
 			static q::TypeNum const typeNum = KD;
 			static I convert(DATE date) { return static_cast<I>(q::DATE2q(date)); }
 		};
@@ -55,6 +55,23 @@ namespace Wind {
 template <typename T>
 struct Wind::MatrixDataParser::qTypeTraits : q::type_traits<T>, Wind::util::PrimitiveTypeTraits<T> {};
 
+template <>
+struct Wind::MatrixDataParser::qTypeTraits<::BSTR> : q::type_traits<void> {
+	static K convert(::BSTR x) {
+		return kp(const_cast<S>(ml::convert(q::DEFAULT_CP, x).c_str()));
+	}
+
+	static K checkError(K& k) {
+		K error = K_NIL;
+		if ((k != K_NIL) && (k->t == -128)) {
+			error = k;
+			k = K_NIL;
+		}
+		return error;
+	}
+};
+
+//@ref Wind::MatrixDataParser::parse()
 template <>
 struct Wind::MatrixDataParser::qTypeTraits<::VARIANT> : q::type_traits<void> {
 	static K convert(::VARIANT const& x) {
@@ -102,7 +119,7 @@ struct Wind::MatrixDataParser::qTypeTraits<::VARIANT> : q::type_traits<void> {
 		}
 	}
 
-	static K getError(K& k) {
+	static K checkError(K& k) {
 		K error = K_NIL;
 		if ((k != K_NIL) && (k->t == -128)) {
 			error = k;
@@ -145,7 +162,7 @@ K Wind::MatrixDataParser::parseSafeArray(::SAFEARRAY& array) throw() {
 			for (LONG x = Xd(lb); x <= Xd(ub); ++x) {
 				typename Traits::value_type& k = Traits::index(resultY)[Di(Xd, x)];
 				k = Traits::convert(data[idx++]);
-				K const error = Traits::getError(k);	// detect potential conversion errors
+				K const error = Traits::checkError(k);	// detect potential conversion errors
 				if (error != K_NIL) return error;
 			}
 		}

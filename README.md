@@ -2,7 +2,7 @@
 
 ## kdb+/q interface for Wind API (non-COM version)
 
-[Wind Quant API](http://www.dajiangzhang.com/download) is developed by [Wind Info](http://www.wind.com.cn/En/Default.aspx), a Chinese financial information and solutions provider.
+[Wind Quant API](http://www.dajiangzhang.com/download) is developed by [Wind Information Co., Ltd](http://www.wind.com.cn/En/), a Chinese financial information and solutions provider.
 
 ## Wind 万得 kdb+/q 数据接口（non-COM version）
 

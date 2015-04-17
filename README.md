@@ -2,13 +2,13 @@
 
 ## kdb+/q interface for Wind API (non-COM version)
 
-[Wind Quant API](http://www.dajiangzhang.com/download) is developed by [Wind Information Co., Ltd](http://www.wind.com.cn/En/), a Chinese financial information and solutions provider.
+[Wind Quant API][] is developed by [Wind Information Co., Ltd][Wind Info], a Chinese financial information and solutions provider.
 
 ## Wind 万得 kdb+/q 数据接口（non-COM version）
 
-这是一个[Wind Quant API](http://www.dajiangzhang.com/download)的kdb+接口。
+这是一个[Wind Quant API][]的kdb+接口。
 
-本项目是使用Visual Studio 2013编译的工程。与[zwz](http://www.dajiangzhang.com/u?4bf215b5-2c07-4b70-91ec-09d8269e48e2)的《[WindKdb+数据及交易接口V1.1](http://www.dajiangzhang.com/q?fc42e518-3ced-4b97-833e-5f6673a7127b)》不同，本工程直接使用`WindQuantData.dll`的API而不须使用基于COM的`WAPIWrapperCpp.dll`。虽然没有使用`WAPIWrapperCpp.dll`，不过本接口已经把所有接数的函数封装为同步函数（`.wind.WSQ`除外），以方便在q程序内使用。
+本项目是使用Visual Studio 2013编译的工程。与[zwz][]的《[WindKdb+数据及交易接口V1.1][WindKdb+]》不同，本工程直接使用`WindQuantData.dll`的API而不须使用基于COM的`WAPIWrapperCpp.dll`。虽然没有使用`WAPIWrapperCpp.dll`，不过本接口已经把所有接数的函数封装为同步函数（`.wind.WSQ`除外），以方便在q程序内使用。
 
 ### License
 
@@ -16,7 +16,7 @@
 
 ### Build
 
-如果您使用正版的Visual Studio 2013，则本工程只需要[Kx](http://www.kx.com)的[`k.h`](http://code.kx.com/wsvn/code/kx/kdb%2B/c/c/k.h)和[`q.lib`](http://code.kx.com/wsvn/code/kx/kdb%2B/w32/q.lib)即可编译通过。
+如果您使用正版的Visual Studio 2013，则本工程只需要[Kx][]的[`k.h`](http://code.kx.com/wsvn/code/kx/kdb%2B/c/c/k.h)和[`q.lib`](http://code.kx.com/wsvn/code/kx/kdb%2B/w32/q.lib)即可编译通过。
 
 如果您使用的是免费版的Visual Studio Express 2013，则本工程还额外需要[Windows Driver Kit (WDK) v7.1.0](http://www.microsoft.com/en-us/download/details.aspx?id=11800)中的头文件和库方可编译。为方便直接使用，[压缩包](./packaged/)里还包括了工程编译后生成的DLL（在Release目录中）。
 
@@ -32,6 +32,12 @@
   * Various bug fixes
 
 ### References
+
+[Kx]:             http://www.kx.com
+[Wind Info]:      http://www.wind.com.cn/En/
+[Wind Quant API]: http://www.dajiangzhang.com/download
+[WindKdb+]:       http://www.dajiangzhang.com/q?fc42e518-3ced-4b97-833e-5f6673a7127b
+[zwz]:            http://www.dajiangzhang.com/u?4bf215b5-2c07-4b70-91ec-09d8269e48e2
 
 #### About Wind万得
 

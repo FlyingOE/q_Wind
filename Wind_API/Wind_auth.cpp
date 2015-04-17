@@ -34,7 +34,15 @@ WIND_API K K_DECL Wind_login(K username, K password) {
 	std::wcsncpy(login.strPassword, pwd.c_str(), pwd.size());
 #	endif
 
+#	ifndef NDEBUG
+	std::cerr << ">>> WDataAuthorize({\""
+		<< login.strUserName << "\", \"" << login.strPassword
+		<< "\"})" << std::endl;
+#	endif
 	::WQErr const error = ::WDataAuthorize(&login);
+#	ifndef NDEBUG
+	std::cerr << "<<< WDataAuthorize = " << error << std::endl;
+#	endif
 	if (error == WQERR_OK) {
 		std::string const u = ml::convert(q::DEFAULT_CP, uid.c_str());
 		std::cerr << "<Wind> logged in as " << u << std::endl;

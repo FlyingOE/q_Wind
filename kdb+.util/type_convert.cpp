@@ -245,20 +245,10 @@ std::tm q::q2tm(K data) throw(std::string) {
 	std::tm result = { 0 };
 	switch (data->t) {
 	case -KD:
-		if (data->i == ni) {
-			throw std::string("null date");
-		}
-		else {
-			Cookbook::gt_r(data->i, &result);
-		}
+		Cookbook::gt_r((data->i == ni) ? 0 : data->i, &result);
 		break;
 	case -KZ:
-		if (data->f == nf) {
-			throw std::string("null datetime");
-		}
-		else {
-			Cookbook::gt_r(data->f, &result);
-		}
+		Cookbook::gt_r((data->f == nf) ? 0. : data->f, &result);
 		break;
 	default:
 		throw std::string("not a date or datetime");
@@ -278,22 +268,12 @@ std::vector<std::tm> q::qList2tm(K data) throw(std::string) {
 	switch (data->t) {
 	case KD:
 		for (std::size_t i = 0; i < data->n; ++i) {
-			if (kI(data)[i] == ni) {
-				throw std::string("null date");
-			}
-			else {
-				Cookbook::gt_r(kI(data)[i], &result[i]);
-			}
+			Cookbook::gt_r((kI(data)[i] == ni) ? 0 : kI(data)[i], &result[i]);
 		}
 		break;
 	case KZ:
 		for (std::size_t i = 0; i < data->n; ++i) {
-			if (kF(data)[i] == nf) {
-				throw std::string("null datetime");
-			}
-			else {
-				Cookbook::gt_r(kF(data)[i], &result[i]);
-			}
+			Cookbook::gt_r((kF(data)[i] == nf) ? 0. : kF(data)[i], &result[i]);
 		}
 		break;
 	default:

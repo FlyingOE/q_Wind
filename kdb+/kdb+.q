@@ -14,10 +14,11 @@ utf8_gb18030:lineOrList[;.CPPlib.DLL 2:(`utf8_gb18030;1)];
 \d .opt
 
 .opt.parse:{[cfg;z_x]
-	args:(!).@["S\037\036"0:"\036"sv"\037"sv/:0N 2#z_x;0;{`$1_/:string x}];
+	args:(key[cfg]!count[cfg]#enlist""),
+		(!).@["S\037\036"0:"\036"sv"\037"sv/:0N 2#z_x;0;{`$1_/:string x}];
 	if[0<count unknown:k where not(k:key args)in key cfg;
 		'","sv"-",/:string unknown];
-	:(cfg key args)$'args
+	:type'[cfg key args]$'args
 	};
 
 /==============================================================================

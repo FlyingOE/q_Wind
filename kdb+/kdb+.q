@@ -10,6 +10,8 @@ lineOrList:{$[type x;y@x;.z.s\:[x;y]]};
 gb18030_utf8:lineOrList[;.CPPlib.DLL 2:(`gb18030_utf8;1)];
 utf8_gb18030:lineOrList[;.CPPlib.DLL 2:(`utf8_gb18030;1)];
 
+stringize:{x _.Q.s y}$[.z.o like"w*";2;1]
+
 /==============================================================================
 \d .opt
 

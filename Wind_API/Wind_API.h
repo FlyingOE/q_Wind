@@ -105,6 +105,13 @@ extern "C" {
 		K params		//0h=() or 11h!0h
 		);
 
+	WIND_API K K_DECL Wind_edb(
+		K windCode,		//-11h or 10h
+		K beginTime,	//-14h or -15h
+		K endTime,		//-14h or -15h
+		K params		//0h=() or 11h!0h
+		);
+
 #ifdef __cplusplus
 }//extern "C"
 #endif

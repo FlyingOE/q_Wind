@@ -119,6 +119,13 @@ WUPF:portfUpdate:{[F;n;d;c;q;x;p]
     F[n;(),d;(),c;(),q;(),x;impl.dict2Strings p]
     }DLL 2:(`Wind_wupf;6);
 
+/q) .wind.EDB[`M0009808;2011.01.01;2015.06.29;()]
+EDB:{[F;c;b;e;p]
+    delete ts,code from
+        update date:"d"$ts,sym:`$code from
+            impl.quantData2Table F[c;b;e;impl.dict2Strings p]
+    }DLL 2:(`Wind_edb;4);
+
 /==============================================================================
 impl.quantData2Table:{
     x:`ts`code`field`data!x;

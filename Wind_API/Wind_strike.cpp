@@ -246,3 +246,21 @@ WIND_API K K_DECL Wind_wupf(K portfolioName, K tradeDates, K windCodes, K quanti
 		&Wind::callback::strike, result.dup());
 	return result.waitFor(qid);
 }
+
+WIND_API K K_DECL Wind_edb(K windCode, K beginTime, K endTime, K params) {
+	std::wstring code, begin, end, paras;
+	try {
+		code = q::q2WString(windCode);
+		begin = Wind::util::q2DateTimeStr(beginTime);
+		end = Wind::util::q2DateTimeStr(endTime);
+		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
+	}
+	catch (std::string const& error) {
+		return q::error2q(error);
+	}
+
+	Wind::callback::Result result;
+	::WQID const qid = ::EDB(code.c_str(), begin.c_str(), end.c_str(), paras.c_str(),
+		&Wind::callback::strike, result.dup());
+	return result.waitFor(qid);
+}

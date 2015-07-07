@@ -83,7 +83,7 @@ void Wind::util::dupSimpleArray(WQArray& dst, WQArray const& src, ElemT* WQArray
 template <typename qTraits, typename WQArray, typename ElemT>
 K Wind::util::parseSimpleArray(WQArray const& array, ElemT* WQArray::*arrPtr) throw() {
 	assert(array.arrLen >= 0);
-	q::K_ptr result(ktn(qTraits::typeNum, array.arrLen));
+	q::K_ptr result(ktn(qTraits::TYPE_NUM, array.arrLen));
 
 	typename qTraits::value_type* const dst = qTraits::index(result.get());
 	assert(dst != NULL);
@@ -115,7 +115,7 @@ K Wind::util::qConvertArray3D(K array) throw() {
 			K const arrayY = kK(arrayZ)[y];
 			assert(arrayY != K_NIL);
 			K& resultY = kK(resultZ)[y];
-			assert((arrayY->t == qSrcTraits::typeNum) && (arrayY->n >= 0));
+			assert((arrayY->t == qSrcTraits::TYPE_NUM) && (arrayY->n >= 0));
 			resultY = ktn(qDstTraits::typeNum, arrayY->n);
 			for (std::size_t x = 0; x < arrayY->n; ++x) {
 				qDstTraits::index(resultY)[x] = qDstTraits::convert(qSrcTraits::index(arrayY)[x]);

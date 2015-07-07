@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="type_convert.cpp" />
+    <ClCompile Include="type_traits.cpp" />
     <ClCompile Include="util.cpp" />
     <ClCompile Include="multilang.cpp" />
     <ClCompile Include="stdafx.cpp">

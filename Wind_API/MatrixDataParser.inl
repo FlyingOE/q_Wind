@@ -158,7 +158,7 @@ K Wind::MatrixDataParser::parseSafeArray(::SAFEARRAY& array) throw() {
 		resultZ = ktn(0, Dn(Yd));
 		for (LONG y = Yd(lb); y <= Yd(ub); ++y) {
 			K& resultY = kK(resultZ)[Di(Yd, y)];
-			resultY = ktn(Traits::typeNum, Dn(Xd));
+			resultY = ktn(Traits::TYPE_NUM, Dn(Xd));
 			for (LONG x = Xd(lb); x <= Xd(ub); ++x) {
 				typename Traits::value_type& k = Traits::index(resultY)[Di(Xd, x)];
 				k = Traits::convert(data[idx++]);

@@ -238,11 +238,12 @@ std::map<std::wstring, std::wstring> q::qDict2WStringMap(K data, UINT frCP) thro
 	return result;
 }
 
-std::tm q::q2tm(K data) throw(std::string) {
+q::tm_ext q::q2tm(K data) throw(std::string) {
 	if (data == K_NIL) {
 		throw std::string("nil date or datetime");
 	}
-	std::tm result = { 0 };
+	tm_ext result;
+	std::memset(&result, 0, sizeof(tm_ext));
 	switch (data->t) {
 	case -KD:
 		Cookbook::gt_r((data->i == ni) ? 0 : data->i, &result);
@@ -256,7 +257,7 @@ std::tm q::q2tm(K data) throw(std::string) {
 	return result;
 }
 
-std::vector<std::tm> q::qList2tm(K data) throw(std::string) {
+std::vector<q::tm_ext> q::qList2tm(K data) throw(std::string) {
 	if (data == K_NIL) {
 		throw std::string("nil date or datetime list");
 	}
@@ -264,7 +265,7 @@ std::vector<std::tm> q::qList2tm(K data) throw(std::string) {
 		throw std::string("not a date or datetime list");
 	}
 	assert(data->n >= 0);
-	std::vector<std::tm> result(static_cast<std::size_t>(data->n));
+	std::vector<tm_ext> result(static_cast<std::size_t>(data->n));
 	switch (data->t) {
 	case KD:
 		for (std::size_t i = 0; i < data->n; ++i) {

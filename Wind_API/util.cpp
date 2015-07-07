@@ -5,6 +5,10 @@
 #include "kdb+.util/multilang.h"
 #include "kdb+.util/type_convert.h"
 #include <cassert>
+#ifdef _MSC_VER
+//@ref https://msdn.microsoft.com/en-us/library/dn607301.aspx
+#include <iterator>	//MSVC: stdext::make_unchecked_array_iterator
+#endif
 
 std::string Wind::util::error2Text(::WQErr error) {
 	TCHAR const* msg = ::WErr(error, eENG);
@@ -35,25 +39,55 @@ char const* Wind::util::eventType2Text(::WQEventType type) {
 }
 
 std::wstring Wind::util::q2tmStr(K data, std::size_t maxLen, wchar_t const* fmt) throw(std::string) {
-	std::tm const tm = q::q2tm(data);
+	// Special treatment of millisecond format
+	std::vector<wchar_t> f(fmt, fmt + std::wcslen(fmt) + 1);
+	while (wchar_t* p = std::wcsstr(&f[0], L"%##")) {
+		*p = L'#';
+	}
+
+	q::tm_ext const tm = q::q2tm(data);
 	std::vector<wchar_t> buffer(maxLen + 1, L'\0');
 	assert(fmt != NULL);
-	std::size_t const count = std::wcsftime(&buffer[0], buffer.size(), fmt, &tm);
+	std::size_t const count = std::wcsftime(&buffer[0], buffer.size(), &f[0], &tm);
 	assert(count + 1 == buffer.size());
 	assert(*buffer.rbegin() == L'\0');
+
+	// Patch millisecond format
+	wchar_t ms[4] = { L'\0' };
+	auto const pms = stdext::make_unchecked_array_iterator(ms);
+	std::swprintf(ms, _countof(ms), L"%03d", tm.tm_millis);
+	while (wchar_t* p = std::wcsstr(&buffer[0], L"###")) {
+		std::copy(pms, pms + 3, stdext::make_unchecked_array_iterator(p));
+	}
+	
 	return &buffer[0];
 }
 
 std::vector<std::wstring> Wind::util::qList2tmStr(K data, std::size_t maxLen, wchar_t const* fmt) throw(std::string) {
-	std::vector<std::tm> const tms = q::qList2tm(data);
+	// Special treatment of millisecond format
+	std::vector<wchar_t> f(fmt, fmt + std::wcslen(fmt) + 1);
+	while (wchar_t* p = std::wcsstr(&f[0], L"%##")) {
+		*p = L'#';
+	}
+
+	std::vector<q::tm_ext> const tms = q::qList2tm(data);
 	std::vector<std::wstring> result;
 	result.reserve(tms.size());
 	std::vector<wchar_t> buffer(maxLen + 1, L'\0');
+	wchar_t ms[4] = { L'\0' };
+	auto const pms = stdext::make_unchecked_array_iterator(ms);
 	assert(fmt != NULL);
 	for (std::size_t i = 0; i < tms.size(); ++i) {
-		std::size_t const count = std::wcsftime(&buffer[0], buffer.size(), fmt, &tms[i]);
+		std::size_t const count = std::wcsftime(&buffer[0], buffer.size(), &f[0], &tms[i]);
 		assert(count + 1 == buffer.size());
 		assert(*buffer.rbegin() == L'\0');
+
+		// Patch millisecond format
+		std::swprintf(ms, _countof(ms), L"%03d", tms[i].tm_millis);
+		while (wchar_t* p = std::wcsstr(&buffer[0], L"###")) {
+			std::copy(pms, pms + 2, stdext::make_unchecked_array_iterator(p));
+		}
+
 		result.push_back(&buffer[0]);
 	}
 	return result;
@@ -68,9 +102,9 @@ std::vector<std::wstring> Wind::util::qList2DateStr(K data) throw(std::string) {
 }
 
 std::wstring Wind::util::q2DateTimeStr(K data) throw(std::string) {
-	return q2tmStr(data, 10 + 1 + 8, L"%Y-%m-%d %H:%M:%S");
+	return q2tmStr(data, 10 + 1 + 8, L"%Y-%m-%d %H:%M:%S.%##");
 }
 
 std::vector<std::wstring> Wind::util::qList2DateTimeStr(K data) throw(std::string) {
-	return qList2tmStr(data, 10 + 1 + 8, L"%Y-%m-%d %H:%M:%S");
+	return qList2tmStr(data, 10 + 1 + 8, L"%Y-%m-%d %H:%M:%S.%##");
 }

@@ -10,8 +10,8 @@ namespace q {
 		inline F zu(I u) {	// kdb+ datetime from unix
 			return u / 86400. - 10957;
 		}
-		inline I uz(F f) {	// unix from kdb+ datetime
-			return static_cast<I>(86400 * (f + 10957));
+		inline F uz(F f) {	// unix from kdb+ datetime
+			return 86400 * (f + 10957);
 		}
 		inline J pu(I u) {	// kdb+ timestamp from unix, use ktj(Kj,n) to create timestamp from n
 			return static_cast<J>(8.64e13 * (u / 86400. - 10957));
@@ -25,8 +25,11 @@ namespace q {
 			return std::localtime(&t);
 		}
 		*/
-		template <typename T> std::tm* lt_r(T kd, std::tm* res) {
-			std::time_t t = uz(kd);
+		template <typename T>
+		tm_ext* lt_r(T kd, tm_ext* res) {
+			F tt = uz(kd);
+			std::time_t t = static_cast<std::time_t>(tt);
+			res->tm_millis = static_cast<int>(tt * 1000);
 #			ifdef _MSC_VER
 			::errno_t err = ::localtime_s(res, &t);
 			assert(err == 0);
@@ -41,8 +44,11 @@ namespace q {
 			return std::gmtime(&t);
 		}
 		*/
-		template <typename T> std::tm* gt_r(T kd, std::tm* res) {
-			std::time_t t = uz(kd);
+		template <typename T>
+		tm_ext* gt_r(T kd, tm_ext* res) {
+			F tt = uz(kd);
+			std::time_t t = static_cast<std::time_t>(tt);
+			res->tm_millis = static_cast<int>(tt * 1000);
 #			ifdef _MSC_VER
 			::errno_t err = ::gmtime_s(res, &t);
 			assert(err == 0);

@@ -30,8 +30,8 @@ WIND_API K K_DECL Wind_login(K username, K password) {
 	::wcsncpy_s(login.strUserName, uid.c_str(), uid.size());
 	::wcsncpy_s(login.strPassword, pwd.c_str(), pwd.size());
 #	else
-	std::wcsncpy(login.strUserName, uid.c_str(), uid.size());
-	std::wcsncpy(login.strPassword, pwd.c_str(), pwd.size());
+	std::wcsncpy(login.strUserName, uid.c_str(), _countof(login.strUserName));
+	std::wcsncpy(login.strPassword, pwd.c_str(), _countof(login.strPassword));
 #	endif
 
 #	ifndef NDEBUG
@@ -55,5 +55,11 @@ WIND_API K K_DECL Wind_login(K username, K password) {
 
 WIND_API K K_DECL Wind_logout(K _) {
 	::WQErr const error = ::WDataAuthQuit();
-	return (error == WQERR_OK) ? K_NIL : q::error2q(Wind::util::error2Text(error));
+	if (error == WQERR_OK) {
+		std::cerr << "<Wind> logged out" << std::endl;
+		return K_NIL;
+	}
+	else {
+		return q::error2q(Wind::util::error2Text(error));
+	}
 }

@@ -23,7 +23,7 @@
 extern "C" {
 #endif
 
-	WIND_API K K_DECL getTimeout(K/*NOTE: at least one argument required by 2:!*/);
+	WIND_API K K_DECL getTimeout(K/*NOTE: at least one argument required by `2:'*/);
 	WIND_API K K_DECL setTimeout(K timeout);
 
 	WIND_API K K_DECL Wind_login(
@@ -31,7 +31,7 @@ extern "C" {
 		K password	//-11h or 10h
 		);
 
-	WIND_API K K_DECL Wind_logout(K/*dummy*/);
+	WIND_API K K_DECL Wind_logout(K/*NOTE: at least one argument required by `2:'*/);
 
 	WIND_API K K_DECL Wind_wsd(
 		K windCode,		//-11h or 10h
@@ -76,7 +76,7 @@ extern "C" {
 		);
 
 	WIND_API K K_DECL Wind_cr(K qid);
-	WIND_API K K_DECL Wind_car(K/*dummy*/);
+	WIND_API K K_DECL Wind_car(K/*NOTE: at least one argument required by `2:'*/);
 
 	WIND_API K K_DECL Wind_tdays(
 		K beginDate,	//-14h

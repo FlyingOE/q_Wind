@@ -21,7 +21,7 @@ struct q::type_traits<C> {
 template <>
 struct q::type_traits<G> {
 	typedef G value_type;
-	static TypeNum const TYPE_NUM = KB;
+	static TypeNum const TYPE_NUM = KG;
 	static value_type const NULL_VAL;
 	static value_type* index(K k) { return kG(k); }
 };

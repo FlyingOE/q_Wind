@@ -283,6 +283,13 @@ std::vector<q::tm_ext> q::qList2tm(K data) throw(std::string) {
 	return result;
 }
 
+I q::date2q(int yyyymmdd) {
+	int const year = yyyymmdd / 10000;
+	int const month = (yyyymmdd % 10000) / 100;
+	int const mday = yyyymmdd % 100;
+	return ymd(year, month, mday);
+}
+
 I q::date2q(char const* dateStr) throw(std::string) {
 	assert(dateStr != NULL);
 	int year = 0, month = 0, mday = 0;

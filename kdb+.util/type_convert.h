@@ -47,10 +47,11 @@ namespace q {
 	std::vector<tm_ext> qList2tm(K data) throw(std::string);
 
 	// Convert a C++ date string to a q date
+	I date2q(int yyyymmdd);
 	I date2q(char const* dateStr) throw(std::string);
 	I date2q(std::string const& dateStr) throw(std::string);
 
-	// COnvert a ATL DATE value to a q datetime
+	// Convert a ATL DATE value to a q datetime
 	F DATE2q(::DATE date) throw(std::string);
 
 }//namespace q

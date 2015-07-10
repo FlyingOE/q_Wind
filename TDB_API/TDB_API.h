@@ -47,6 +47,12 @@ extern "C" {
 		K market	//-11h or 10h
 		);
 
+	//获取代码的详细信息
+	TDB_API K K_DECL TDB_codeInfo(
+		K tdb,		//-7h
+		K windCode	//-11h or 10h
+		);
+
 	//获取快照数据(带买卖盘口)
 	TDB_API K K_DECL TDB_tickAB_fields(K/*NOTE: at least one argument required by `2:'*/);
 	TDB_API K K_DECL TDB_tickAB(

@@ -151,6 +151,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TDB_API.cpp" />
+    <ClCompile Include="TDB_code.cpp" />
     <ClCompile Include="TDB_tick.cpp" />
     <ClCompile Include="TDB_transaction.cpp" />
     <ClCompile Include="util.cpp" />

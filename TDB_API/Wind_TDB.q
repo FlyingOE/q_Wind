@@ -35,6 +35,11 @@ start:{
 codeTable:{[F;h;m]
     flip`WindCode`Code`Market`CNName`ENName`Type!F[h;m]
     }DLL 2:(`TDB_codeTable;2);
+    
+/q) .tdb.codeInfo[h]`600000.SH
+codeInfo:{[F;h;c]
+    `WindCode`Code`Market`CNName`ENName`Type!F[h;c]
+    }DLL 2:(`TDB_codeInfo;2);
 
 /q) .tdb.tickAB_fields h
 /q) .tdb.tickAB[h][`600000.SH;`WindCode`Code`Date`Time`BSFlag`AskPrices`AskVolumes`BidPrices`BidVolumes;2015.07.01T00:00;2015.07.03T23:59:59.999]

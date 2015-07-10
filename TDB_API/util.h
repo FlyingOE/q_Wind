@@ -20,6 +20,10 @@ namespace TDB {
 		struct GB18030Encoder {
 			std::string operator()(char const* str) const;
 		};
+		struct StringizeEncoder {
+			template <typename T>
+			std::string operator()(T const& data) const;
+		};
 
 	}//namespace Wind::util
 

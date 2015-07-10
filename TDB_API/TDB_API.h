@@ -84,6 +84,26 @@ extern "C" {
 		K end			//-15h
 		);
 
+	//获取逐笔委托数据
+	TDB_API K K_DECL TDB_order_fields(K/*NOTE: at least one argument required by `2:'*/);
+	TDB_API K K_DECL TDB_order(
+		K tdb,			//-7h
+		K windCode,		//-11h or 10h
+		K indicators,	//-11h or 11h
+		K begin,		//-15h
+		K end			//-15h
+		);
+
+	//获取委托队列数据
+	TDB_API K K_DECL TDB_orderQueue_fields(K/*NOTE: at least one argument required by `2:'*/);
+	TDB_API K K_DECL TDB_orderQueue(
+		K tdb,			//-7h
+		K windCode,		//-11h or 10h
+		K indicators,	//-11h or 11h
+		K begin,		//-15h
+		K end			//-15h
+		);
+
 #ifdef __cplusplus
 }//extern "C"
 #endif

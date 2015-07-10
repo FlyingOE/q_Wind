@@ -42,7 +42,7 @@ void TDB::IntAccessor<TDBDefine_T, QType>::setElement(K out, TDBDefine_T const* 
 
 template <typename TDBDefine_T, typename Str, typename Encoder>
 void TDB::StringAccessor<TDBDefine_T, Str, Encoder>::setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const {
-	q::type_traits<void>::index(out)[index] = kp(encode_(dataArray[index].*field_).c_str());
+	q::type_traits<void>::index(out)[index] = kp(const_cast<S>(encode_(dataArray[index].*field_).c_str()));
 }
 
 template <typename TDBDefine_T, typename Str, typename Encoder>

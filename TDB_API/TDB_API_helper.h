@@ -60,7 +60,7 @@ namespace TDB {
 	protected:
 		virtual void setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const override;
 	private:
-		Encoder encode_;
+		Encoder const encode_;
 	};
 	//DEFINE_ACCESSOR(SymbolAccessor, ...)
 	template <typename TDBDefine_T, typename Str, typename Encoder = util::PassthruEncoder>
@@ -70,25 +70,27 @@ namespace TDB {
 	protected:
 		virtual void setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const override;
 	private:
-		Encoder encode_;
+		Encoder const encode_;
 	};
 	//DEFINE_ACCESSOR(FloatAccessor, ...)
 	template <typename TDBDefine_T, typename Val>
 	struct FloatAccessor : public AccessorBase<TDBDefine_T, Val> {
 		FloatAccessor(field_accessor field, double scalar = 1.)
 			: AccessorBase<TDBDefine_T, Val>(field, KF), scalar_(scalar) {}
+	protected:
+		virtual void setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const override;
 	private:
 		double const scalar_;
-		virtual void setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const override;
 	};
 	//DEFINE_ACCESSOR(FloatsAccessor, ...)
 	template <typename TDBDefine_T, typename Vals>
 	struct FloatsAccessor : public AccessorBase<TDBDefine_T, Vals> {
 		FloatsAccessor(field_accessor field, double scalar = 1.)
 			: AccessorBase<TDBDefine_T, Vals>(field, 0), scalar_(scalar) {}
+	protected:
+		virtual void setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const override;
 	private:
 		double const scalar_;
-		virtual void setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const override;
 	};
 #	undef DEFINE_ACCESSOR
 #	pragma endregion

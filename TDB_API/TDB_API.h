@@ -57,7 +57,18 @@ extern "C" {
 		K end			//-15h
 		);
 
-	//获取逐笔成交数据
+	//获取快照数据(带买卖盘口)
+	TDB_API K K_DECL TDB_futureAB_fields(K/*NOTE: at least one argument required by `2:'*/);
+	TDB_API K K_DECL TDB_futureAB(
+		K tdb,			//-7h
+		K windCode,		//-11h or 10h
+		K indicators,	//-11h or 11h
+		K begin,		//-15h
+		K end,			//-15h
+		K autoComplete	//-1h
+		);
+
+	//获取期货行情(带买卖盘口)
 	TDB_API K K_DECL TDB_transaction_fields(K/*NOTE: at least one argument required by `2:'*/);
 	TDB_API K K_DECL TDB_transaction(
 		K tdb,			//-7h

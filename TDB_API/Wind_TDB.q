@@ -36,19 +36,26 @@ codeTable:{[F;h;m]
     flip`WindCode`Code`Market`CNName`ENName`Type!F[h;m]
     }DLL 2:(`TDB_codeTable;2);
 
+/q) .tdb.tickAB_fields h
 /q) .tdb.tickAB[h][`600000.SH;`WindCode`Code`Date`Time`BSFlag`AskPrices`AskVolumes`BidPrices`BidVolumes;2015.07.01T00:00;2015.07.03T23:59:59.999]
+tickAB_fields:DLL 2:(`TDB_tickAB_fields;1);
 tickAB:{[F;h;c;i;b;e]
     flip i!F[h;c;i:(),i;$[-15h=type b;b;"z"$b];$[-15h=type e;e;"z"$e]]
     }DLL 2:(`TDB_tickAB;5);
-/ Return all possible field names
-tickAB_fields:DLL 2:(`TDB_tickAB_fields;1);
 
-/q) .tdb.transaction[h][`600000.SH;`WindCode`Code`BSFlag`TradePrice`TradeVolume;2015.07.01T00:00;2015.07.03T23:59:59.999]
-transaction:{[F;h;c;i;b;e]
+/q) .tdb.futureAB_fields h
+/q) .tdb.futureAB[h][`IF1507.CF;`WindCode`Code`Date`Time`CurDelta`AskPrices`AskVolumes`BidPrices`BidVolumes;2015.07.01T00:00;2015.07.03T23:59:59.999;0b]
+futureAB_fields:DLL 2:(`TDB_futureAB_fields;1);
+futureAB:{[F;h;c;i;b;e;ac]
+    flip i!F[h;c;i:(),i;$[-15h=type b;b;"z"$b];$[-15h=type e;e;"z"$e];ac]
+    }DLL 2:(`TDB_futureAB;6);
+
+/q) .tdb.txn_fields h
+/q) .tdb.txn[h][`600000.SH;`WindCode`Code`BSFlag`TradePrice`TradeVolume;2015.07.01T00:00;2015.07.03T23:59:59.999]
+txn_fields:DLL 2:(`TDB_transaction_fields;1);
+txn:{[F;h;c;i;b;e]
     flip i!F[h;c;i:(),i;$[-15h=type b;b;"z"$b];$[-15h=type e;e;"z"$e]]
     }DLL 2:(`TDB_transaction;5);
-/ Return all possible field names
-transaction_fields:DLL 2:(`TDB_transaction_fields;1);
 
 \d .
 \
@@ -57,5 +64,5 @@ __EOD__
 
 h:.tdb.start`:.tdb.pass
 update string Type from .tdb.codeTable[h]`
-reverse update string Type from .tdb.codeTable[h]`
+reverse update string Type from .tdb.codeTable[h]`CF
 select count Code by Market,string Type from .tdb.codeTable[h]`

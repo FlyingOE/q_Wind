@@ -41,8 +41,7 @@ namespace TDB {
 		static std::map<Field, std::unique_ptr<field_accessor_type> > Accessors;
 
 		// Data field names
-		struct FieldName :
-			public enum_util::EnumBase<FieldName, Field>
+		struct FieldName : public enum_util::EnumBase<FieldName, Field>
 		{
 			static void registerAll() {
 #				define TRANSACTION_FIELD(name, accessor)	\

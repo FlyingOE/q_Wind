@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TDB_API.h"
 
-#include "util.h"
+#include "TDB_API_helper.h"
 
 #include "kdb+.util/util.h"
 #include "kdb+.util/K_ptr.h"

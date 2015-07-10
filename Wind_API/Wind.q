@@ -19,7 +19,9 @@ setTimeout:DLL 2:(`setTimeout;1);
 /q) .wind.start hsym`password
 login: DLL 2:(`Wind_login ;2);
 logout:DLL 2:(`Wind_logout;1);
-start:{login .@[;0 2](0,k,1+k:p?":")_p:first read0 x};
+start:{
+    login .@[;0 2](0,k,1+k:p?":")_p:first read0 x
+    };
 
 /q) .wind.WSD[`000001.SZ;`open`high`low`close`volume;2014.01.01;.z.D;()]
 WSD:dateSeq:{[F;c;i;b;e;p]

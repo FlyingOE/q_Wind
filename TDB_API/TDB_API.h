@@ -38,17 +38,29 @@ extern "C" {
 		);
 
 	TDB_API K K_DECL TDB_logout(
-		K h		//-7h
+		K tdb		//-7h
 		);
 
+	//获取代码表
 	TDB_API K K_DECL TDB_codeTable(
-		K h,		//-7h
+		K tdb,		//-7h
 		K market	//-11h or 10h
 		);
 
+	//获取快照数据(带买卖盘口)
 	TDB_API K K_DECL TDB_tickAB_fields(K/*NOTE: at least one argument required by `2:'*/);
 	TDB_API K K_DECL TDB_tickAB(
-		K h,			//-7h
+		K tdb,			//-7h
+		K windCode,		//-11h or 10h
+		K indicators,	//-11h or 11h
+		K begin,		//-15h
+		K end			//-15h
+		);
+
+	//获取逐笔成交数据
+	TDB_API K K_DECL TDB_transaction_fields(K/*NOTE: at least one argument required by `2:'*/);
+	TDB_API K K_DECL TDB_transaction(
+		K tdb,			//-7h
 		K windCode,		//-11h or 10h
 		K indicators,	//-11h or 11h
 		K begin,		//-15h

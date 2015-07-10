@@ -150,6 +150,7 @@
     </ClCompile>
     <ClCompile Include="TDB_API.cpp" />
     <ClCompile Include="TDB_tick.cpp" />
+    <ClCompile Include="TDB_transaction.cpp" />
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>

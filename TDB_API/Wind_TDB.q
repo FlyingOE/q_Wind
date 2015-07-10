@@ -36,12 +36,19 @@ codeTable:{[F;h;m]
     flip`WindCode`Code`Market`CNName`ENName`Type!F[h;m]
     }DLL 2:(`TDB_codeTable;2);
 
-/q) .tdb.tickAB[h][`000001.SZ`600000.SH;`Open`High`Low`Close;2014.01.01T00:00;2015.07.05T23:59:59.999]
+/q) .tdb.tickAB[h][`600000.SH;`WindCode`Code`Date`Time`BSFlag`AskPrices`AskVolumes`BidPrices`BidVolumes;2015.07.01T00:00;2015.07.03T23:59:59.999]
 tickAB:{[F;h;c;i;b;e]
     flip i!F[h;c;i:(),i;$[-15h=type b;b;"z"$b];$[-15h=type e;e;"z"$e]]
     }DLL 2:(`TDB_tickAB;5);
 / Return all possible field names
 tickAB_fields:DLL 2:(`TDB_tickAB_fields;1);
+
+/q) .tdb.transaction[h][`600000.SH;`WindCode`Code`BSFlag`TradePrice`TradeVolume;2015.07.01T00:00;2015.07.03T23:59:59.999]
+transaction:{[F;h;c;i;b;e]
+    flip i!F[h;c;i:(),i;$[-15h=type b;b;"z"$b];$[-15h=type e;e;"z"$e]]
+    }DLL 2:(`TDB_transaction;5);
+/ Return all possible field names
+transaction_fields:DLL 2:(`TDB_transaction_fields;1);
 
 /
 h:.tdb.start`:.tdb.pass

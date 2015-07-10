@@ -12,14 +12,14 @@ namespace TDB {
 	// Heper to assist symbolic retrieval of tick data fields from TDBDefine_TickAB.
 	struct TickAB {
 
-		// Data fields -- always keep in sync with TDBAPIStruct.h
+		// Data fields -- always keep in sync with TDBDefine_TickAB
 		enum Field {
 			NIL = 0,		//`NULL' for this enum
 			WindCode,		//万得代码(AG1312.SHF)
 			Code,			//交易所代码(ag1312)
 			Date,			//日期（自然日）格式YYMMDD
 			Time,			//时间（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
-			Price,			//成交价((a double number + 0.00005) *10000)
+			Price,			//成交价
 			Volume,			//成交量
 			Turover,		//成交额(元)
 			MatchItems,		//成交笔数
@@ -159,6 +159,7 @@ TDB_API K K_DECL TDB_tickAB(K h, K windCode, K indicators, K begin, K end) {
 		return q::error2q(TDB::getError(result));
 	}
 	assert(tickCount >= 0);
+	assert(ticks);
 
 	// Convert each requested field
 	q::K_ptr data(ktn(0, fields.size()));

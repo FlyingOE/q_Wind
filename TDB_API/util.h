@@ -108,6 +108,7 @@ namespace TDB {
 		double const scalar_;
 		virtual void setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const override;
 	};
+#	undef DEFINE_ACCESSOR
 #	pragma endregion
 
 }//namespace TDB

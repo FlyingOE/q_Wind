@@ -33,6 +33,9 @@
     <ClInclude Include="util.inl">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="EnumUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -41,5 +44,10 @@
     <ClCompile Include="SocketPair.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EnumUtil.inl">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

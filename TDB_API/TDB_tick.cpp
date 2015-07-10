@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TDB_API.h"
 
-#include "util.h"
+#include "TDB_API_helper.h"
 
 #include "win32.util/EnumUtil.h"
 #include "kdb+.util/K_ptr.h"
@@ -47,16 +47,17 @@ namespace TDB {
 			HoldLines,		//（指数）持平品种数
 		};
 
-		typedef FieldAccessor<::TDBDefine_TickAB> FieldAccessor_;
-		typedef CharAccessor<::TDBDefine_TickAB> CharAccessor_;
-		typedef DateAccessor<::TDBDefine_TickAB> DateAccessor_;
-		typedef TimeAccessor<::TDBDefine_TickAB> TimeAccessor_;
-		typedef IntAccessor<::TDBDefine_TickAB, I> IntAccessor_;
-		template <typename Str> using SymbolAccessor_ = SymbolAccessor<::TDBDefine_TickAB, Str>;
-		template <typename Val> using FloatAccessor_ = FloatAccessor<::TDBDefine_TickAB, Val>;
-		template <typename Vals> using FloatsAccessor_ = FloatsAccessor<::TDBDefine_TickAB, Vals>;
+		typedef ::TDBDefine_TickAB tdb_result_type;
+		typedef FieldAccessor<tdb_result_type> field_accessor_type;
+		typedef CharAccessor<tdb_result_type> CharAccessor_;
+		typedef DateAccessor<tdb_result_type> DateAccessor_;
+		typedef TimeAccessor<tdb_result_type> TimeAccessor_;
+		typedef IntAccessor<tdb_result_type, I> IntAccessor_;
+		template <typename Str> using SymbolAccessor_ = SymbolAccessor<tdb_result_type, Str>;
+		template <typename Val> using FloatAccessor_ = FloatAccessor<tdb_result_type, Val>;
+		template <typename Vals> using FloatsAccessor_ = FloatsAccessor<tdb_result_type, Vals>;
 
-		static std::map<Field, std::unique_ptr<FieldAccessor_> > accessors_;
+		static std::map<Field, std::unique_ptr<field_accessor_type> > Accessors;
 
 		// Data field names
 		struct FieldName :
@@ -65,38 +66,38 @@ namespace TDB {
 			static void registerAll() {
 #				define TICKAB_FIELD(name, accessor)	\
 					ENUM_STRING(name);	\
-					TickAB::accessors_.insert(std::make_pair(name, std::unique_ptr<FieldAccessor_>(accessor)))
+					TickAB::Accessors.insert(std::make_pair(name, std::unique_ptr<field_accessor_type>(accessor)))
 
-				TICKAB_FIELD(WindCode, new SymbolAccessor_<char[32]>(&::TDBDefine_TickAB::chWindCode));
-				TICKAB_FIELD(Code, new SymbolAccessor_<char[32]>(&::TDBDefine_TickAB::chCode));
-				TICKAB_FIELD(Date, new DateAccessor_(&::TDBDefine_TickAB::nDate));
-				TICKAB_FIELD(Time, new TimeAccessor_(&::TDBDefine_TickAB::nTime));
-				TICKAB_FIELD(Price, new FloatAccessor_<int>(&::TDBDefine_TickAB::nPrice, .0001));
-				TICKAB_FIELD(Volume, new FloatAccessor_<__int64>(&::TDBDefine_TickAB::iVolume));
-				TICKAB_FIELD(Turover, new FloatAccessor_<__int64>(&::TDBDefine_TickAB::iTurover));
-				TICKAB_FIELD(MatchItems, new IntAccessor_(&::TDBDefine_TickAB::nMatchItems));
-				TICKAB_FIELD(Interest, new FloatAccessor_<int>(&::TDBDefine_TickAB::nInterest));
-				TICKAB_FIELD(TradeFlag, new CharAccessor_(&::TDBDefine_TickAB::chTradeFlag));
-				TICKAB_FIELD(BSFlag, new CharAccessor_(&::TDBDefine_TickAB::chBSFlag));
-				TICKAB_FIELD(AccVolume, new FloatAccessor_<__int64>(&::TDBDefine_TickAB::iAccVolume));
-				TICKAB_FIELD(AccTurover, new FloatAccessor_<__int64>(&::TDBDefine_TickAB::iAccTurover));
-				TICKAB_FIELD(High, new FloatAccessor_<int>(&::TDBDefine_TickAB::nHigh, .0001));
-				TICKAB_FIELD(Low, new FloatAccessor_<int>(&::TDBDefine_TickAB::nLow, .0001));
-				TICKAB_FIELD(Open, new FloatAccessor_<int>(&::TDBDefine_TickAB::nOpen, .0001));
-				TICKAB_FIELD(PreClose, new FloatAccessor_<int>(&::TDBDefine_TickAB::nPreClose, .0001));
-				TICKAB_FIELD(AskPrices, new FloatsAccessor_<int[10]>(&::TDBDefine_TickAB::nAskPrice, .0001));
-				TICKAB_FIELD(AskVolumes, new FloatsAccessor_<unsigned[10]>(&::TDBDefine_TickAB::nAskVolume));
-				TICKAB_FIELD(BidPrices, new FloatsAccessor_<int[10]>(&::TDBDefine_TickAB::nBidPrice, .0001));
-				TICKAB_FIELD(BidVolumes, new FloatsAccessor_<unsigned[10]>(&::TDBDefine_TickAB::nBidVolume));
-				TICKAB_FIELD(AskAvPrice, new FloatAccessor_<int>(&::TDBDefine_TickAB::nAskAvPrice, .0001));
-				TICKAB_FIELD(BidAvPrice, new FloatAccessor_<int>(&::TDBDefine_TickAB::nBidAvPrice, .0001));
-				TICKAB_FIELD(TotalAskVolume, new FloatAccessor_<__int64>(&::TDBDefine_TickAB::iTotalAskVolume));
-				TICKAB_FIELD(TotalBidVolume, new FloatAccessor_<__int64>(&::TDBDefine_TickAB::iTotalBidVolume));
-				TICKAB_FIELD(Index, new IntAccessor_(&::TDBDefine_TickAB::nIndex));
-				TICKAB_FIELD(Stocks, new IntAccessor_(&::TDBDefine_TickAB::nStocks));
-				TICKAB_FIELD(Ups, new IntAccessor_(&::TDBDefine_TickAB::nUps));
-				TICKAB_FIELD(Downs, new IntAccessor_(&::TDBDefine_TickAB::nDowns));
-				TICKAB_FIELD(HoldLines, new IntAccessor_(&::TDBDefine_TickAB::nHoldLines));
+				TICKAB_FIELD(WindCode, new SymbolAccessor_<char[32]>(&tdb_result_type::chWindCode));
+				TICKAB_FIELD(Code, new SymbolAccessor_<char[32]>(&tdb_result_type::chCode));
+				TICKAB_FIELD(Date, new DateAccessor_(&tdb_result_type::nDate));
+				TICKAB_FIELD(Time, new TimeAccessor_(&tdb_result_type::nTime));
+				TICKAB_FIELD(Price, new FloatAccessor_<int>(&tdb_result_type::nPrice, .0001));
+				TICKAB_FIELD(Volume, new FloatAccessor_<__int64>(&tdb_result_type::iVolume));
+				TICKAB_FIELD(Turover, new FloatAccessor_<__int64>(&tdb_result_type::iTurover));
+				TICKAB_FIELD(MatchItems, new IntAccessor_(&tdb_result_type::nMatchItems));
+				TICKAB_FIELD(Interest, new FloatAccessor_<int>(&tdb_result_type::nInterest));
+				TICKAB_FIELD(TradeFlag, new CharAccessor_(&tdb_result_type::chTradeFlag));
+				TICKAB_FIELD(BSFlag, new CharAccessor_(&tdb_result_type::chBSFlag));
+				TICKAB_FIELD(AccVolume, new FloatAccessor_<__int64>(&tdb_result_type::iAccVolume));
+				TICKAB_FIELD(AccTurover, new FloatAccessor_<__int64>(&tdb_result_type::iAccTurover));
+				TICKAB_FIELD(High, new FloatAccessor_<int>(&tdb_result_type::nHigh, .0001));
+				TICKAB_FIELD(Low, new FloatAccessor_<int>(&tdb_result_type::nLow, .0001));
+				TICKAB_FIELD(Open, new FloatAccessor_<int>(&tdb_result_type::nOpen, .0001));
+				TICKAB_FIELD(PreClose, new FloatAccessor_<int>(&tdb_result_type::nPreClose, .0001));
+				TICKAB_FIELD(AskPrices, new FloatsAccessor_<int[10]>(&tdb_result_type::nAskPrice, .0001));
+				TICKAB_FIELD(AskVolumes, new FloatsAccessor_<unsigned[10]>(&tdb_result_type::nAskVolume));
+				TICKAB_FIELD(BidPrices, new FloatsAccessor_<int[10]>(&tdb_result_type::nBidPrice, .0001));
+				TICKAB_FIELD(BidVolumes, new FloatsAccessor_<unsigned[10]>(&tdb_result_type::nBidVolume));
+				TICKAB_FIELD(AskAvPrice, new FloatAccessor_<int>(&tdb_result_type::nAskAvPrice, .0001));
+				TICKAB_FIELD(BidAvPrice, new FloatAccessor_<int>(&tdb_result_type::nBidAvPrice, .0001));
+				TICKAB_FIELD(TotalAskVolume, new FloatAccessor_<__int64>(&tdb_result_type::iTotalAskVolume));
+				TICKAB_FIELD(TotalBidVolume, new FloatAccessor_<__int64>(&tdb_result_type::iTotalBidVolume));
+				TICKAB_FIELD(Index, new IntAccessor_(&tdb_result_type::nIndex));
+				TICKAB_FIELD(Stocks, new IntAccessor_(&tdb_result_type::nStocks));
+				TICKAB_FIELD(Ups, new IntAccessor_(&tdb_result_type::nUps));
+				TICKAB_FIELD(Downs, new IntAccessor_(&tdb_result_type::nDowns));
+				TICKAB_FIELD(HoldLines, new IntAccessor_(&tdb_result_type::nHoldLines));
 			}
 		};
 	};
@@ -104,67 +105,25 @@ namespace TDB {
 }//namespace TDB
 
 
-std::map<TDB::TickAB::Field, std::unique_ptr<TDB::TickAB::FieldAccessor_> >
-	TDB::TickAB::accessors_;
+std::map<TDB::TickAB::Field, std::unique_ptr<TDB::TickAB::field_accessor_type> >
+	TDB::TickAB::Accessors;
 
 TDB_API K K_DECL TDB_tickAB_fields(K _) {
-	std::vector<std::string> const fieldNames = TDB::TickAB::FieldName::getAllStrings();
-	q::K_ptr result(ktn(KS, fieldNames.size()));
-	for (std::size_t i = 0; i < fieldNames.size(); ++i) {
-		kS(result.get())[i] = ss(const_cast<S>(fieldNames[i].c_str()));
-	}
-	return result.release();
+	return TDB::getFields<TDB::TickAB>();
 }
 
 TDB_API K K_DECL TDB_tickAB(K h, K windCode, K indicators, K begin, K end) {
 	::THANDLE tdb = NULL;
-	std::vector<std::string> indis;
+	std::vector<TDB::TickAB::field_accessor_type const*> indis;
 	::TDBDefine_ReqTick req = { 0 };
 	try {
-		tdb = reinterpret_cast<::THANDLE>(q::q2Dec(h));
-
-		std::string const code = q::q2String(windCode);
-		std::copy(code.begin(), code.end(), req.chCode);
-		req.chCode[code.size()] = '\0';
-
-		indis = q::qList2String(indicators);
-
-		TDB::util::tm2DateTime(q::q2tm(begin), req.nBeginDate, req.nBeginTime);
-		TDB::util::tm2DateTime(q::q2tm(end),   req.nEndDate,   req.nEndTime);
+		TDB::parseTdbHandle(h, tdb);
+		TDB::parseIndicators<TDB::TickAB>(indicators, indis);
+		TDB::parseTdbReq(windCode, begin, end, req);
 	}
 	catch (std::string const& error) {
 		return q::error2q(error);
 	}
-	if (!tdb) {
-		return q::error2q("null THANDLE");
-	}
 
-	// Get all requested field accessors
-	std::vector<TDB::TickAB::FieldAccessor_ const*> fields;
-	fields.reserve(indis.size());
-	for (auto i = indis.cbegin(); i != indis.cend(); ++i) {
-		auto const f = TDB::TickAB::FieldName::fromString(*i);
-		if (f == TDB::TickAB::NIL) {
-			return q::error2q(*i);
-		}
-		fields.push_back(TDB::TickAB::accessors_[f].get());
-	}
-
-	// Query
-	int tickCount = 0;
-	::TDBDefine_TickAB* t = NULL;
-	int const result = ::TDB_GetTickAB(tdb, &req, &t, &tickCount);
-	TDB::Ptr<::TDBDefine_TickAB> ticks(t);
-	if (result != TDB_SUCCESS) {
-		return q::error2q(TDB::getError(result));
-	}
-	assert(tickCount >= 0);
-	assert(ticks);
-
-	// Convert each requested field
-	q::K_ptr data(ktn(0, fields.size()));
-	for (std::size_t i = 0; i < fields.size(); ++i) {
-		kK(data.get())[i] = fields[i]->extract(ticks.get(), tickCount);
-	}
-	return data.release();
+	return TDB::runQuery<TDB::TickAB, ::TDBDefine_ReqTick>(tdb, req, indis, &::TDB_GetTickAB);
 }

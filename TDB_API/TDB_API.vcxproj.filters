@@ -30,6 +30,9 @@
     <ClInclude Include="util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TDB_API_helper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -53,12 +56,18 @@
     <ClCompile Include="TDB_transaction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TDB_API_helper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Wind_TDB.q">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="util.inl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="TDB_API_helper.inl">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

@@ -18,6 +18,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Wind_API", "Wind_API\Wind_A
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32.util", "win32.util\win32.util.vcxproj", "{7609463A-AF49-4D74-9BBB-51C144514573}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TDB_API", "TDB_API\TDB_API.vcxproj", "{9E5FE548-9404-41BA-A057-A24908F60E40}"
+	ProjectSection(ProjectDependencies) = postProject
+		{15DC0B83-55C7-466E-9A76-FD5D54598F4A} = {15DC0B83-55C7-466E-9A76-FD5D54598F4A}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -40,6 +45,10 @@ Global
 		{7609463A-AF49-4D74-9BBB-51C144514573}.Debug|Win32.Build.0 = Debug|Win32
 		{7609463A-AF49-4D74-9BBB-51C144514573}.Release|Win32.ActiveCfg = Release|Win32
 		{7609463A-AF49-4D74-9BBB-51C144514573}.Release|Win32.Build.0 = Release|Win32
+		{9E5FE548-9404-41BA-A057-A24908F60E40}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9E5FE548-9404-41BA-A057-A24908F60E40}.Debug|Win32.Build.0 = Debug|Win32
+		{9E5FE548-9404-41BA-A057-A24908F60E40}.Release|Win32.ActiveCfg = Release|Win32
+		{9E5FE548-9404-41BA-A057-A24908F60E40}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

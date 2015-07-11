@@ -15,18 +15,18 @@ namespace TDB {
 
 #	pragma region
 	// Data field accessors for TDBDefine_* structs, handling data type conversions if necessary
-	template <typename TDBDefine_T>
+	template <typename TdbT>
 	struct FieldAccessor {
-		K extract(TDBDefine_T const* dataArray, std::size_t arrayLen) const;
+		K extract(TdbT const* dataArray, std::size_t arrayLen) const;
 	protected:
 		virtual H getTypeNum() const = 0;
-		virtual void setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const = 0;
+		virtual void setElement(K out, TdbT const* dataArray, std::size_t index) const = 0;
 	};
 
-	template <typename TDBDefine_T, typename T>
-	struct AccessorBase : public FieldAccessor<TDBDefine_T> {
-		typedef T field_type;
-		typedef field_type(TDBDefine_T::*field_accessor);
+	template <typename TdbT, typename FieldT>
+	struct AccessorBase : public FieldAccessor<TdbT> {
+		typedef FieldT field_type;
+		typedef field_type(TdbT::*field_accessor);
 		AccessorBase(field_accessor field, H typeNum) : field_(field), typeNum_(typeNum) {}
 	protected:
 		field_accessor const field_;
@@ -35,60 +35,60 @@ namespace TDB {
 	};
 
 #	define DEFINE_ACCESSOR(Accessor, FieldType, TypeNum)	\
-	template <typename TDBDefine_T>	\
-	struct Accessor : public AccessorBase<TDBDefine_T, FieldType> {	\
-		Accessor(field_accessor field) : AccessorBase<TDBDefine_T, FieldType>(field, (TypeNum)) {}	\
+	template <typename TdbT>	\
+	struct Accessor : public AccessorBase<TdbT, FieldType> {	\
+		Accessor(field_accessor field) : AccessorBase<TdbT, FieldType>(field, (TypeNum)) {}	\
 	protected:	\
-		virtual void setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const override;	\
+		virtual void setElement(K out, TdbT const* dataArray, std::size_t index) const override;	\
 		}
 	DEFINE_ACCESSOR(CharAccessor, char, KC);
 	DEFINE_ACCESSOR(DateAccessor, int, KD);
 	DEFINE_ACCESSOR(TimeAccessor, int, KT);
 	//DEFINE_ACCESSOR(IntAccessor, ...)
-	template <typename TDBDefine_T, typename QType>
-	struct IntAccessor : public AccessorBase<TDBDefine_T, int> {
+	template <typename TdbT, typename QType>
+	struct IntAccessor : public AccessorBase<TdbT, int> {
 		IntAccessor(field_accessor field)
-			: AccessorBase<TDBDefine_T, int>(field, q::type_traits<QType>::TYPE_NUM) {}
+			: AccessorBase<TdbT, int>(field, q::type_traits<QType>::TYPE_NUM) {}
 	protected:
-		virtual void setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const override;
+		virtual void setElement(K out, TdbT const* dataArray, std::size_t index) const override;
 	};
 	//DEFINE_ACCESSOR(StringAccessor, ...)
-	template <typename TDBDefine_T, typename Str, typename Encoder = util::PassthruEncoder>
-	struct StringAccessor : public AccessorBase<TDBDefine_T, Str> {
+	template <typename TdbT, typename Str, typename Encoder = util::PassthruEncoder>
+	struct StringAccessor : public AccessorBase<TdbT, Str> {
 		StringAccessor(field_accessor field)
-			: AccessorBase<TDBDefine_T, Str>(field, 0) {}
+			: AccessorBase<TdbT, Str>(field, 0) {}
 	protected:
-		virtual void setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const override;
+		virtual void setElement(K out, TdbT const* dataArray, std::size_t index) const override;
 	private:
 		Encoder const encode_;
 	};
 	//DEFINE_ACCESSOR(SymbolAccessor, ...)
-	template <typename TDBDefine_T, typename Str, typename Encoder = util::PassthruEncoder>
-	struct SymbolAccessor : public AccessorBase<TDBDefine_T, Str> {
+	template <typename TdbT, typename Str, typename Encoder = util::PassthruEncoder>
+	struct SymbolAccessor : public AccessorBase<TdbT, Str> {
 		SymbolAccessor(field_accessor field)
-			: AccessorBase<TDBDefine_T, Str>(field, KS) {}
+			: AccessorBase<TdbT, Str>(field, KS) {}
 	protected:
-		virtual void setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const override;
+		virtual void setElement(K out, TdbT const* dataArray, std::size_t index) const override;
 	private:
 		Encoder const encode_;
 	};
 	//DEFINE_ACCESSOR(FloatAccessor, ...)
-	template <typename TDBDefine_T, typename Val>
-	struct FloatAccessor : public AccessorBase<TDBDefine_T, Val> {
+	template <typename TdbT, typename Val>
+	struct FloatAccessor : public AccessorBase<TdbT, Val> {
 		FloatAccessor(field_accessor field, double scalar = 1.)
-			: AccessorBase<TDBDefine_T, Val>(field, KF), scalar_(scalar) {}
+			: AccessorBase<TdbT, Val>(field, KF), scalar_(scalar) {}
 	protected:
-		virtual void setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const override;
+		virtual void setElement(K out, TdbT const* dataArray, std::size_t index) const override;
 	private:
 		double const scalar_;
 	};
 	//DEFINE_ACCESSOR(FloatsAccessor, ...)
-	template <typename TDBDefine_T, typename Vals>
-	struct FloatsAccessor : public AccessorBase<TDBDefine_T, Vals> {
+	template <typename TdbT, typename Vals>
+	struct FloatsAccessor : public AccessorBase<TdbT , Vals> {
 		FloatsAccessor(field_accessor field, double scalar = 1.)
-			: AccessorBase<TDBDefine_T, Vals>(field, 0), scalar_(scalar) {}
+			: AccessorBase<TdbT, Vals>(field, 0), scalar_(scalar) {}
 	protected:
-		virtual void setElement(K out, TDBDefine_T const* dataArray, std::size_t index) const override;
+		virtual void setElement(K out, TdbT const* dataArray, std::size_t index) const override;
 	private:
 		double const scalar_;
 	};
@@ -97,20 +97,20 @@ namespace TDB {
 
 	void parseTdbHandle(K h, ::THANDLE& tdb) throw(std::string);
 
-	template <typename TDBDefine_Wrap>
+	template <typename Traits>
 	void parseIndicators(K indicators,
-		std::vector<typename TDBDefine_Wrap::field_accessor_type const*>& indis) throw(std::string);
+		std::vector<typename Traits::field_accessor_type const*>& indis) throw(std::string);
 
-	template <typename TDBDefine_ReqT>
-	void parseTdbReq(K windCode, K begin, K end, TDBDefine_ReqT& req) throw(std::string);
+	template <typename TdbReq>
+	void parseTdbReq(K windCode, K begin, K end, TdbReq& req) throw(std::string);
 
-	template <typename TDBDefine_Wrap>
+	template <typename Traits>
 	K getFields();
 
-	template <typename TDBDefine_Wrap, typename TDBDefine_ReqT>
-	K runQuery(::THANDLE tdb, TDBDefine_ReqT const& req,
-		std::vector<typename TDBDefine_Wrap::field_accessor_type const*>& indis,
-		int(*tdbCall)(::THANDLE, TDBDefine_ReqT const*, typename TDBDefine_Wrap::tdb_result_type**, int*));
+	template <typename Traits, typename TdbReq>
+	K runQuery(::THANDLE tdb, TdbReq const& req,
+		std::vector<typename Traits::field_accessor_type const*>& indis,
+		int(*tdbCall)(::THANDLE, TdbReq const*, typename Traits::tdb_result_type**, int*));
 
 }//namespace TDB
 

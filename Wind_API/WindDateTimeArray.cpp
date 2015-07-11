@@ -31,7 +31,7 @@ void Wind::DateTimeArray::clear() {
 }
 
 struct Wind::DateTimeArray::qTypeTraits : q::type_traits<F> {
-	static q::TypeNum const typeNum = KZ;
+	static q::TypeNum const TYPE_NUM = KZ;
 	static F convert(DATE date) { return q::DATE2q(date); }
 };
 

@@ -44,7 +44,7 @@ namespace Wind {
 		};
 
 		struct qDateTypeTraits : q::type_traits <I> {
-			static q::TypeNum const typeNum = KD;
+			static q::TypeNum const TYPE_NUM = KD;
 			static I convert(DATE date) { return static_cast<I>(q::DATE2q(date)); }
 		};
 

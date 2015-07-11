@@ -116,7 +116,7 @@ K Wind::util::qConvertArray3D(K array) throw() {
 			assert(arrayY != K_NIL);
 			K& resultY = kK(resultZ)[y];
 			assert((arrayY->t == qSrcTraits::TYPE_NUM) && (arrayY->n >= 0));
-			resultY = ktn(qDstTraits::typeNum, arrayY->n);
+			resultY = ktn(qDstTraits::TYPE_NUM, arrayY->n);
 			for (std::size_t x = 0; x < arrayY->n; ++x) {
 				qDstTraits::index(resultY)[x] = qDstTraits::convert(qSrcTraits::index(arrayY)[x]);
 			}

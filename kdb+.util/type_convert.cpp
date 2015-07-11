@@ -5,8 +5,9 @@
 #include "multilang.h"
 #include "K_ptr.h"
 #include <cassert>
-#include <algorithm>
+#include <cmath>
 #include <ctime>
+#include <algorithm>
 #include "Cookbook.inl"
 
 int q::UTC_OFFSET = 0;
@@ -328,11 +329,11 @@ F q::DATE2q(::DATE date) throw(std::string) {
 	// Normal year: ydays for each month
 	static J const MONTH_DAYS[13] = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
 
-	std::tm tm;
+	std::tm tm = { 0 };
 	// # days since 1899.12.30
 	J nDays1899 = static_cast<J>(date);
 	// Seconds since midnight
-	J nSecs = static_cast<J>((date - std::floor(date)) * (60L * 60 * 24));
+	F nSecs = (date - std::floor(date)) * (60L * 60 * 24);
 	// # days since 0000.01.01
 	J nDaysAbs = nDays1899 + 693959L;
 	// Known: 0000.01.01 was a Saturday
@@ -398,13 +399,14 @@ F q::DATE2q(::DATE date) throw(std::string) {
 	}
 
 	// Shortcut for integral (date-only) DATEs
-	if (nSecs == 0) {
+	J nSecsOnly = static_cast<J>(nSecs);
+	if (nSecs == 0.) {
 		tm.tm_hour = UTC_OFFSET;
 		tm.tm_min = tm.tm_sec = 0;
 	}
 	else {
-		tm.tm_sec = static_cast<int>(nSecs % 60L);
-		J nMins = nSecs / 60L;
+		tm.tm_sec = static_cast<int>(nSecsOnly % 60L);
+		J nMins = nSecsOnly / 60L;
 		tm.tm_min = static_cast<int>(nMins % 60);
 		tm.tm_hour = static_cast<int>(nMins / 60) + UTC_OFFSET;
 	}
@@ -416,5 +418,5 @@ F q::DATE2q(::DATE date) throw(std::string) {
 	if ((time < std::numeric_limits<I>::min()) || (std::numeric_limits<I>::max() < time)) {
 		throw std::string("DATE out of range for datetime");
 	}
-	return Cookbook::zu(static_cast<I>(time));
+	return Cookbook::zu(time + (nSecs - nSecsOnly));
 }

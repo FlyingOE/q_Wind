@@ -7,8 +7,11 @@
 namespace q {
 	namespace Cookbook {
 
-		inline F zu(I u) {	// kdb+ datetime from unix
+		inline F zu(F u) {
 			return u / 86400. - 10957;
+		}
+		inline F zu(I u) {	// kdb+ datetime from unix
+			return zu(static_cast<F>(u));
 		}
 		inline F uz(F f) {	// unix from kdb+ datetime
 			return 86400 * (f + 10957);

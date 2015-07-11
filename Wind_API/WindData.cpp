@@ -52,7 +52,6 @@ K Wind::Data::parse() const throw() {
 	PARSE_AND_VERIFY(windCodes, static_cast<WindCodeArray const&>(this->ArrWindCode));
 	PARSE_AND_VERIFY(windFields, static_cast<WindFieldsArray const&>(this->ArrWindFields));
 	PARSE_AND_VERIFY(data, MatrixDataParser(this->MatrixData));
-#	undef PARSE_AND_VERIFY
 
 	//NOTE: result is _not_ a q table! Further massaging is required in q driver code.
 	return knk(4, dateTimes.release(), windCodes.release(), windFields.release(), data.release());

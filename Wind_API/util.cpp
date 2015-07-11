@@ -102,9 +102,9 @@ std::vector<std::wstring> Wind::util::qList2DateStr(K data) throw(std::string) {
 }
 
 std::wstring Wind::util::q2DateTimeStr(K data) throw(std::string) {
-	return q2tmStr(data, 10 + 1 + 8, L"%Y-%m-%d %H:%M:%S.%##");
+	return q2tmStr(data, 10 + 1 + 8 + 1 + 3, L"%Y-%m-%d %H:%M:%S.%##");
 }
 
 std::vector<std::wstring> Wind::util::qList2DateTimeStr(K data) throw(std::string) {
-	return qList2tmStr(data, 10 + 1 + 8, L"%Y-%m-%d %H:%M:%S.%##");
+	return qList2tmStr(data, 10 + 1 + 8 + 1 + 3, L"%Y-%m-%d %H:%M:%S.%##");
 }

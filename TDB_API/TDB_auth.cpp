@@ -50,11 +50,8 @@ TDB_API K K_DECL TDB_login(K host, K port, K username, K password) {
 #	endif
 	::TDBDefine_ResLogin result = { 0 };
 	::THANDLE tdb = ::TDB_Open(&settings, &result);
-#	ifndef NDEBUG
-	std::cerr << "<<< TDB_Open = 0x" << ::util::hexBytes(tdb) << std::endl;
-#	endif
 	if (tdb) {
-		std::cerr << "<TDB> logged in as " << uid << std::endl;
+		std::cerr << "<TDB> logged in as " << uid << " (0x" << util::hexBytes(tdb) << ')' << std::endl;
 		static_assert(sizeof(J) >= sizeof(::THANDLE), "J is smaller than THANDLE");
 		return kj(reinterpret_cast<J>(tdb));
 	}
@@ -75,7 +72,7 @@ TDB_API K K_DECL TDB_logout(K h) {
 
 	if (tdb) {
 		int const error = ::TDB_Close(tdb);
-		std::cerr << "<TDB> logged out " << ::util::hexBytes(tdb) << std::endl;
+		std::cerr << "<TDB> logged out 0x" << util::hexBytes(tdb) << std::endl;
 		return ki(error);
 	}
 	else {

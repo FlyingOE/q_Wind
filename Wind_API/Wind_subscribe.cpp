@@ -6,6 +6,9 @@
 
 #include "kdb+.util/K_ptr.h"
 #include "kdb+.util/type_convert.h"
+#if KX_USE_OKX
+#include "win32.util/util.h"
+#endif
 #include "win32.util/SocketPair.h"
 #include <iostream>
 #include <mutex>	//C++11
@@ -77,7 +80,7 @@ namespace Wind {
 			//@ref https://groups.google.com/forum/#!topic/personal-kdbplus/pjsugT7590A
 			if (!okx(serialized.get())) {
 				std::cerr << "<recv> bad data: ["
-					<< util::hexBytes(kG(serialized.get()), static_cast<std::size_t>(serialized->n))
+					<< ::util::hexBytes(&kG(serialized.get())[0], static_cast<std::size_t>(serialized->n))
 					<< ']' << std::endl;
 				return K_NIL;
 			}

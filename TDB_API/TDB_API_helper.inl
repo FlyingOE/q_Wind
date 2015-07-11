@@ -90,6 +90,9 @@ void TDB::parseTdbReq(K windCode, K begin, K end, TDBDefine_ReqT& req) throw(std
 	std::memset(&req, 0, sizeof(TDBDefine_ReqT));
 
 	std::string const code = q::q2String(windCode);
+	if (code.size() >= sizeof(req.chCode)) {
+		throw std::string("windCode too long");
+	}
 	std::copy(code.begin(), code.end(), req.chCode);
 	req.chCode[code.size()] = '\0';
 

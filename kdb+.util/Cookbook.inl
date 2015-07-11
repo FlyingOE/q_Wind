@@ -29,7 +29,7 @@ namespace q {
 		tm_ext* lt_r(T kd, tm_ext* res) {
 			F tt = uz(kd);
 			std::time_t t = static_cast<std::time_t>(tt);
-			res->tm_millis = static_cast<int>(tt * 1000);
+			res->tm_millis = static_cast<int>(std::round((tt - t) * 1000));
 #			ifdef _MSC_VER
 			::errno_t err = ::localtime_s(res, &t);
 			assert(err == 0);
@@ -48,7 +48,7 @@ namespace q {
 		tm_ext* gt_r(T kd, tm_ext* res) {
 			F tt = uz(kd);
 			std::time_t t = static_cast<std::time_t>(tt);
-			res->tm_millis = static_cast<int>(tt * 1000);
+			res->tm_millis = static_cast<int>(std::round((tt - t) * 1000));
 #			ifdef _MSC_VER
 			::errno_t err = ::gmtime_s(res, &t);
 			assert(err == 0);

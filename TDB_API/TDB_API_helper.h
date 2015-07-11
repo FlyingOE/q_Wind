@@ -19,7 +19,7 @@ namespace TDB {
 	struct FieldAccessor {
 		K extract(TdbT const* dataArray, std::size_t arrayLen) const;
 	protected:
-		virtual H getTypeNum() const = 0;
+		virtual q::TypeNum getTypeNum() const = 0;
 		virtual void setElement(K out, TdbT const* dataArray, std::size_t index) const = 0;
 	};
 
@@ -27,11 +27,11 @@ namespace TDB {
 	struct AccessorBase : public FieldAccessor<TdbT> {
 		typedef FieldT field_type;
 		typedef field_type(TdbT::*field_accessor);
-		AccessorBase(field_accessor field, H typeNum) : field_(field), typeNum_(typeNum) {}
+		AccessorBase(field_accessor field, q::TypeNum typeNum) : field_(field), typeNum_(typeNum) {}
 	protected:
 		field_accessor const field_;
-		H const typeNum_;
-		virtual H getTypeNum() const override { return typeNum_; }
+		q::TypeNum const typeNum_;
+		virtual q::TypeNum getTypeNum() const override { return typeNum_; }
 	};
 
 #	define DEFINE_ACCESSOR(Accessor, FieldType, TypeNum)	\

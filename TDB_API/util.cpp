@@ -41,10 +41,10 @@ std::string TDB::getError(::TDB_ERROR errorCode) {
 		return "invalid code type";
 	case TDB_WRONG_FORMULA:		//指标公式错误
 		return "invalid_formula";
-	default: {
-			std::ostringstream buffer;
-			buffer << "unknown errorCode=" << errorCode;
-			return buffer.str();
-		}
+	default:
+		;
 	}
+	std::ostringstream buffer;
+	buffer << "unknown errorCode=" << errorCode;
+	return buffer.str();
 }

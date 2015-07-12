@@ -3,9 +3,9 @@
 
 #include "kdb+.util/type_convert.h"
 
-#include "TDBAPIStruct.h"
 #include <memory>
 
+enum TDB_ERROR;
 namespace TDB {
 	
 	namespace util {

@@ -86,6 +86,5 @@ TDB_API K K_DECL TDB_transaction(K h, K windCode, K indicators, K begin, K end) 
 	catch (std::string const& error) {
 		return q::error2q(error);
 	}
-
 	return TDB::runQuery<TDB::Transaction, ::TDBDefine_ReqTransaction>(tdb, req, indis, &::TDB_GetTransaction);
 }

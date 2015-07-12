@@ -116,7 +116,7 @@ K TDB::runQuery(::THANDLE tdb, TdbReq const& req,
 {
 	int arrayLen = 0;
 	typename Traits::tdb_result_type* dataArray = NULL;
-	int const result = tdbCall(tdb, &req, &dataArray, &arrayLen);
+	::TDB_ERROR const result = static_cast<::TDB_ERROR>(tdbCall(tdb, &req, &dataArray, &arrayLen));
 	TDB::Ptr<typename Traits::tdb_result_type> data(dataArray);
 	if (result != TDB_SUCCESS) {
 		return q::error2q(TDB::getError(result));

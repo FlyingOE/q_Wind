@@ -19,7 +19,7 @@ TDB_API K K_DECL TDB_codeTable(K h, K market) {
 
 	int codeCount = 0;
 	::TDBDefine_Code* t = NULL;
-	int const result = ::TDB_GetCodeTable(tdb, mkt.c_str(), &t, &codeCount);
+	::TDB_ERROR const result = static_cast<::TDB_ERROR>(::TDB_GetCodeTable(tdb, mkt.c_str(), &t, &codeCount));
 	TDB::Ptr<::TDBDefine_Code> codes(t);
 	if (result != TDB_SUCCESS) {
 		return q::error2q(TDB::getError(result));

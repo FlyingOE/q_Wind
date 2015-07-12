@@ -3,6 +3,7 @@
 
 #include "kdb+.util/type_convert.h"
 
+#include "TDBAPIStruct.h"
 #include <memory>
 
 namespace TDB {
@@ -27,7 +28,7 @@ namespace TDB {
 
 	}//namespace Wind::util
 
-	std::string getError(int errorCode);
+	std::string getError(::TDB_ERROR errorCode);
 
 	// TDB result array smart pointer
 	template <typename T> struct Deleter;

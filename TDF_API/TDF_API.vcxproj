@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{FF4C0297-4686-4F23-B461-499F583AA3EA}</ProjectGuid>
+    <ProjectGuid>{93204B75-6DC0-46FF-A3C1-C684602D531B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Wind_API</RootNamespace>
+    <RootNamespace>TDF_API</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -50,29 +50,37 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;WIND_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;TDF_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir);D:\q\c;D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\API</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\inc\TDF_C++_v3;D:\q\c</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);D:\q\c;D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)\lib\TDF_C++_v3\$(PlatformTarget).Release;D:\q\c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>FOR %%p IN ("$(SolutionDir)..\arbitrage\" "$(SolutionDir)..\CHF.proj\") DO (
-  @FOR %%f IN ("$(TargetPath)" "$(TargetDir)Wind.q") DO (
+      <Message>Copy DLL &amp; driver script to q project directory</Message>
+      <Command>FOR %%p IN ("$(SolutionDir)..\CHF.proj\") DO (
+  @FOR %%t IN (x86 x64) DO (
+    @FOR %%c IN (Debug Release) DO (
+      @FOR %%f IN ("$(SolutionDir)lib\TDF_C++_v3\%%t.%%c"\*.dll) DO (
+        IF EXIST %%p%%~nxf DEL /F %%p%%~nxf
+      )
+    )
+  )
+  @FOR %%f IN ("$(SolutionDir)lib\TDF_C++_v3\$(PlatformTarget).Release"\*.dll) DO (
+    @XCOPY %%f %%p /F /Y
+  )
+  @FOR %%f IN ("$(TargetPath)" "$(TargetDir)Wind_TDF.q") DO (
     @XCOPY %%f %%p /F /Y
   )
 )</Command>
     </PostBuildEvent>
-    <PostBuildEvent>
-      <Message>Copy DLL &amp; driver script to q project directory</Message>
-    </PostBuildEvent>
     <PreBuildEvent>
       <Message>Copy driver script to target directory</Message>
-      <Command>@XCOPY "$(ProjectDir)\Wind.q" "$(TargetDir)" /F /Y</Command>
+      <Command>@XCOPY "$(ProjectDir)\Wind_TDF.q" "$(TargetDir)" /F /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -82,9 +90,9 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;WIND_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TDF_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir);D:\q\c;D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\API</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\inc\TDF_C++_v3;D:\q\c</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -92,37 +100,38 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);D:\q\c;D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)\lib\TDF_C++_v3\$(PlatformTarget).Release;D:\q\c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>FOR %%p IN ("$(SolutionDir)..\arbitrage\" "$(SolutionDir)..\CHF.proj\") DO (
-  @FOR %%f IN ("$(TargetPath)" "$(TargetDir)Wind.q") DO (
+      <Message>Copy DLL &amp; driver script to q project directory</Message>
+      <Command>FOR %%p IN ("$(SolutionDir)..\CHF.proj\") DO (
+  @FOR %%t IN (x86 x64) DO (
+    @FOR %%c IN (Debug Release) DO (
+      @FOR %%f IN ("$(SolutionDir)lib\TDF_C++_v3\%%t.%%c"\*.dll) DO (
+        IF EXIST %%p%%~nxf DEL /F %%p%%~nxf
+      )
+    )
+  )
+  @FOR %%f IN ("$(SolutionDir)lib\TDF_C++_v3\$(PlatformTarget).Release"\*.dll) DO (
+    @XCOPY %%f %%p /F /Y
+  )
+  @FOR %%f IN ("$(TargetPath)" "$(TargetDir)Wind_TDF.q") DO (
     @XCOPY %%f %%p /F /Y
   )
 )</Command>
     </PostBuildEvent>
-    <PostBuildEvent>
-      <Message>Copy DLL &amp; driver script to q project directory</Message>
-    </PostBuildEvent>
     <PreBuildEvent>
       <Message>Copy driver script to target directory</Message>
-      <Command>@XCOPY "$(ProjectDir)\Wind.q" "$(TargetDir)" /F /Y</Command>
+      <Command>@XCOPY "$(ProjectDir)\Wind_TDF.q" "$(TargetDir)" /F /Y</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MatrixDataParser.h" />
-    <ClInclude Include="WindCodeArray.h" />
-    <ClInclude Include="WindDateTimeArray.h" />
-    <ClInclude Include="WindData.h" />
-    <ClInclude Include="WindEvent.h" />
-    <ClInclude Include="WindFieldsArray.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="util.h" />
-    <ClInclude Include="Wind_API.h" />
+    <ClInclude Include="TDF_API.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -133,35 +142,14 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="MatrixDataParser.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="util.cpp" />
-    <ClCompile Include="WindCodeArray.cpp" />
-    <ClCompile Include="WindData.cpp" />
-    <ClCompile Include="WindDateTimeArray.cpp" />
-    <ClCompile Include="WindEvent.cpp" />
-    <ClCompile Include="WindFieldsArray.cpp" />
-    <ClCompile Include="Wind_API.cpp" />
-    <ClCompile Include="Wind_auth.cpp" />
-    <ClCompile Include="Wind_strike.cpp" />
-    <ClCompile Include="Wind_subscribe.cpp" />
+    <ClCompile Include="TDF_API.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="MatrixDataParser.inl" />
-    <ClInclude Include="util.inl">
-      <FileType>Document</FileType>
-    </ClInclude>
-    <Text Include="Wind.q">
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-      <FileType>Document</FileType>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
-    </Text>
-    <ClInclude Include="WindEvent.inl">
-      <FileType>Document</FileType>
-    </ClInclude>
+    <None Include="Wind_TDF.q" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

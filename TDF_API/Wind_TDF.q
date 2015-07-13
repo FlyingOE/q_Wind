@@ -8,29 +8,25 @@
 
 DLL:hsym`$("TDF_API");
 
-/
-
-/q) .tdb.getTimeout[]
-/q) .tdb.setTimeout 30*1000
-getTimeout:{[F;x]
-    `timeout`retries`gap!F[x]*1000 1 1000
-    }DLL 2:(`getTimeout;1);
-setTimeout:{[F;x]
-    F . x[`timeout`retries`gap]div 1000 1 1000;
-    getTimeout`
+/q) .tdb.setTimeout[10000;2;30000]
+setTimeout:{[F;hbInterval;hbMissing;openTimeout]
+    F .(hbInterval;hbMissing;openTimeout)div 1000 1 1000
     }DLL 2:(`setTimeout;3);
 
-/q) h:.tdb.login[`host:port;`w*******;"********"]
-/q) .tdb.logout[]
+/q) h:.tdf.login[([]server:`host1:port1`host2:port2;username:`user1`user2;password:("****";"****"));`SZ`SH;`Transaction`Order`OrderQueue]
+/q) h:.tdf.login[([]server:`host1:port1`host2:port2;username:`user1`user2;password:("****";"****"));`;`]
+/q) .tdf.logout h
 / OR
-/q) h:.tdb.start hsym`password
-login:{[F;s;u;p]
-    F .@[;1;"I"$](":"vs string s),(u;p)
-    }DLL 2:(`TDB_login ;4);
-logout:DLL 2:(`TDB_logout;1);
-start:{
-    login[`$l 0;;].@[;0 2](0,k,1+k:p?":")_p:(l:2#read0 x)1
-    };
+/q) h:.tdf.start hsym`connections
+login:{[F;s;m;t]
+    F[;(),m;(),t]delete server from s,'exec`host`port!/:.[;(::;1);"I"$]":"vs/:string server from s
+    }DLL 2:(`TDF_login;3);
+logout:DLL 2:(`TDF_logout;1);
+/start:{
+/    login[`$l 0;;].@[;0 2](0,k,1+k:p?":")_p:(l:2#read0 x)1
+/    };
+
+/
 
 /q) .tdb.codeTable[h]`      /all markets
 /q) .tdb.codeTable[h]`SH

@@ -53,7 +53,7 @@ namespace TDB {
 			}
 		}
 
-	}//namespace util
+	}//namespace TDB::util
 }//namespace TDB
 
 

@@ -1,14 +1,20 @@
 # q_Wind
 
-## kdb+/q interface for Wind API (non-COM version)
+## kdb+/q interface for Wind APIs (non-COM version)
 
-[Wind Quant API][] is developed by [Wind Information Co., Ltd][Wind Info], a Chinese financial information and solutions provider.
+This project provides kdb+/q support for 3 distinct sets of APIs provided by [Wind Information Co., Ltd][Wind Info], a Chinese financial information and solutions provider:
+* [Wind Quant API][], a Quants API that also provides some market data feeds;
+* [Wind TDF API][], a read-time data feed API for Chinese financial market data;
+* [Wind TDB API][], a historical database API for what is provided by TDF API at real-time.
 
 ## Wind 万得 kdb+/q 数据接口（non-COM version）
 
-这是一个[Wind Quant API][]的kdb+接口。
+本项目提供了三个kdb+/q的接口，用于连接[万得Wind][Wind Info]几个不同的编程接口：
+* [Wind Quant API][]——量化编程接口（机构版）；
+* [Wind TDF API][]——实时市场数据流接口；
+* [Wind TDB API][]——对应TDF API的历史市场数据接口。
 
-本项目是使用Visual Studio 2013编译的工程。与[zwz][]的《[WindKdb+数据及交易接口V1.1][WindKdb+]》不同，本工程直接使用`WindQuantData.dll`的API而不须使用基于COM的`WAPIWrapperCpp.dll`。虽然没有使用`WAPIWrapperCpp.dll`，不过本接口已经把所有接数的函数封装为同步函数（`.wind.WSQ`除外），以方便在q程序内使用。
+本项目是使用Visual Studio 2013编译的工程。与[zwz][]的《[WindKdb+数据及交易接口V1.1][WindKdb+]》不同，本工程对Wind Quant API的支持直接使用`WindQuantData.dll`的API而不须使用基于COM的`WAPIWrapperCpp.dll`。虽然没有使用`WAPIWrapperCpp.dll`，不过本接口已经把所有接数的函数封装为同步函数（`.wind.WSQ`除外），以方便在q程序内使用。
 
 ### License
 
@@ -39,6 +45,8 @@
 [WDK]:   http://www.microsoft.com/en-us/download/details.aspx?id=11800
 [Wind Info]:      http://www.wind.com.cn/En/
 [Wind Quant API]: http://www.dajiangzhang.com/download
+[Wind TDF API]: -
+[Wind TDB API]: -
 [zwz]:            http://www.dajiangzhang.com/u?4bf215b5-2c07-4b70-91ec-09d8269e48e2
 [WindKdb+]:       http://www.dajiangzhang.com/q?fc42e518-3ced-4b97-833e-5f6673a7127b
 

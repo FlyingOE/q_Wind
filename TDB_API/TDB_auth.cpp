@@ -45,8 +45,8 @@ TDB_API K K_DECL TDB_login(K host, K port, K username, K password) {
 #	ifndef NDEBUG
 	std::cerr << ">>> TDB_Open({\""
 		<< settings.szIP << "\", \"" << settings.szPort << "\", \""
-		<< settings.szUser << "\", \"" << settings.szPassword
-		<< "\"})" << std::endl;
+		<< settings.szUser << "\", \"" << settings.szPassword << "\"})"
+		<< std::endl;
 #	endif
 	::TDBDefine_ResLogin result = { 0 };
 	::THANDLE tdb = ::TDB_Open(&settings, &result);

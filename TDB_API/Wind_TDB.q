@@ -19,12 +19,12 @@ setTimeout:{[F;x]
     }DLL 2:(`setTimeout;3);
 
 /q) h:.tdb.login[`host:port;`w*******;"********"]
-/q) .tdb.logout[]
+/q) .tdb.logout h
 / OR
-/q) h:.tdb.start hsym`password
+/q) h:.tdb.start hsym`connection
 login:{[F;s;u;p]
     F .@[;1;"I"$](":"vs string s),(u;p)
-    }DLL 2:(`TDB_login ;4);
+    }DLL 2:(`TDB_login;4);
 logout:DLL 2:(`TDB_logout;1);
 start:{
     login[`$l 0;;].@[;0 2](0,k,1+k:p?":")_p:(l:2#read0 x)1

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "util.h"
 
+#include "kdb+.util/type_convert.h"
 #include "kdb+.util/Cookbook.inl"
 
 std::string TDF::getError(::TDF_ERR errorCode) {

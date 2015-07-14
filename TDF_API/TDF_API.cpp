@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "TDF_API.h"
 
+#include "TDF_API_handler.h"
+
 #include "kdb+.util/type_traits.h"
 #include "kdb+.util/type_convert.h"
 
@@ -9,7 +11,7 @@
 
 ::TDF_OPEN_SETTING_EXT TDF::SETTINGS = {
 	{ 0 }, 0,
-	NULL, NULL,
+	&TDF::OnDataMsg, &TDF::OnSystemMsg,
 	"BBQ", "", 0,
 	0xFFFFFFFF,
 	__COUNTER__

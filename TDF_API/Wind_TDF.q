@@ -13,44 +13,37 @@ setTimeout:{[F;hbInterval;hbMissing;openTimeout]
     F .(hbInterval;hbMissing;openTimeout)div 1000 1 1000
     }DLL 2:(`setTimeout;3);
 
-/q) h:.tdf.login[([]server:`host1:port1`host2:port2;username:`user1`user2;password:("****";"****"));`SZ`SH;`;`Transaction`Order`OrderQueue;09:00:00]
-/q) h:.tdf.login[([]server:`host1:port1`host2:port2;username:`user1`user2;password:("****";"****"));`;`;`;0]
-/q) .tdf.logout h
+/q) h:.tdf.sub[([]server:`host1:port1`host2:port2;username:`user1`user2;password:("****";"****"));`SZ`SH;`;`Transaction`Order`OrderQueue;09:00:00]
+/q) h:.tdf.sub[([]server:`host1:port1`host2:port2;username:`user1`user2;password:("****";"****"));`;`;`;0]
+/q) .tdf.unsub h
 / OR
 /q) h:.tdf.start[hsym`connections;`SZ`SH;`;`;0]
-login:{[F;S;m;c;t;s]
+sub:{[F;S;m;c;t;s]
     if[()~key`:log;-1"Creating TDF log directory...";system"MKDIR log"];
     F[;(),m;(),c;(),t;$[-19h=type s;s;"t"$s]]
         delete server from S,'exec`host`port!/:.[;(::;1);"I"$]":"vs/:string server from S
-    }DLL 2:(`TDF_login;5);
-logout:DLL 2:(`TDF_logout;1);
+    }DLL 2:(`TDF_subscribe;5);
+unsub:DLL 2:(`TDF_unsubscribe;1);
 start:{[x;m;c;t;s]
     S:flip`server`username`password!(enlist`$l[;0]),
         flip .[;(::;0 2)](0,/:k,'1+k:p?\:":")_'p:(l:"\001"vs/:"\001;\001"vs"\001"sv read0 x)[;1];
-    login[S;m;c;t;s]
+    sub[S;m;c;t;s]
     };
 
-x:hsym`.tdf.connect;
-
-T:([]
-    server:`114.80.154.34:6221`114.80.154.34:10051;
-    username:`TD4351909001`TDcc0001;
-    password:("12597050";"13833692")
-    );
+/q) .tdf.codeTable[h]`      /all markets
+/q) .tdf.codeTable[h]`SH
+codeTable:{[F;h;m]
+    flip`WindCode`Market`Code`ENName`CNName`Type!F[h;m]
+    }DLL 2:(`TDF_codeTable;2);
+    
+/q) .tdf.optionCodeInfo[h]`AG1312.SHF
+optionCodeInfo:{[F;h;c]
+    (`WindCode`Market`Code`ENName`CNName`Type,
+        `Contract`Underlying`CallPut`ExecDate`UnderlyingType`OptionType`PxLimitType`Multiplier`ExecPx`StartDate`EndDate`ExpireDate
+        )!F[h;c]
+    }DLL 2:(`TDF_optionCodeInfo;2);
 
 /
-
-/q) .tdb.codeTable[h]`      /all markets
-/q) .tdb.codeTable[h]`SH
-codeTable:{[F;h;m]
-    flip`WindCode`Code`Market`CNName`ENName`Type!F[h;m]
-    }DLL 2:(`TDB_codeTable;2);
-    
-/q) .tdb.codeInfo[h]`600000.SH
-codeInfo:{[F;h;c]
-    `WindCode`Code`Market`CNName`ENName`Type!F[h;c]
-    }DLL 2:(`TDB_codeInfo;2);
-
 /q) .tdb.tickAB_fields h
 /q) .tdb.tickAB[h][`600000.SH;`WindCode`Code`Date`Time`BSFlag`AskPrices`AskVolumes`BidPrices`BidVolumes;2015.07.01T00:00;2015.07.03T23:59:59.999]
 tickAB_fields:DLL 2:(`TDB_tickAB_fields;1);

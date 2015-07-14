@@ -2,6 +2,7 @@
 #include "TDF_API.h"
 
 #include "util.h"
+#include "TDF_API_handler.h"
 
 #include "TDB_API/util.h"
 #include "win32.util/util.h"
@@ -95,7 +96,7 @@ namespace TDF {
 }//namespace TDF
 
 
-TDF_API K K_DECL TDF_login(K servers, K markets, K windCodes, K msgTypes, K startTime) {
+TDF_API K K_DECL TDF_subscribe(K servers, K markets, K windCodes, K msgTypes, K startTime) {
 	::TDF_OPEN_SETTING_EXT settings = TDF::SETTINGS;
 	std::vector<char> mkts, tiks;
 	try {
@@ -128,16 +129,11 @@ TDF_API K K_DECL TDF_login(K servers, K markets, K windCodes, K msgTypes, K star
 	}
 
 #	ifndef NDEBUG
-	std::cerr << ">>> TDF_OpenExt({[";
-	for (std::size_t i = 0; i < settings.nServerNum; ++i) {
-		std::cerr << "{\""
-			<< settings.siServer[i].szIp << "\", \"" << settings.siServer[i].szPort << "\", \""
-			<< settings.siServer[i].szUser << "\", \"" << settings.siServer[i].szPwd << "\"}";
-		if (i + 1 < settings.nServerNum) std::cerr << ", ";
-	}
-	std::cerr << "], \"" << settings.szMarkets << "\", \"" << settings.szSubScriptions << "\", "
-		<< settings.nTime << ", 0x" << util::hexBytes(settings.nTypeFlags) << "})" << std::endl;
+	std::cerr << ">>> TDF_OpenExt(" << settings << ')' << std::endl;
 #	endif
+	assert(settings.pfnMsgHandler != NULL);
+	assert(settings.pfnSysMsgNotify != NULL);
+	TDF::ResetMsgHandlers();
 	::TDF_ERR result = TDF_ERR_UNKOWN;
 	::THANDLE tdf = ::TDF_OpenExt(&settings, &result);
 	if (result == TDF_ERR_SUCCESS) {
@@ -155,7 +151,7 @@ TDF_API K K_DECL TDF_login(K servers, K markets, K windCodes, K msgTypes, K star
 	}
 }
 
-TDF_API K K_DECL TDF_logout(K h) {
+TDF_API K K_DECL TDF_unsubscribe(K h) {
 	::THANDLE tdf = NULL;
 	try {
 		long long const hh = q::q2Dec(h);

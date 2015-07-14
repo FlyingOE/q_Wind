@@ -29,7 +29,7 @@ extern "C" {
 		K openTimeout	//-5h or -6h or -7h
 		);
 
-	TDF_API K K_DECL TDF_login(
+	TDF_API K K_DECL TDF_subscribe(
 		K servers,		//99h: `host`port`username`password!(-11h or 10h;5h or 6h or 7h;-11h or 10h;-11h or 10h)
 		K markets,		//-11h or 11h
 		K windCodes,	//-11h or 11h
@@ -37,10 +37,21 @@ extern "C" {
 		K startTime		//-19h
 		);
 
-	TDF_API K K_DECL TDF_logout(
+	TDF_API K K_DECL TDF_unsubscribe(
 		K tdf		//-7h
 		);
 
+	//获取代码表（在已经收到MSG_SYS_CODETABLE_RESULT 消息之后，可以获得代码表）
+	TDF_API K K_DECL TDF_codeTable(
+		K tdf,		//-7h
+		K market	//-11h or 10h
+		);
+
+	//从万得代码来获取详细的期权代码信息
+	TDF_API K K_DECL TDF_optionCodeInfo(
+		K tdf,		//-7h
+		K windCode	//-11h or 10h
+		);
 #ifdef __cplusplus
 }//extern "C"
 #endif

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "util.h"
 
+#include "kdb+.util/Cookbook.inl"
+
 std::string TDF::getError(::TDF_ERR errorCode) {
 	switch (errorCode) {
 	case TDF_ERR_SUCCESS:				// ³É¹¦
@@ -25,6 +27,20 @@ std::string TDF::getError(::TDF_ERR errorCode) {
 	std::ostringstream buffer;
 	buffer << "unknown errorCode=" << errorCode;
 	return buffer.str();
+}
+
+unsigned int TDF::util::q2time(K time) throw(std::string) {
+	if (time == K_NIL) throw std::string("nil time");
+
+	char hh, mm, ss;
+	short millis;
+	switch (time->t) {
+	case -KT:
+		q::Cookbook::tsms(time->i, &hh, &mm, &ss, &millis);
+		return hh * 10000 + mm * 100 + ss;
+	default:
+		throw std::string("not a time");
+	}
 }
 
 void TDF::DataTypeFlag::registerAll() {

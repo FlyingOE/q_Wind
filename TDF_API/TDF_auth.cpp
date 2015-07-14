@@ -15,7 +15,28 @@
 namespace TDF {
 	namespace util {
 
-		std::size_t setServerInfos(K const servers, ::TDF_SERVER_INFO out[MAXSERVER]) throw(std::string) {
+		template <typename T, typename Id>
+		void setServerInfo(std::string const& data, T& field, char const* fieldName, Id const& fieldId)
+			throw(std::string)
+		{
+			if (data.size() >= _countof(field)) {
+				std::ostringstream buffer;
+				buffer << fieldName << " [" << fieldId << "] too long";
+				throw buffer.str();
+			}
+			else {
+				std::memset(field, '\0', _countof(field));
+#				ifdef _MSC_VER
+				::strncpy_s(field, data.c_str(), data.size());
+#				else
+				std::strncpy(field, data.c_str(), _countof(field));
+#				endif
+			}
+		}
+
+		std::size_t setServerInfos(K const servers, ::TDF_SERVER_INFO out[MAXSERVER])
+			throw(std::string)
+		{
 			if (servers == K_NIL) throw std::string("null servers");
 			if (servers->t != XT) throw std::string("not a table");
 
@@ -54,40 +75,18 @@ namespace TDF {
 			}
 
 			for (std::size_t i = 0; i < count; ++i) {
-				std::memset(out[i].szIp, '\0', _countof(out[i].szIp));
-				std::memset(out[i].szPort, '\0', _countof(out[i].szPort));
-				std::memset(out[i].szUser, '\0', _countof(out[i].szUser));
-				std::memset(out[i].szPwd, '\0', _countof(out[i].szPwd));
-				if (hosts[i].size() >= _countof(out[i].szIp)) {
-					std::ostringstream buffer;
-					buffer << "host/IP [" << i << "] too long";
-					throw buffer.str();
-				}
+				setServerInfo(hosts[i], out[i].szIp, "host/IP", i);
+				setServerInfo(uids[i], out[i].szUser, "username", i);
+				setServerInfo(pwds[i], out[i].szPwd, "password", i);
 				if (ports[i] >= std::pow(10, _countof(out[i].szPort))) {
 					std::ostringstream buffer;
 					buffer << "port number [" << i << "] too long";
 					throw buffer.str();
 				}
-				if (uids[i].size() >= _countof(out[i].szUser)) {
-					std::ostringstream buffer;
-					buffer << "username [" << i << "] too long";
-					throw buffer.str();
+				else {
+					std::memset(out[i].szPort, '\0', _countof(out[i].szPort));
+					std::snprintf(out[i].szPort, _countof(out[i].szPort), "%ld", ports[i]);
 				}
-				if (pwds[i].size() >= _countof(out[i].szPwd)) {
-					std::ostringstream buffer;
-					buffer << "password [" << i << "] too long";
-					throw buffer.str();
-				}
-#				ifdef _MSC_VER
-				::strncpy_s(out[i].szIp, hosts[i].c_str(), hosts[i].size());
-				::strncpy_s(out[i].szUser, uids[i].c_str(), uids[i].size());
-				::strncpy_s(out[i].szPwd, pwds[i].c_str(), pwds[i].size());
-#				else
-				std::strncpy(out[i].szIp, hosts[i].c_str(), _countof(out[i].szIp));
-				std::strncpy(out[i].szUser, uids[i].c_str(), _countof(out[i].szUser));
-				std::strncpy(out[i].szPwd, pwds[i].c_str(), _countof(out[i].szPwd));
-#				endif
-				std::snprintf(out[i].szPort, _countof(out[i].szPort), "%ld", ports[i]);
 			}
 			return count;
 		}
@@ -96,26 +95,33 @@ namespace TDF {
 }//namespace TDF
 
 
-TDF_API K K_DECL TDF_login(K servers, K markets, K tickers, K types, K startTime) {
+TDF_API K K_DECL TDF_login(K servers, K markets, K windCodes, K msgTypes, K startTime) {
 	::TDF_OPEN_SETTING_EXT settings = TDF::SETTINGS;
-	std::vector<char> mkts;
+	std::vector<char> mkts, tiks;
 	try {
 		settings.nServerNum = TDF::util::setServerInfos(servers, settings.siServer);
 		
-		std::string const mkt = TDF::util::join(';', q::qList2String(markets));
-		mkts.assign(mkt.begin(), mkt.end());
+		std::string const mktList = TDF::util::join(';', q::qList2String(markets));
+		mkts.assign(mktList.begin(), mktList.end());
 		mkts.push_back('\0');
 		settings.szMarkets = &mkts[0];
+
+		std::string const codeList = TDF::util::join(';', q::qList2String(windCodes));
+		tiks.assign(codeList.begin(), codeList.end());
+		tiks.push_back('\0');
+		settings.szSubScriptions = &tiks[0];
 		
-		std::vector<std::string> const tiks = q::qList2String(tickers);
+		std::vector<std::string> const typeList = q::qList2String(msgTypes);
 		settings.nTypeFlags = 0;
-		for (auto t = tiks.cbegin(); t != tiks.cend(); ++t) {
+		for (auto t = typeList.cbegin(); t != typeList.cend(); ++t) {
 			if (!t->empty()) {
 				::DATA_TYPE_FLAG const flag = TDF::DataTypeFlag::fromString(*t);
 				if (flag == 0) throw *t;
 				settings.nTypeFlags |= flag;
 			}
 		}
+
+		settings.nTime = TDF::util::q2time(startTime);
 	}
 	catch (std::string const& error) {
 		return q::error2q(error);
@@ -129,12 +135,12 @@ TDF_API K K_DECL TDF_login(K servers, K markets, K tickers, K types, K startTime
 			<< settings.siServer[i].szUser << "\", \"" << settings.siServer[i].szPwd << "\"}";
 		if (i + 1 < settings.nServerNum) std::cerr << ", ";
 	}
-	std::cerr << "], \"" << settings.szMarkets << "\", "
-		<< util::hexBytes(settings.nTypeFlags) << "})" << std::endl;
+	std::cerr << "], \"" << settings.szMarkets << "\", \"" << settings.szSubScriptions << "\", "
+		<< settings.nTime << ", 0x" << util::hexBytes(settings.nTypeFlags) << "})" << std::endl;
 #	endif
 	::TDF_ERR result = TDF_ERR_UNKOWN;
 	::THANDLE tdf = ::TDF_OpenExt(&settings, &result);
-	if (result != TDF_ERR_SUCCESS) {
+	if (result == TDF_ERR_SUCCESS) {
 		std::cerr << "<TDF> logged in as [";
 		for (std::size_t i = 0; i < settings.nServerNum; ++i) {
 			std::cerr << settings.siServer[i].szUser;

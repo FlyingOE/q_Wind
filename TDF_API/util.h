@@ -15,6 +15,8 @@ namespace TDF {
 
 	namespace util {
 
+		unsigned int q2time(K time) throw(std::string);
+
 		template <typename Delim>
 		std::string join(Delim const& delim, std::vector<std::string> const& list);
 

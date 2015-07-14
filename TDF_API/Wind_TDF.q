@@ -13,18 +13,30 @@ setTimeout:{[F;hbInterval;hbMissing;openTimeout]
     F .(hbInterval;hbMissing;openTimeout)div 1000 1 1000
     }DLL 2:(`setTimeout;3);
 
-/q) h:.tdf.login[([]server:`host1:port1`host2:port2;username:`user1`user2;password:("****";"****"));`SZ`SH;`Transaction`Order`OrderQueue]
-/q) h:.tdf.login[([]server:`host1:port1`host2:port2;username:`user1`user2;password:("****";"****"));`;`]
+/q) h:.tdf.login[([]server:`host1:port1`host2:port2;username:`user1`user2;password:("****";"****"));`SZ`SH;`;`Transaction`Order`OrderQueue;09:00:00]
+/q) h:.tdf.login[([]server:`host1:port1`host2:port2;username:`user1`user2;password:("****";"****"));`;`;`;0]
 /q) .tdf.logout h
 / OR
-/q) h:.tdf.start hsym`connections
-login:{[F;s;m;t]
-    F[;(),m;(),t]delete server from s,'exec`host`port!/:.[;(::;1);"I"$]":"vs/:string server from s
-    }DLL 2:(`TDF_login;3);
+/q) h:.tdf.start[hsym`connections;`SZ`SH;`;`;0]
+login:{[F;S;m;c;t;s]
+    if[()~key`:log;-1"Creating TDF log directory...";system"MKDIR log"];
+    F[;(),m;(),c;(),t;$[-19h=type s;s;"t"$s]]
+        delete server from S,'exec`host`port!/:.[;(::;1);"I"$]":"vs/:string server from S
+    }DLL 2:(`TDF_login;5);
 logout:DLL 2:(`TDF_logout;1);
-/start:{
-/    login[`$l 0;;].@[;0 2](0,k,1+k:p?":")_p:(l:2#read0 x)1
-/    };
+start:{[x;m;c;t;s]
+    S:flip`server`username`password!(enlist`$l[;0]),
+        flip .[;(::;0 2)](0,/:k,'1+k:p?\:":")_'p:(l:"\001"vs/:"\001;\001"vs"\001"sv read0 x)[;1];
+    login[S;m;c;t;s]
+    };
+
+x:hsym`.tdf.connect;
+
+T:([]
+    server:`114.80.154.34:6221`114.80.154.34:10051;
+    username:`TD4351909001`TDcc0001;
+    password:("12597050";"13833692")
+    );
 
 /
 

@@ -60,11 +60,12 @@ namespace q {
 			return std::gmtime_r(&t, res);
 #			endif
 		}
+		/*
 		inline char* fdt(std::tm* ptm, char* d) {
 			std::strftime(d, 10, "%Y.%m.%d", ptm);
 			return d;
 		}
-		/*
+		*/
 		inline void tsms(unsigned ts, char*h, char*m, char*s, short*mmm) {
 			*h = ts / 3600000;
 			ts -= 3600000 * (*h);
@@ -74,6 +75,7 @@ namespace q {
 			ts -= 1000 * (*s);
 			*mmm = ts;
 		}
+		/*
 		inline char* ftsms(unsigned ts, char* d){
 			char h, m, s;
 			short mmm;
@@ -82,6 +84,7 @@ namespace q {
 			return d;
 		}
 		*/
+
 	}//namespace q::Cookbook
 }//namespace q
 

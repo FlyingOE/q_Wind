@@ -32,8 +32,8 @@ extern "C" {
 	TDF_API K K_DECL TDF_login(
 		K servers,		//99h: `host`port`username`password!(-11h or 10h;5h or 6h or 7h;-11h or 10h;-11h or 10h)
 		K markets,		//-11h or 11h
-		K tickers,		//-11h or 11h
-		K types,		//-11h or 11h
+		K windCodes,	//-11h or 11h
+		K msgTypes,		//-11h or 11h
 		K startTime		//-19h
 		);
 

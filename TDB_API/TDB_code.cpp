@@ -64,7 +64,6 @@ TDB_API K K_DECL TDB_codeInfo(K h, K windCode) {
 	}
 
 	q::K_ptr data(ktn(0, 6));
-	typedef Wind::accessor::SymbolAccessor<::TDBDefine_Code, char[32]> SymbolAccessor_;
 	kK(data.get())[0] = ks(const_cast<S>(info->chWindCode));
 	kK(data.get())[1] = ks(const_cast<S>(info->chCode));
 	kK(data.get())[2] = ks(const_cast<S>(info->chMarket));

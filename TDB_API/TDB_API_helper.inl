@@ -7,66 +7,6 @@ static_assert(0, "Include TDB_API/TDB_API_helper.h instead!");
 #include "kdb+.util/type_convert.h"
 #include <cassert>
 
-#pragma region
-
-template <typename TdbT>
-K TDB::FieldAccessor<TdbT>::extract(TdbT const* dataArray, std::size_t arrayLen) const {
-	assert(NULL != dataArray);
-	assert(arrayLen >= 0);
-	q::K_ptr result(ktn(getTypeNum(), arrayLen));
-	for (std::size_t i = 0; i < arrayLen; ++i) {
-		setElement(result.get(), dataArray, i);
-	}
-	return result.release();
-}
-
-template <typename TdbT>
-void TDB::CharAccessor<TdbT>::setElement(K out, TdbT const* dataArray, std::size_t index) const {
-	q::type_traits<C>::index(out)[index] = dataArray[index].*field_;
-}
-
-template <typename TdbT>
-void TDB::DateAccessor<TdbT>::setElement(K out, TdbT const* dataArray, std::size_t index) const {
-	q::type_traits<I>::index(out)[index] = q::date2q(dataArray[index].*field_);
-}
-
-template <typename TdbT>
-void TDB::TimeAccessor<TdbT>::setElement(K out, TdbT const* dataArray, std::size_t index) const {
-	q::type_traits<I>::index(out)[index] = util::time2q(dataArray[index].*field_);
-}
-
-template <typename TdbT, typename QType>
-void TDB::IntAccessor<TdbT, QType>::setElement(K out, TdbT const* dataArray, std::size_t index) const {
-	q::type_traits<QType>::index(out)[index] = dataArray[index].*field_;
-}
-
-template <typename TdbT, typename Str, typename Encoder>
-void TDB::StringAccessor<TdbT, Str, Encoder>::setElement(K out, TdbT const* dataArray, std::size_t index) const {
-	q::type_traits<void>::index(out)[index] = kp(const_cast<S>(encode_(dataArray[index].*field_).c_str()));
-}
-
-template <typename TdbT, typename Str, typename Encoder>
-void TDB::SymbolAccessor<TdbT, Str, Encoder>::setElement(K out, TdbT const* dataArray, std::size_t index) const {
-	q::type_traits<S>::index(out)[index] = ss(const_cast<S>(encode_(dataArray[index].*field_).c_str()));
-}
-
-template <typename TdbT, typename Val>
-void TDB::FloatAccessor<TdbT, Val>::setElement(K out, TdbT const* dataArray, std::size_t index) const {
-	q::type_traits<F>::index(out)[index] = scalar_ * dataArray[index].*field_;
-}
-
-template <typename TdbT, typename Vals>
-void TDB::FloatsAccessor<TdbT, Vals>::setElement(K out, TdbT const* dataArray, std::size_t index) const {
-	std::size_t const size = std::extent<Vals, 0>::value;
-	K dst = q::type_traits<void>::index(out)[index] = ktn(KF, size);
-	Vals const& src = dataArray[index].*field_;
-	for (std::size_t j = 0; j < size; ++j) {
-		kF(dst)[j] = scalar_ * src[j];
-	}
-}
-
-#pragma endregion
-
 template <typename Traits>
 void TDB::parseIndicators(K indicators, std::vector<typename Traits::field_accessor_type const*>& indis)
 	throw(std::string)

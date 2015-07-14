@@ -3,9 +3,10 @@
 
 #include "TDB_API_helper.h"
 
-#include "win32.util/EnumUtil.h"
 #include "kdb+.util/K_ptr.h"
 #include "kdb+.util/type_convert.h"
+#include "Wind.util/EnumUtil.h"
+#include "Wind.util/FieldAccessors.h"
 
 namespace TDB {
 
@@ -28,14 +29,17 @@ namespace TDB {
 		};
 
 		typedef ::TDBDefine_Order tdb_result_type;
-		typedef FieldAccessor<tdb_result_type> field_accessor_type;
-		typedef CharAccessor<tdb_result_type> CharAccessor_;
-		typedef DateAccessor<tdb_result_type> DateAccessor_;
-		typedef TimeAccessor<tdb_result_type> TimeAccessor_;
-		typedef IntAccessor<tdb_result_type, I> IntAccessor_;
-		template <typename Str> using SymbolAccessor_ = SymbolAccessor<tdb_result_type, Str>;
-		template <typename Str, typename Encoder> using StringAccessor_ = StringAccessor<tdb_result_type, Str, Encoder>;
-		template <typename Val> using FloatAccessor_ = FloatAccessor<tdb_result_type, Val>;
+		typedef Wind::accessor::FieldAccessor<tdb_result_type> field_accessor_type;
+		typedef Wind::accessor::CharAccessor<tdb_result_type> CharAccessor_;
+		typedef Wind::accessor::DateAccessor<tdb_result_type> DateAccessor_;
+		typedef Wind::accessor::TimeAccessor<tdb_result_type> TimeAccessor_;
+		typedef Wind::accessor::IntAccessor<tdb_result_type, I> IntAccessor_;
+		template <typename Str>
+		using SymbolAccessor_ = Wind::accessor::SymbolAccessor<tdb_result_type, Str>;
+		template <typename Str, typename Encoder>
+		using StringAccessor_ = Wind::accessor::StringAccessor<tdb_result_type, Str, Encoder>;
+		template <typename Val>
+		using FloatAccessor_ = Wind::accessor::FloatAccessor<tdb_result_type, Val>;
 
 		static std::map<Field, std::unique_ptr<field_accessor_type> > Accessors;
 
@@ -52,7 +56,7 @@ namespace TDB {
 				ORDER_FIELD(Date, new DateAccessor_(&tdb_result_type::nDate));
 				ORDER_FIELD(Time, new TimeAccessor_(&tdb_result_type::nTime));
 				ORDER_FIELD(Index, new IntAccessor_(&tdb_result_type::nIndex));
-				ORDER_FIELD(OrderId, (new StringAccessor_<int, util::StringizeEncoder>(&tdb_result_type::nOrder)));
+				ORDER_FIELD(OrderId, (new StringAccessor_<int, Wind::encoder::StringizeEncoder>(&tdb_result_type::nOrder)));
 				ORDER_FIELD(OrderKind, new CharAccessor_(&tdb_result_type::chOrderKind));
 				ORDER_FIELD(FunctionCode, new CharAccessor_(&tdb_result_type::chFunctionCode));
 				ORDER_FIELD(OrderPrice, new FloatAccessor_<int>(&tdb_result_type::nOrderPrice, .0001));
@@ -78,22 +82,23 @@ namespace TDB {
 		};
 
 		typedef ::TDBDefine_OrderQueue tdb_result_type;
-		typedef FieldAccessor<tdb_result_type> field_accessor_type;
-		typedef DateAccessor<tdb_result_type> DateAccessor_;
-		typedef TimeAccessor<tdb_result_type> TimeAccessor_;
-		typedef IntAccessor<tdb_result_type, I> IntAccessor_;
-		template <typename Str> using SymbolAccessor_ = SymbolAccessor<tdb_result_type, Str>;
-		template <typename Val> using FloatAccessor_ = FloatAccessor<tdb_result_type, Val>;
+		typedef Wind::accessor::FieldAccessor<tdb_result_type> field_accessor_type;
+		typedef Wind::accessor::DateAccessor<tdb_result_type> DateAccessor_;
+		typedef Wind::accessor::TimeAccessor<tdb_result_type> TimeAccessor_;
+		typedef Wind::accessor::IntAccessor<tdb_result_type, I> IntAccessor_;
+		template <typename Str>
+		using SymbolAccessor_ = Wind::accessor::SymbolAccessor<tdb_result_type, Str>;
+		template <typename Val>
+		using FloatAccessor_ = Wind::accessor::FloatAccessor<tdb_result_type, Val>;
 		
-		struct SideAccessor_ : public AccessorBase<tdb_result_type, int> {
-			SideAccessor_(field_accessor field)
-				: AccessorBase<tdb_result_type, int>(field, KC) {}
+		struct SideAccessor_ : public Wind::accessor::AccessorBase<tdb_result_type, int> {
+			SideAccessor_(field_accessor field) : AccessorBase<tdb_result_type, int>(field, KC) {}
 		protected:
 			virtual void setElement(K out, tdb_result_type const* dataArray, std::size_t index) const override;
 		};
 
 		template <typename Vals>
-		struct VarFloatsAccessor_ : public AccessorBase<tdb_result_type, Vals> {
+		struct VarFloatsAccessor_ : public Wind::accessor::AccessorBase<tdb_result_type, Vals> {
 			VarFloatsAccessor_(field_accessor field, int const tdb_result_type::*count, double scalar = 1.)
 				: AccessorBase<tdb_result_type, Vals>(field, 0), count_(count), scalar_(scalar) {}
 		protected:

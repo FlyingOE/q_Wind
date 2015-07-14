@@ -3,9 +3,10 @@
 
 #include "TDB_API_helper.h"
 
-#include "win32.util/EnumUtil.h"
 #include "kdb+.util/K_ptr.h"
 #include "kdb+.util/type_convert.h"
+#include "Wind.util/EnumUtil.h"
+#include "Wind.util/FieldAccessors.h"
 
 namespace TDB {
 
@@ -30,13 +31,15 @@ namespace TDB {
 		};
 
 		typedef ::TDBDefine_Transaction tdb_result_type;
-		typedef FieldAccessor<tdb_result_type> field_accessor_type;
-		typedef CharAccessor<tdb_result_type> CharAccessor_;
-		typedef DateAccessor<tdb_result_type> DateAccessor_;
-		typedef TimeAccessor<tdb_result_type> TimeAccessor_;
-		typedef IntAccessor<tdb_result_type, I> IntAccessor_;
-		template <typename Str> using SymbolAccessor_ = SymbolAccessor<tdb_result_type, Str>;
-		template <typename Val> using FloatAccessor_ = FloatAccessor<tdb_result_type, Val>;
+		typedef Wind::accessor::FieldAccessor<tdb_result_type> field_accessor_type;
+		typedef Wind::accessor::CharAccessor<tdb_result_type> CharAccessor_;
+		typedef Wind::accessor::DateAccessor<tdb_result_type> DateAccessor_;
+		typedef Wind::accessor::TimeAccessor<tdb_result_type> TimeAccessor_;
+		typedef Wind::accessor::IntAccessor<tdb_result_type, I> IntAccessor_;
+		template <typename Str>
+		using SymbolAccessor_ = Wind::accessor::SymbolAccessor<tdb_result_type, Str>;
+		template <typename Val>
+		using FloatAccessor_ = Wind::accessor::FloatAccessor<tdb_result_type, Val>;
 
 		static std::map<Field, std::unique_ptr<field_accessor_type> > Accessors;
 

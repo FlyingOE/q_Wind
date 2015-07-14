@@ -24,25 +24,39 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SocketPair.h">
+    <ClInclude Include="FieldAccessors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EnumUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StringEncoders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="util.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="util.inl">
-      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SocketPair.cpp">
+    <ClCompile Include="StringEncoders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="EnumUtil.inl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="FieldAccessors.inl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="StringEncoders.inl">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -84,7 +84,7 @@ orderQueue:{[F;h;c;i;b;e]
 __EOD__
 ===============================================================================
 
-h:.tdb.start`:.tdb.pass
+h:.tdb.start`:.tdb.connect
 update string Type from .tdb.codeTable[h]`
 reverse update string Type from .tdb.codeTable[h]`CF
 select count Code by Market,string Type from .tdb.codeTable[h]`

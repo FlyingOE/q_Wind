@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{7609463A-AF49-4D74-9BBB-51C144514573}</ProjectGuid>
+    <ProjectGuid>{E1757D5A-2CB1-458E-B5F9-0978A9ACB2C5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>win32util</RootNamespace>
+    <RootNamespace>Windutil</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -47,11 +47,15 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir);D:\q\c</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);D:\q\c</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -62,6 +66,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir);D:\q\c</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -69,28 +74,33 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);D:\q\c</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SocketPair.h" />
+    <ClInclude Include="EnumUtil.h" />
+    <ClInclude Include="FieldAccessors.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="StringEncoders.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="util.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SocketPair.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="StringEncoders.cpp" />
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="util.inl">
-      <FileType>Document</FileType>
-    </ClInclude>
+    <None Include="EnumUtil.inl" />
+    <None Include="FieldAccessors.inl" />
+    <None Include="StringEncoders.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

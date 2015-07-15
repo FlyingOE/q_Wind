@@ -8,7 +8,6 @@
 #include <cmath>
 #include <ctime>
 #include <algorithm>
-#include "Cookbook.inl"
 
 int q::UTC_OFFSET = 0;
 
@@ -289,6 +288,13 @@ I q::date2q(int yyyymmdd) {
 	int const month = (yyyymmdd % 10000) / 100;
 	int const mday = yyyymmdd % 100;
 	return ymd(year, month, mday);
+}
+
+I q::time2q(int hhmmssfff) {
+	int const hh = hhmmssfff / 10000000;
+	int const mm = (hhmmssfff % 10000000) / 100000;
+	int const ssfff = hhmmssfff % 100000;
+	return (hh * 60 + mm) * 60000 + ssfff;
 }
 
 I q::date2q(char const* dateStr) throw(std::string) {

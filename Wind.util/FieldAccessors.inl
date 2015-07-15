@@ -27,7 +27,7 @@ void Wind::accessor::DateAccessor<T>::setElement(K out, T const* dataArray, std:
 
 template <typename T>
 void Wind::accessor::TimeAccessor<T>::setElement(K out, T const* dataArray, std::size_t index) const {
-	q::type_traits<I>::index(out)[index] = util::time2q(dataArray[index].*field_);
+	q::type_traits<I>::index(out)[index] = q::time2q(dataArray[index].*field_);
 }
 
 template <typename T, typename QType>

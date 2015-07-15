@@ -2,6 +2,11 @@
 #ifndef __COOKBOOK_INL__
 #define __COOKBOOK_INL__
 
+#include "win32.util/util.h"
+
+#include <cassert>
+#include <ctime>
+
 // Utilities to deal with q datetime/timestamp data types in C.
 //@ref http://code.kx.com/wiki/Cookbook/InterfacingWithC#Strings_and_datetimes
 namespace q {
@@ -60,12 +65,10 @@ namespace q {
 			return std::gmtime_r(&t, res);
 #			endif
 		}
-		/*
 		inline char* fdt(std::tm* ptm, char* d) {
-			std::strftime(d, 10, "%Y.%m.%d", ptm);
+			std::strftime(d, (4 + 1 + 2 + 1 + 2) + 1, "%Y.%m.%d", ptm);
 			return d;
 		}
-		*/
 		inline void tsms(unsigned ts, char*h, char*m, char*s, short*mmm) {
 			*h = ts / 3600000;
 			ts -= 3600000 * (*h);
@@ -75,15 +78,13 @@ namespace q {
 			ts -= 1000 * (*s);
 			*mmm = ts;
 		}
-		/*
 		inline char* ftsms(unsigned ts, char* d){
 			char h, m, s;
 			short mmm;
 			tsms(ts, &h, &m, &s, &mmm);
-			std::sprintf(d, "%02d:%02d:%02d.%03d", h, m, s, mmm);
+			std::snprintf(d, (2 + 1 + 2 + 1 + 2 + 1 + 3) + 1, "%02d:%02d:%02d.%03d", h, m, s, mmm);
 			return d;
 		}
-		*/
 
 	}//namespace q::Cookbook
 }//namespace q

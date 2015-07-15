@@ -54,6 +54,11 @@ namespace q {
 	// Convert a ATL DATE value to a q datetime
 	F DATE2q(::DATE date) throw(std::string);
 
+	// Convert a C++ time string to a q time
+	I time2q(int hhmmssfff);
+
 }//namespace q
+
+#include "Cookbook.inl"
 
 #endif//__TYPE_CONVERT_H__

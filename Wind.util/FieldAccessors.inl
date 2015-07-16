@@ -2,7 +2,7 @@
 static_assert(0, "Include Wind.util/FieldAccessors.h instead!");
 #endif
 
-#include "util.h"
+#include "kdb+.util/type_convert.h"
 
 template <typename T>
 K Wind::accessor::FieldAccessor<T>::extract(T const* dataArray, std::size_t arrayLen) const {

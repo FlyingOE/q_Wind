@@ -22,13 +22,13 @@ namespace TDB {
 			Time,			//时间（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
 			Price,			//成交价
 			Volume,			//成交量
-			Turover,		//成交额(元)
+			Turnover,		//成交额(元)
 			MatchItems,		//成交笔数
 			Interest,		//IOPV(基金)、利息(债券)
 			TradeFlag,		//成交标志
 			BSFlag,			//BS标志
 			AccVolume,		//当日累计成交量
-			AccTurover,		//当日成交额(元)
+			AccTurnover,	//当日成交额(元)
 			High,			//最高
 			Low,			//最低
 			Open,			//开盘
@@ -77,13 +77,13 @@ namespace TDB {
 				TICKAB_FIELD(Time, new TimeAccessor_(&tdb_result_type::nTime));
 				TICKAB_FIELD(Price, new FloatAccessor_<int>(&tdb_result_type::nPrice, .0001));
 				TICKAB_FIELD(Volume, new FloatAccessor_<__int64>(&tdb_result_type::iVolume));
-				TICKAB_FIELD(Turover, new FloatAccessor_<__int64>(&tdb_result_type::iTurover));
+				TICKAB_FIELD(Turnover, new FloatAccessor_<__int64>(&tdb_result_type::iTurover));
 				TICKAB_FIELD(MatchItems, new IntAccessor_(&tdb_result_type::nMatchItems));
 				TICKAB_FIELD(Interest, new FloatAccessor_<int>(&tdb_result_type::nInterest));
 				TICKAB_FIELD(TradeFlag, new CharAccessor_(&tdb_result_type::chTradeFlag));
 				TICKAB_FIELD(BSFlag, new CharAccessor_(&tdb_result_type::chBSFlag));
 				TICKAB_FIELD(AccVolume, new FloatAccessor_<__int64>(&tdb_result_type::iAccVolume));
-				TICKAB_FIELD(AccTurover, new FloatAccessor_<__int64>(&tdb_result_type::iAccTurover));
+				TICKAB_FIELD(AccTurnover, new FloatAccessor_<__int64>(&tdb_result_type::iAccTurover));
 				TICKAB_FIELD(High, new FloatAccessor_<int>(&tdb_result_type::nHigh, .0001));
 				TICKAB_FIELD(Low, new FloatAccessor_<int>(&tdb_result_type::nLow, .0001));
 				TICKAB_FIELD(Open, new FloatAccessor_<int>(&tdb_result_type::nOpen, .0001));

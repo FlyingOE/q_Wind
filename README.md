@@ -36,6 +36,8 @@ This project provides kdb+/q support for 3 distinct sets of APIs provided by [Wi
   * Fixed problem with `WSQ` subscribers being not able to modify global data in q
 * 2015.03&ndash;04
   * Various bug fixes
+* 2015.07
+  * Added support for Wind TDF/TDB APIs -- Only part of the APIs have been implemented, still work in progress...
 
 ### References
 

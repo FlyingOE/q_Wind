@@ -28,6 +28,9 @@ namespace TDF {
 
 		unsigned int q2time(K time) throw(std::string);
 
+		std::string formatDate(int yyyymmdd);
+		std::string formatTime(int hhmmssfff);
+
 		template <typename Delim>
 		std::string join(Delim const& delim, std::vector<std::string> const& list);
 

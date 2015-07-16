@@ -11,7 +11,7 @@
 
 ::TDF_OPEN_SETTING_EXT TDF::SETTINGS = {
 	{ 0 }, 0,
-	&TDF::OnDataMsg, &TDF::OnSystemMsg,
+	&TDF::onDataMsg, &TDF::onSystemMsg,
 	"BBQ", "", 0,
 	0xFFFFFFFF,
 	__COUNTER__

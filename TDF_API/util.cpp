@@ -2,7 +2,6 @@
 #include "util.h"
 
 #include "kdb+.util/type_convert.h"
-#include "kdb+.util/Cookbook.inl"
 
 std::string TDF::getError(::TDF_ERR errorCode) {
 	switch (errorCode) {
@@ -42,6 +41,24 @@ unsigned int TDF::util::q2time(K time) throw(std::string) {
 	default:
 		throw std::string("not a time");
 	}
+}
+
+std::string TDF::util::formatDate(int yyyymmdd) {
+	I const d = q::date2q(yyyymmdd);
+	q::tm_ext tm;
+	std::memset(&tm, 0, sizeof(tm));
+	q::Cookbook::lt_r(d, &tm);
+	std::vector<char> buffer((4 + 1 + 2 + 1 + 2) + 1, '\0');
+	q::Cookbook::fdt(&tm, &buffer[0]);
+	return &buffer[0];
+}
+
+std::string TDF::util::formatTime(int hhmmssfff) {
+	I const ts = q::time2q(hhmmssfff);
+	std::vector<char> buffer((2 + 1 + 2 + 1 + 2 + 1 + 3) + 1, '\0');
+	q::Cookbook::ftsms(ts, &buffer[0]);
+	assert(*buffer.rbegin() == '\0');
+	return &buffer[0];
 }
 
 void TDF::DataTypeFlag::registerAll() {

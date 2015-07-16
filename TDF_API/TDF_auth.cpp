@@ -137,12 +137,12 @@ TDF_API K K_DECL TDF_subscribe(K servers, K markets, K windCodes, K msgTypes, K 
 	::TDF_ERR result = TDF_ERR_UNKOWN;
 	::THANDLE tdf = ::TDF_OpenExt(&settings, &result);
 	if (result == TDF_ERR_SUCCESS) {
-		std::cerr << "<TDF> logged in as [";
+		std::cerr << "<TDF> connecting as [";
 		for (std::size_t i = 0; i < settings.nServerNum; ++i) {
 			std::cerr << settings.siServer[i].szUser;
 			if (i + 1 < settings.nServerNum) std::wcerr << ';';
 		}
-		std::cerr << "] (0x" << util::hexBytes(tdf) << ')' << std::endl;
+		std::cerr << "] (0x" << util::hexBytes(tdf) << ")..." << std::endl;
 		static_assert(sizeof(J) >= sizeof(::THANDLE), "J is smaller than THANDLE");
 		return kj(reinterpret_cast<J>(tdf));
 	}

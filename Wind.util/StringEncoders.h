@@ -7,17 +7,17 @@
 namespace Wind {
 	namespace encoder {
 
-		struct PassthruEncoder {
-			std::string operator()(char const* str) const { return str; }
+		struct Passthrough {
+			static std::string encode(char const* str);
 		};
 
-		struct GB18030Encoder {
-			std::string operator()(char const* str) const;
+		struct GB18030_UTF8 {
+			static std::string encode(char const* str);
 		};
 
-		struct StringizeEncoder {
+		struct Stringize {
 			template <typename T>
-			std::string operator()(T const& data) const;
+			static std::string encode(T const& data);
 		};
 
 	}//namespace Wind::encoder

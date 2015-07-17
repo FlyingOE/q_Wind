@@ -33,6 +33,9 @@
     <ClInclude Include="StringEncoders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FieldMapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -50,6 +53,9 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="StringEncoders.inl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="FieldMapper.inl">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

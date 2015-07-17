@@ -15,20 +15,17 @@ namespace TDB {
 
 	void parseTdbHandle(K h, ::THANDLE& tdb) throw(std::string);
 
-	template <typename Traits>
+	template <typename FieldTraits>
 	void parseIndicators(K indicators,
-		std::vector<typename Traits::field_accessor_type const*>& indis) throw(std::string);
+		std::vector<typename FieldTraits::field_accessor const*>& indis) throw(std::string);
 
 	template <typename TdbReq>
 	void parseTdbReq(K windCode, K begin, K end, TdbReq& req) throw(std::string);
 
-	template <typename Traits>
-	K getFields();
-
-	template <typename Traits, typename TdbReq>
+	template <typename FieldTraits, typename TdbReq>
 	K runQuery(::THANDLE tdb, TdbReq const& req,
-		std::vector<typename Traits::field_accessor_type const*>& indis,
-		int(*tdbCall)(::THANDLE, TdbReq const*, typename Traits::tdb_result_type**, int*));
+		std::vector<typename FieldTraits::field_accessor const*> const& indis,
+		int(*tdbCall)(::THANDLE, TdbReq const*, typename FieldTraits::tdb_result_type**, int*));
 
 }//namespace TDB
 

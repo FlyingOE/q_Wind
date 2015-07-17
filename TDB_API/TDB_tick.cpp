@@ -3,230 +3,198 @@
 
 #include "TDB_API_helper.h"
 
+#include "win32.util/Singleton.h"
 #include "kdb+.util/K_ptr.h"
 #include "kdb+.util/type_convert.h"
-#include "Wind.util/EnumUtil.h"
-#include "Wind.util/FieldAccessors.h"
+#include "Wind.util/FieldMapper.h"
 
 namespace TDB {
+	namespace traits {
 
-	// Heper to assist symbolic retrieval of tick data fields from TDBDefine_TickAB.
-	struct TickAB {
+		// Traits to assist symbolic retrieval of tick data fields from TDBDefine_TickAB.
+		struct TickAB : public Wind::mapper::Fields<::TDBDefine_TickAB> {
+			typedef Singleton<TickAB> accessor_map;
+			typedef ::TDBDefine_TickAB tdb_result_type;
 
-		// Data fields -- always keep in sync with TDBDefine_TickAB
-		enum Field {
-			NIL = 0,		//`NULL' for this enum
-			WindCode,		//万得代码(AG1312.SHF)
-			Code,			//交易所代码(ag1312)
-			Date,			//日期（自然日）格式YYMMDD
-			Time,			//时间（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
-			Price,			//成交价
-			Volume,			//成交量
-			Turnover,		//成交额(元)
-			MatchItems,		//成交笔数
-			Interest,		//IOPV(基金)、利息(债券)
-			TradeFlag,		//成交标志
-			BSFlag,			//BS标志
-			AccVolume,		//当日累计成交量
-			AccTurnover,	//当日成交额(元)
-			High,			//最高
-			Low,			//最低
-			Open,			//开盘
-			PreClose,		//前收盘
-			AskPrices,		//叫卖价
-			AskVolumes,		//叫卖量
-			BidPrices,		//叫买价
-			BidVolumes,		//叫买量
-			AskAvPrice,		//加权平均叫卖价(上海L2)
-			BidAvPrice,		//加权平均叫买价(上海L2)
-			TotalAskVolume,	//叫卖总量(上海L2)
-			TotalBidVolume,	//叫买总量(上海L2)
-			Index,			//（指数）不加权指数
-			Stocks,			//（指数）品种总数
-			Ups,			//（指数）上涨品种数
-			Downs,			//（指数）下跌品种数
-			HoldLines,		//（指数）持平品种数
-		};
+			TickAB() : Wind::mapper::Fields<tdb_result_type>() { registerAllFields(); }
 
-		typedef ::TDBDefine_TickAB tdb_result_type;
-		typedef Wind::accessor::FieldAccessor<tdb_result_type> field_accessor_type;
-		typedef Wind::accessor::CharAccessor<tdb_result_type> CharAccessor_;
-		typedef Wind::accessor::DateAccessor<tdb_result_type> DateAccessor_;
-		typedef Wind::accessor::TimeAccessor<tdb_result_type> TimeAccessor_;
-		typedef Wind::accessor::IntAccessor<tdb_result_type, I> IntAccessor_;
-		template <typename Str>
-		using SymbolAccessor_ = Wind::accessor::SymbolAccessor<tdb_result_type, Str>;
-		template <typename Val>
-		using FloatAccessor_ = Wind::accessor::FloatAccessor<tdb_result_type, Val>;
-		template <typename Vals>
-		using FloatsAccessor_ = Wind::accessor::FloatsAccessor<tdb_result_type, Vals>;
+			typedef Wind::accessor::SymbolAccessor<tdb_result_type, char[32]> SymbolAccessor;
+			typedef Wind::accessor::DateAccessor<tdb_result_type> DateAccessor;
+			typedef Wind::accessor::TimeAccessor<tdb_result_type> TimeAccessor;
+			typedef Wind::accessor::IntAccessor<tdb_result_type, I> IntAccessor;
+			typedef Wind::accessor::CharAccessor<tdb_result_type> CharAccessor;
+			template <typename FieldT>
+			using FloatAccessor = Wind::accessor::FloatAccessor<tdb_result_type, FieldT>;
+			template <typename FieldT>
+			using FloatsAccessor = Wind::accessor::FloatsAccessor<tdb_result_type, FieldT>;
 
-		static std::map<Field, std::unique_ptr<field_accessor_type> > Accessors;
-
-		// Data field names
-		struct FieldName : public enum_util::EnumBase<FieldName, Field>
-		{
-			static void registerAll() {
-#				define TICKAB_FIELD(name, accessor)	\
-					ENUM_STRING(name);	\
-					TickAB::Accessors.insert(std::make_pair(name, std::unique_ptr<field_accessor_type>(accessor)))
-
-				TICKAB_FIELD(WindCode, new SymbolAccessor_<char[32]>(&tdb_result_type::chWindCode));
-				TICKAB_FIELD(Code, new SymbolAccessor_<char[32]>(&tdb_result_type::chCode));
-				TICKAB_FIELD(Date, new DateAccessor_(&tdb_result_type::nDate));
-				TICKAB_FIELD(Time, new TimeAccessor_(&tdb_result_type::nTime));
-				TICKAB_FIELD(Price, new FloatAccessor_<int>(&tdb_result_type::nPrice, .0001));
-				TICKAB_FIELD(Volume, new FloatAccessor_<__int64>(&tdb_result_type::iVolume));
-				TICKAB_FIELD(Turnover, new FloatAccessor_<__int64>(&tdb_result_type::iTurover));
-				TICKAB_FIELD(MatchItems, new IntAccessor_(&tdb_result_type::nMatchItems));
-				TICKAB_FIELD(Interest, new FloatAccessor_<int>(&tdb_result_type::nInterest));
-				TICKAB_FIELD(TradeFlag, new CharAccessor_(&tdb_result_type::chTradeFlag));
-				TICKAB_FIELD(BSFlag, new CharAccessor_(&tdb_result_type::chBSFlag));
-				TICKAB_FIELD(AccVolume, new FloatAccessor_<__int64>(&tdb_result_type::iAccVolume));
-				TICKAB_FIELD(AccTurnover, new FloatAccessor_<__int64>(&tdb_result_type::iAccTurover));
-				TICKAB_FIELD(High, new FloatAccessor_<int>(&tdb_result_type::nHigh, .0001));
-				TICKAB_FIELD(Low, new FloatAccessor_<int>(&tdb_result_type::nLow, .0001));
-				TICKAB_FIELD(Open, new FloatAccessor_<int>(&tdb_result_type::nOpen, .0001));
-				TICKAB_FIELD(PreClose, new FloatAccessor_<int>(&tdb_result_type::nPreClose, .0001));
-				TICKAB_FIELD(AskPrices, new FloatsAccessor_<int[10]>(&tdb_result_type::nAskPrice, .0001));
-				TICKAB_FIELD(AskVolumes, new FloatsAccessor_<unsigned int[10]>(&tdb_result_type::nAskVolume));
-				TICKAB_FIELD(BidPrices, new FloatsAccessor_<int[10]>(&tdb_result_type::nBidPrice, .0001));
-				TICKAB_FIELD(BidVolumes, new FloatsAccessor_<unsigned int[10]>(&tdb_result_type::nBidVolume));
-				TICKAB_FIELD(AskAvPrice, new FloatAccessor_<int>(&tdb_result_type::nAskAvPrice, .0001));
-				TICKAB_FIELD(BidAvPrice, new FloatAccessor_<int>(&tdb_result_type::nBidAvPrice, .0001));
-				TICKAB_FIELD(TotalAskVolume, new FloatAccessor_<__int64>(&tdb_result_type::iTotalAskVolume));
-				TICKAB_FIELD(TotalBidVolume, new FloatAccessor_<__int64>(&tdb_result_type::iTotalBidVolume));
-				TICKAB_FIELD(Index, new IntAccessor_(&tdb_result_type::nIndex));
-				TICKAB_FIELD(Stocks, new IntAccessor_(&tdb_result_type::nStocks));
-				TICKAB_FIELD(Ups, new IntAccessor_(&tdb_result_type::nUps));
-				TICKAB_FIELD(Downs, new IntAccessor_(&tdb_result_type::nDowns));
-				TICKAB_FIELD(HoldLines, new IntAccessor_(&tdb_result_type::nHoldLines));
+			// Data fields -- always keep in sync with TDBDefine_TickAB
+			void registerAllFields() {
+				// 万得代码(AG1312.SHF)
+				addField("WindCode", new SymbolAccessor(&tdb_result_type::chWindCode));
+				// 交易所代码(ag1312)
+				addField("Code", new SymbolAccessor(&tdb_result_type::chCode));
+				// 日期（自然日）格式YYMMDD
+				addField("Date", new DateAccessor(&tdb_result_type::nDate));
+				// 时间（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
+				addField("Time", new TimeAccessor(&tdb_result_type::nTime));
+				// 成交价格
+				addField("Price", new FloatAccessor<int>(&tdb_result_type::nPrice, .0001));
+				// 成交数量
+				addField("Size", new FloatAccessor<__int64>(&tdb_result_type::iVolume));
+				// 成交额(元)
+				addField("Amount", new FloatAccessor<__int64>(&tdb_result_type::iTurover));
+				// 成交笔数
+				addField("MatchCount", new IntAccessor(&tdb_result_type::nMatchItems));
+				// IOPV(基金)、利息(债券)
+				addField("Interest", new FloatAccessor<int>(&tdb_result_type::nInterest));
+				// 成交标志
+				addField("TradeFlag", new CharAccessor(&tdb_result_type::chTradeFlag));
+				// BS标志
+				addField("Side", new CharAccessor(&tdb_result_type::chBSFlag));
+				// 当日累计成交量
+				addField("AccumSize", new FloatAccessor<__int64>(&tdb_result_type::iAccVolume));
+				// 当日成交额(元)
+				addField("AccumAmount", new FloatAccessor<__int64>(&tdb_result_type::iAccTurover));
+				// 最高
+				addField("High", new FloatAccessor<int>(&tdb_result_type::nHigh, .0001));
+				// 最低
+				addField("Low", new FloatAccessor<int>(&tdb_result_type::nLow, .0001));
+				// 开盘
+				addField("Open", new FloatAccessor<int>(&tdb_result_type::nOpen, .0001));
+				// 前收盘
+				addField("PreClose", new FloatAccessor<int>(&tdb_result_type::nPreClose, .0001));
+				// 叫卖价
+				addField("Asks", new FloatsAccessor<int[10]>(&tdb_result_type::nAskPrice, .0001));
+				// 叫卖量
+				addField("AskSizes", new FloatsAccessor<unsigned int[10]>(&tdb_result_type::nAskVolume));
+				// 叫买价
+				addField("Bids", new FloatsAccessor<int[10]>(&tdb_result_type::nBidPrice, .0001));
+				// 叫买量
+				addField("BidSizes", new FloatsAccessor<unsigned int[10]>(&tdb_result_type::nBidVolume));
+				// 加权平均叫卖价(上海L2)
+				addField("AvgAsk", new FloatAccessor<int>(&tdb_result_type::nAskAvPrice, .0001));
+				// 加权平均叫买价(上海L2)
+				addField("AvgBid", new FloatAccessor<int>(&tdb_result_type::nBidAvPrice, .0001));
+				// 叫卖总量(上海L2)
+				addField("TotalAskSize", new FloatAccessor<__int64>(&tdb_result_type::iTotalAskVolume));
+				// 叫买总量(上海L2)
+				addField("TotalBidSize", new FloatAccessor<__int64>(&tdb_result_type::iTotalBidVolume));
+				// （指数）不加权指数
+				addField("Index", new IntAccessor(&tdb_result_type::nIndex));
+				// （指数）品种总数
+				addField("StockCount", new IntAccessor(&tdb_result_type::nStocks));
+				// （指数）上涨品种数
+				addField("UpCount", new IntAccessor(&tdb_result_type::nUps));
+				// （指数）下跌品种数
+				addField("DownCount", new IntAccessor(&tdb_result_type::nDowns));
+				// （指数）持平品种数
+				addField("FlatCount", new IntAccessor(&tdb_result_type::nHoldLines));
 			}
 		};
-	};
 
-	// Heper to assist symbolic retrieval of tick data fields from TDBDefine_FutureAB.
-	struct FutureAB {
+		// Traits to assist symbolic retrieval of tick data fields from TDBDefine_FutureAB.
+		struct FutureAB : public Wind::mapper::Fields<::TDBDefine_FutureAB> {
+			typedef Singleton<FutureAB> accessor_map;
+			typedef ::TDBDefine_FutureAB tdb_result_type;
 
-		// Data fields -- always keep in sync with TDBDefine_FutureAB
-		enum Field {
-			NIL = 0,		//`NULL' for this enum
-			WindCode,		//万得代码(AG1312.SHF)
-			Code,			//交易所代码(ag1312)
-			Date,			//日期（自然日）格式：YYMMDD
-			Time,			//时间（精确到毫秒，HHMMSSmmm）
-			Volume,			//成交量
-			Turnover,		//成交额(元)
-			Settle,			//结算价
-			Position,		//持仓量
-			CurDelta,		//虚实度
-			TradeFlag,		//成交标志
-			AccVolume,		//当日累计成交量
-			AccTurnover,	//当日成交额(元)
-			Open,			//开盘
-			High,			//最高
-			Low,			//最低
-			Price,			//成交价
-			AskPrices,		//叫卖价
-			AskVolumes,		//叫卖量
-			BidPrices,		//叫买价
-			BidVolumes,		//叫买量
-			PreClose,		//前收盘
-			PreSettle,		//昨结算
-			PrePosition,	//昨持仓
-		};
+			FutureAB() : Wind::mapper::Fields<tdb_result_type>() { registerAllFields(); }
 
-		typedef ::TDBDefine_FutureAB tdb_result_type;
-		typedef Wind::accessor::FieldAccessor<tdb_result_type> field_accessor_type;
-		typedef Wind::accessor::CharAccessor<tdb_result_type> CharAccessor_;
-		typedef Wind::accessor::DateAccessor<tdb_result_type> DateAccessor_;
-		typedef Wind::accessor::TimeAccessor<tdb_result_type> TimeAccessor_;
-		typedef Wind::accessor::IntAccessor<tdb_result_type, I> IntAccessor_;
-		template <typename Str>
-		using SymbolAccessor_ = Wind::accessor::SymbolAccessor<tdb_result_type, Str>;
-		template <typename Val>
-		using FloatAccessor_ = Wind::accessor::FloatAccessor<tdb_result_type, Val>;
-		template <typename Vals>
-		using FloatsAccessor_ = Wind::accessor::FloatsAccessor<tdb_result_type, Vals>;
+			typedef Wind::accessor::SymbolAccessor<tdb_result_type, char[32]> SymbolAccessor;
+			typedef Wind::accessor::DateAccessor<tdb_result_type> DateAccessor;
+			typedef Wind::accessor::TimeAccessor<tdb_result_type> TimeAccessor;
+			typedef Wind::accessor::IntAccessor<tdb_result_type, I> IntAccessor;
+			typedef Wind::accessor::CharAccessor<tdb_result_type> CharAccessor;
+			template <typename FieldT>
+			using FloatAccessor = Wind::accessor::FloatAccessor<tdb_result_type, FieldT>;
+			template <typename FieldT>
+			using FloatsAccessor = Wind::accessor::FloatsAccessor<tdb_result_type, FieldT>;
 
-		static std::map<Field, std::unique_ptr<field_accessor_type> > Accessors;
-
-		// Data field names
-		struct FieldName : public enum_util::EnumBase<FieldName, Field>
-		{
-			static void registerAll() {
-#				define FUTUREAB_FIELD(name, accessor)	\
-					ENUM_STRING(name);	\
-					FutureAB::Accessors.insert(std::make_pair(name, std::unique_ptr<field_accessor_type>(accessor)))
-
-				FUTUREAB_FIELD(WindCode, new SymbolAccessor_<char[32]>(&tdb_result_type::chWindCode));
-				FUTUREAB_FIELD(Code, new SymbolAccessor_<char[32]>(&tdb_result_type::chCode));
-				FUTUREAB_FIELD(Date, new DateAccessor_(&tdb_result_type::nDate));
-				FUTUREAB_FIELD(Time, new TimeAccessor_(&tdb_result_type::nTime));
-				FUTUREAB_FIELD(Volume, new FloatAccessor_<__int64>(&tdb_result_type::iVolume));
-				FUTUREAB_FIELD(Turnover, new FloatAccessor_<__int64>(&tdb_result_type::iTurover));
-				FUTUREAB_FIELD(Settle, new FloatAccessor_<int>(&tdb_result_type::nSettle, .0001));
-				FUTUREAB_FIELD(Position, new FloatAccessor_<int>(&tdb_result_type::nPosition));
-				FUTUREAB_FIELD(CurDelta, new FloatAccessor_<int>(&tdb_result_type::nCurDelta));
-				FUTUREAB_FIELD(TradeFlag, new CharAccessor_(&tdb_result_type::chTradeFlag));
-				FUTUREAB_FIELD(AccVolume, new FloatAccessor_<__int64>(&tdb_result_type::iAccVolume));
-				FUTUREAB_FIELD(AccTurnover, new FloatAccessor_<__int64>(&tdb_result_type::iAccTurover));
-				FUTUREAB_FIELD(Open, new FloatAccessor_<int>(&tdb_result_type::nOpen, .0001));
-				FUTUREAB_FIELD(High, new FloatAccessor_<int>(&tdb_result_type::nHigh, .0001));
-				FUTUREAB_FIELD(Low, new FloatAccessor_<int>(&tdb_result_type::nLow, .0001));
-				FUTUREAB_FIELD(Price, new FloatAccessor_<int>(&tdb_result_type::nPrice, .0001));
-				FUTUREAB_FIELD(AskPrices, new FloatsAccessor_<int[5]>(&tdb_result_type::nAskPrice, .0001));
-				FUTUREAB_FIELD(AskVolumes, new FloatsAccessor_<unsigned int[5]>(&tdb_result_type::nAskVolume));
-				FUTUREAB_FIELD(BidPrices, new FloatsAccessor_<int[5]>(&tdb_result_type::nBidPrice, .0001));
-				FUTUREAB_FIELD(BidVolumes, new FloatsAccessor_<unsigned int[5]>(&tdb_result_type::nBidVolume));
-				FUTUREAB_FIELD(PreClose, new FloatAccessor_<int>(&tdb_result_type::nPreClose, .0001));
-				FUTUREAB_FIELD(PreSettle, new FloatAccessor_<int>(&tdb_result_type::nPreSettle, .0001));
-				FUTUREAB_FIELD(PrePosition, new FloatAccessor_<int>(&tdb_result_type::nPrePosition));
+			// Data fields -- always keep in sync with TDBDefine_FutureAB
+			void registerAllFields() {
+				// 万得代码(AG1312.SHF)
+				addField("WindCode", new SymbolAccessor(&tdb_result_type::chWindCode));
+				// 交易所代码(ag1312)
+				addField("Code", new SymbolAccessor(&tdb_result_type::chCode));
+				// 日期（自然日）格式YYMMDD
+				addField("Date", new DateAccessor(&tdb_result_type::nDate));
+				// 时间（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
+				addField("Time", new TimeAccessor(&tdb_result_type::nTime));
+				// 成交数量
+				addField("Size", new FloatAccessor<__int64>(&tdb_result_type::iVolume));
+				// 成交额(元)
+				addField("Amount", new FloatAccessor<__int64>(&tdb_result_type::iTurover));
+				// 结算价
+				addField("SettlePrice", new FloatAccessor<int>(&tdb_result_type::nSettle, .0001));
+				// 持仓量
+				addField("Position", new FloatAccessor<int>(&tdb_result_type::nPosition));
+				// 虚实度
+				addField("Delta", new FloatAccessor<int>(&tdb_result_type::nCurDelta));
+				// 成交标志
+				addField("TradeFlag", new CharAccessor(&tdb_result_type::chTradeFlag));
+				// 当日累计成交量
+				addField("AccumSize", new FloatAccessor<__int64>(&tdb_result_type::iAccVolume));
+				// 当日成交额(元)
+				addField("AccumAmount", new FloatAccessor<__int64>(&tdb_result_type::iAccTurover));
+				// 最高
+				addField("High", new FloatAccessor<int>(&tdb_result_type::nHigh, .0001));
+				// 最低
+				addField("Low", new FloatAccessor<int>(&tdb_result_type::nLow, .0001));
+				// 开盘
+				addField("Open", new FloatAccessor<int>(&tdb_result_type::nOpen, .0001));
+				// 成交价
+				addField("Price", new FloatAccessor<int>(&tdb_result_type::nPrice, .0001));
+				// 叫卖价
+				addField("Asks", new FloatsAccessor<int[5]>(&tdb_result_type::nAskPrice, .0001));
+				// 叫卖量
+				addField("AskSizes", new FloatsAccessor<unsigned int[5]>(&tdb_result_type::nAskVolume));
+				// 叫买价
+				addField("Bids", new FloatsAccessor<int[5]>(&tdb_result_type::nBidPrice, .0001));
+				// 叫买量
+				addField("BidSizes", new FloatsAccessor<unsigned int[5]>(&tdb_result_type::nBidVolume));
+				// 前收盘
+				addField("PreClose", new FloatAccessor<int>(&tdb_result_type::nPreClose, .0001));
+				// 昨结算
+				addField("PreSettlePrice", new FloatAccessor<int>(&tdb_result_type::nPreSettle, .0001));
+				// 昨持仓
+				addField("PrePosition", new FloatAccessor<int>(&tdb_result_type::nPrePosition));
 			}
 		};
-	};
 
+	}//namespace TDB::traits
 }//namespace TDB
 
-
-std::map<TDB::TickAB::Field, std::unique_ptr<TDB::TickAB::field_accessor_type> >
-	TDB::TickAB::Accessors;
-
 TDB_API K K_DECL TDB_tickAB_fields(K _) {
-	return TDB::getFields<TDB::TickAB>();
+	return TDB::traits::TickAB::accessor_map::getInstance()->getFields();
 }
 
 TDB_API K K_DECL TDB_tickAB(K h, K windCode, K indicators, K begin, K end) {
 	::THANDLE tdb = NULL;
-	std::vector<TDB::TickAB::field_accessor_type const*> indis;
+	std::vector<TDB::traits::TickAB::field_accessor const*> indis;
 	::TDBDefine_ReqTick req = { 0 };
 	try {
 		TDB::parseTdbHandle(h, tdb);
-		TDB::parseIndicators<TDB::TickAB>(indicators, indis);
+		TDB::parseIndicators<TDB::traits::TickAB>(indicators, indis);
 		TDB::parseTdbReq(windCode, begin, end, req);
 	}
 	catch (std::string const& error) {
 		return q::error2q(error);
 	}
 
-	return TDB::runQuery<TDB::TickAB, ::TDBDefine_ReqTick>(tdb, req, indis, &::TDB_GetTickAB);
+	return TDB::runQuery<TDB::traits::TickAB, ::TDBDefine_ReqTick>(tdb, req, indis, &::TDB_GetTickAB);
 }
 
-
-std::map<TDB::FutureAB::Field, std::unique_ptr<TDB::FutureAB::field_accessor_type> >
-TDB::FutureAB::Accessors;
-
 TDB_API K K_DECL TDB_futureAB_fields(K _) {
-	return TDB::getFields<TDB::FutureAB>();
+	return TDB::traits::FutureAB::accessor_map::getInstance()->getFields();
 }
 
 TDB_API K K_DECL TDB_futureAB(K h, K windCode, K indicators, K begin, K end, K autoComplete) {
 	::THANDLE tdb = NULL;
-	std::vector<TDB::FutureAB::field_accessor_type const*> indis;
+	std::vector<TDB::traits::FutureAB::field_accessor const*> indis;
 	::TDBDefine_ReqFuture req = { 0 };
 	try {
 		TDB::parseTdbHandle(h, tdb);
-		TDB::parseIndicators<TDB::FutureAB>(indicators, indis);
+		TDB::parseIndicators<TDB::traits::FutureAB>(indicators, indis);
 		TDB::parseTdbReq(windCode, begin, end, req);
 		req.nAutoComplete = !!q::q2Dec(autoComplete) ? 1 : 0;
 	}
@@ -234,5 +202,5 @@ TDB_API K K_DECL TDB_futureAB(K h, K windCode, K indicators, K begin, K end, K a
 		return q::error2q(error);
 	}
 
-	return TDB::runQuery<TDB::FutureAB, ::TDBDefine_ReqFuture>(tdb, req, indis, &::TDB_GetFutureAB);
+	return TDB::runQuery<TDB::traits::FutureAB, ::TDBDefine_ReqFuture>(tdb, req, indis, &::TDB_GetFutureAB);
 }

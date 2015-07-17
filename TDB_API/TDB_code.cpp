@@ -18,31 +18,35 @@ TDB_API K K_DECL TDB_codeTable(K h, K market) {
 		return q::error2q(error);
 	}
 
+	typedef ::TDBDefine_Code tdb_result_type;
 	int codeCount = 0;
-	::TDBDefine_Code* t = NULL;
+	tdb_result_type* t = NULL;
 	::TDB_ERROR const result = static_cast<::TDB_ERROR>(::TDB_GetCodeTable(tdb, mkt.c_str(), &t, &codeCount));
-	TDB::Ptr<::TDBDefine_Code> codes(t);
+	TDB::Ptr<tdb_result_type> codes(t);
 	if (result != TDB_SUCCESS) {
 		return q::error2q(TDB::getError(result));
 	}
 	assert(codes);
 	assert(codeCount >= 0);
 
+	typedef Wind::accessor::SymbolAccessor<tdb_result_type, char[32]> SymbolAccessor;
+	typedef Wind::accessor::SymbolAccessor<tdb_result_type, char[8]> MarketAccessor;
+	typedef Wind::accessor::SymbolAccessor<tdb_result_type, char[32], Wind::encoder::GB18030_UTF8> CnNameAccessor;
+	typedef Wind::accessor::IntAccessor<tdb_result_type, G> TypeAccessor;
+
 	q::K_ptr data(ktn(0, 6));
-	typedef Wind::accessor::SymbolAccessor<::TDBDefine_Code, char[32]> SymbolAccessor_;
-	kK(data.get())[0] =		//万得代码(AG1312.SHF)
-		SymbolAccessor_(&::TDBDefine_Code::chWindCode).extract(codes.get(), codeCount);
-	kK(data.get())[1] =		//交易所代码(ag1312)
-		SymbolAccessor_(&::TDBDefine_Code::chCode).extract(codes.get(), codeCount);
-	kK(data.get())[2] =		//市场代码(SHF)
-		Wind::accessor::SymbolAccessor<::TDBDefine_Code, char[8]>(&::TDBDefine_Code::chMarket).extract(codes.get(), codeCount);
-	kK(data.get())[3] =		//证券中文名称
-		Wind::accessor::SymbolAccessor<::TDBDefine_Code, char[32], Wind::encoder::GB18030Encoder>(
-		&::TDBDefine_Code::chCNName).extract(codes.get(), codeCount);
-	kK(data.get())[4] =		//证券英文名称
-		SymbolAccessor_(&::TDBDefine_Code::chENName).extract(codes.get(), codeCount);
-	kK(data.get())[5] =		//证券类型
-		Wind::accessor::IntAccessor<::TDBDefine_Code, G>(&::TDBDefine_Code::nType).extract(codes.get(), codeCount);
+	//万得代码(AG1312.SHF)
+	kK(data.get())[0] = SymbolAccessor(&tdb_result_type::chWindCode).extract(codes.get(), codeCount);
+	//交易所代码(ag1312)
+	kK(data.get())[1] = SymbolAccessor(&tdb_result_type::chCode).extract(codes.get(), codeCount);
+	//市场代码(SHF
+	kK(data.get())[2] = MarketAccessor(&tdb_result_type::chMarket).extract(codes.get(), codeCount);
+	//证券中文名称
+	kK(data.get())[3] = CnNameAccessor(&tdb_result_type::chCNName).extract(codes.get(), codeCount);
+	//证券英文名称
+	kK(data.get())[4] = SymbolAccessor(&tdb_result_type::chENName).extract(codes.get(), codeCount);
+	//证券类型
+	kK(data.get())[5] = TypeAccessor(&tdb_result_type::nType).extract(codes.get(), codeCount);
 	return data.release();
 }
 
@@ -57,8 +61,8 @@ TDB_API K K_DECL TDB_codeInfo(K h, K windCode) {
 		return q::error2q(error);
 	}
 
-
-	::TDBDefine_Code const* info = ::TDB_GetCodeInfo(tdb, code.c_str());
+	typedef ::TDBDefine_Code tdb_result_type;
+	tdb_result_type const* info = ::TDB_GetCodeInfo(tdb, code.c_str());
 	if (info == NULL) {
 		return q::error2q(TDB::getError(TDB_NETWORK_ERROR));
 	}
@@ -67,7 +71,7 @@ TDB_API K K_DECL TDB_codeInfo(K h, K windCode) {
 	kK(data.get())[0] = ks(const_cast<S>(info->chWindCode));
 	kK(data.get())[1] = ks(const_cast<S>(info->chCode));
 	kK(data.get())[2] = ks(const_cast<S>(info->chMarket));
-	kK(data.get())[3] = ks(const_cast<S>(Wind::encoder::GB18030Encoder()(info->chCNName).c_str()));
+	kK(data.get())[3] = ks(const_cast<S>(Wind::encoder::GB18030_UTF8::encode(info->chCNName).c_str()));
 	kK(data.get())[4] = ks(const_cast<S>(info->chENName));
 	kK(data.get())[5] =	kg(info->nType);
 	return data.release();

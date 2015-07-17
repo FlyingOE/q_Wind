@@ -3,91 +3,75 @@
 
 #include "TDB_API_helper.h"
 
+#include "win32.util/Singleton.h"
 #include "kdb+.util/K_ptr.h"
 #include "kdb+.util/type_convert.h"
-#include "Wind.util/EnumUtil.h"
-#include "Wind.util/FieldAccessors.h"
+#include "Wind.util/FieldMapper.h"
 
 namespace TDB {
+	namespace traits {
 
-	// Heper to assist symbolic retrieval of tick data fields from TDBDefine_Transaction.
-	struct Transaction {
+		// Traits to assist symbolic retrieval of tick data fields from TDBDefine_Transaction.
+		struct Transaction : public Wind::mapper::Fields<::TDBDefine_Transaction> {
+			typedef Singleton<Transaction> accessor_map;
+			typedef ::TDBDefine_Transaction tdb_result_type;
 
-		// Data fields -- always keep in sync with TDBDefine_Transaction
-		enum Field {
-			NIL = 0,		//`NULL' for this enum
-			WindCode,		//万得代码(AG1312.SHF)
-			Code,			//交易所代码(ag1312)
-			Date,			//日期（自然日）格式YYMMDD
-			Time,			//时间（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
-			Index,			//成交编号(从1开始，递增1)
-			FunctionCode,	//成交代码: 'C', 0
-			OrderKind,		//委托类别
-			BSFlag,			//BS标志
-			TradePrice,		//成交价格
-			TradeVolume,	//成交数量
-			AskOrder,		//叫卖序号
-			BidOrder,		//叫买序号
-		};
+			Transaction() : Wind::mapper::Fields<tdb_result_type>() { registerAllFields(); }
 
-		typedef ::TDBDefine_Transaction tdb_result_type;
-		typedef Wind::accessor::FieldAccessor<tdb_result_type> field_accessor_type;
-		typedef Wind::accessor::CharAccessor<tdb_result_type> CharAccessor_;
-		typedef Wind::accessor::DateAccessor<tdb_result_type> DateAccessor_;
-		typedef Wind::accessor::TimeAccessor<tdb_result_type> TimeAccessor_;
-		typedef Wind::accessor::IntAccessor<tdb_result_type, I> IntAccessor_;
-		template <typename Str>
-		using SymbolAccessor_ = Wind::accessor::SymbolAccessor<tdb_result_type, Str>;
-		template <typename Val>
-		using FloatAccessor_ = Wind::accessor::FloatAccessor<tdb_result_type, Val>;
+			typedef Wind::accessor::SymbolAccessor<tdb_result_type, char[32]> SymbolAccessor;
+			typedef Wind::accessor::DateAccessor<tdb_result_type> DateAccessor;
+			typedef Wind::accessor::TimeAccessor<tdb_result_type> TimeAccessor;
+			typedef Wind::accessor::IntAccessor<tdb_result_type, I> IntAccessor;
+			typedef Wind::accessor::CharAccessor<tdb_result_type> CharAccessor;
+			typedef Wind::accessor::FloatAccessor<tdb_result_type, int> FloatAccessor;
 
-		static std::map<Field, std::unique_ptr<field_accessor_type> > Accessors;
-
-		// Data field names
-		struct FieldName : public enum_util::EnumBase<FieldName, Field>
-		{
-			static void registerAll() {
-#				define TRANSACTION_FIELD(name, accessor)	\
-					ENUM_STRING(name);	\
-					Transaction::Accessors.insert(std::make_pair(name, std::unique_ptr<field_accessor_type>(accessor)))
-
-				TRANSACTION_FIELD(WindCode, new SymbolAccessor_<char[32]>(&tdb_result_type::chWindCode));
-				TRANSACTION_FIELD(Code, new SymbolAccessor_<char[32]>(&tdb_result_type::chCode));
-				TRANSACTION_FIELD(Date, new DateAccessor_(&tdb_result_type::nDate));
-				TRANSACTION_FIELD(Time, new TimeAccessor_(&tdb_result_type::nTime));
-				TRANSACTION_FIELD(Index, new IntAccessor_(&tdb_result_type::nIndex));
-				TRANSACTION_FIELD(FunctionCode, new CharAccessor_(&tdb_result_type::chFunctionCode));
-				TRANSACTION_FIELD(OrderKind, new CharAccessor_(&tdb_result_type::chOrderKind));
-				TRANSACTION_FIELD(BSFlag, new CharAccessor_(&tdb_result_type::chBSFlag));
-				TRANSACTION_FIELD(TradePrice, new FloatAccessor_<int>(&tdb_result_type::nTradePrice, .0001));
-				TRANSACTION_FIELD(TradeVolume, new FloatAccessor_<int>(&tdb_result_type::nTradeVolume));
-				TRANSACTION_FIELD(AskOrder, new IntAccessor_(&tdb_result_type::nAskOrder));
-				TRANSACTION_FIELD(BidOrder, new IntAccessor_(&tdb_result_type::nBidOrder));
+			// Data fields -- always keep in sync with TDBDefine_Transaction
+			void registerAllFields() {
+				// 万得代码(AG1312.SHF)
+				addField("WindCode", new SymbolAccessor(&tdb_result_type::chWindCode));
+				// 交易所代码(ag1312)
+				addField("Code", new SymbolAccessor(&tdb_result_type::chCode));
+				// 日期（自然日）格式YYMMDD
+				addField("Date", new DateAccessor(&tdb_result_type::nDate));
+				// 时间（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
+				addField("Time", new TimeAccessor(&tdb_result_type::nTime));
+				// 成交编号(从1开始，递增1)
+				addField("Index", new IntAccessor(&tdb_result_type::nIndex));
+				// 成交代码: 'C', 0
+				addField("Function", new CharAccessor(&tdb_result_type::chFunctionCode));
+				// 委托类别
+				addField("OrderType", new CharAccessor(&tdb_result_type::chOrderKind));
+				// BS标志
+				addField("Side", new CharAccessor(&tdb_result_type::chBSFlag));
+				// 成交价格
+				addField("Price", new FloatAccessor(&tdb_result_type::nTradePrice, .0001));
+				// 成交数量
+				addField("Size", new FloatAccessor(&tdb_result_type::nTradeVolume));
+				// 叫卖序号
+				addField("AskID", new IntAccessor(&tdb_result_type::nAskOrder));
+				// 叫买序号
+				addField("BidID", new IntAccessor(&tdb_result_type::nBidOrder));
 			}
 		};
-	};
 
+	}//namespace TDB::traits
 }//namespace TDB
 
-
-std::map<TDB::Transaction::Field, std::unique_ptr<TDB::Transaction::field_accessor_type> >
-	TDB::Transaction::Accessors;
-
 TDB_API K K_DECL TDB_transaction_fields(K _) {
-	return TDB::getFields<TDB::Transaction>();
+	return TDB::traits::Transaction::accessor_map::getInstance()->getFields();
 }
 
 TDB_API K K_DECL TDB_transaction(K h, K windCode, K indicators, K begin, K end) {
 	::THANDLE tdb = NULL;
-	std::vector<TDB::Transaction::field_accessor_type const*> indis;
+	std::vector<TDB::traits::Transaction::field_accessor const*> indis;
 	::TDBDefine_ReqTransaction req = { 0 };
 	try {
 		TDB::parseTdbHandle(h, tdb);
-		TDB::parseIndicators<TDB::Transaction>(indicators, indis);
+		TDB::parseIndicators<TDB::traits::Transaction>(indicators, indis);
 		TDB::parseTdbReq(windCode, begin, end, req);
 	}
 	catch (std::string const& error) {
 		return q::error2q(error);
 	}
-	return TDB::runQuery<TDB::Transaction, ::TDBDefine_ReqTransaction>(tdb, req, indis, &::TDB_GetTransaction);
+	return TDB::runQuery<TDB::traits::Transaction, ::TDBDefine_ReqTransaction>(tdb, req, indis, &::TDB_GetTransaction);
 }

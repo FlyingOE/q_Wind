@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClInclude Include="EnumUtil.h" />
     <ClInclude Include="FieldAccessors.h" />
+    <ClInclude Include="FieldMapper.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StringEncoders.h" />
     <ClInclude Include="targetver.h" />
@@ -98,6 +99,7 @@
   <ItemGroup>
     <None Include="EnumUtil.inl" />
     <None Include="FieldAccessors.inl" />
+    <None Include="FieldMapper.inl" />
     <None Include="StringEncoders.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

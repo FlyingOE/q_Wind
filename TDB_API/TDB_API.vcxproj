@@ -103,6 +103,7 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)\lib\TDB_C++_v2\$(PlatformTarget).Release;D:\q\c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
+      <Message>Copy DLL &amp; driver script to q project directory</Message>
       <Command>FOR %%p IN ("$(SolutionDir)..\CHF.proj\") DO (
   @FOR %%t IN (x86 x64) DO (
     @FOR %%c IN (Debug Release) DO (
@@ -118,7 +119,6 @@
     @XCOPY %%f %%p /F /Y
   )
 )</Command>
-      <Message>Copy DLL &amp; driver script to q project directory</Message>
     </PostBuildEvent>
     <PreBuildEvent>
       <Message>Copy driver script to target directory</Message>
@@ -153,6 +153,7 @@
     <ClCompile Include="TDB_API.cpp" />
     <ClCompile Include="TDB_code.cpp" />
     <ClCompile Include="TDB_order.cpp" />
+    <ClCompile Include="TDB_orderqueue.cpp" />
     <ClCompile Include="TDB_tick.cpp" />
     <ClCompile Include="TDB_transaction.cpp" />
     <ClCompile Include="util.cpp" />

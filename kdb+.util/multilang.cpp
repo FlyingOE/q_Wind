@@ -10,7 +10,7 @@ UINT const ml::CP_GB18030 = 54936;
 
 std::wstring ml::convert(UINT frCP, char const* inStr) {
 	assert(inStr != NULL);
-	std::size_t const len = ::MultiByteToWideChar(frCP, 0, inStr, -1, NULL, 0);
+	size_t const len = ::MultiByteToWideChar(frCP, 0, inStr, -1, NULL, 0);
 	std::vector<wchar_t> outUcs(len, L'\0');
 	::MultiByteToWideChar(frCP, 0, inStr, -1, &outUcs[0], len);
 	assert(outUcs[len - 1] == L'\0');	//outUcs must be properly terminated!
@@ -19,7 +19,7 @@ std::wstring ml::convert(UINT frCP, char const* inStr) {
 
 std::string ml::convert(UINT toCP, wchar_t const* inUcs) {
 	assert(inUcs != NULL);
-	std::size_t const len = ::WideCharToMultiByte(toCP, 0, inUcs, -1, NULL, 0, NULL, NULL);
+	size_t const len = ::WideCharToMultiByte(toCP, 0, inUcs, -1, NULL, 0, NULL, NULL);
 	std::vector<char> outStr(len, '\0');
 	::WideCharToMultiByte(toCP, 0, inUcs, -1, &outStr[0], len, NULL, NULL);
 	assert(outStr[len - 1] == '\0');	//outStr must be properly terminated!

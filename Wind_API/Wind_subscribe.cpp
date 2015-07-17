@@ -44,8 +44,8 @@ namespace Wind {
 		};
 
 		static CallbackRegistry REGISTRY;
-		std::size_t const CLIENT = 0;
-		std::size_t const SERVER = 1;
+		size_t const CLIENT = 0;
+		size_t const SERVER = 1;
 
 		// Data processor (executed within q's main thread)
 		K invokeCallback(I socket) {
@@ -62,10 +62,10 @@ namespace Wind {
 			::WQID qid = 0;
 			int recvd = ::recv(sock, reinterpret_cast<char*>(&qid), sizeof(::WQID), MSG_WAITALL);
 			RECV_CHECK(sizeof(::WQID), "WQID incomplete");
-			std::size_t len = 0;
+			size_t len = 0;
 			recvd = ::recv(sock, reinterpret_cast<char*>(&len), sizeof(len), MSG_WAITALL);
 			RECV_CHECK(sizeof(len), "size incomplete");
-			if (len > static_cast<std::size_t>(std::numeric_limits<int>::max())) {
+			if (len > static_cast<size_t>(std::numeric_limits<int>::max())) {
 				std::cerr << "<recv> serialized data (" << len << ") > 2G" << std::endl;
 				return K_NIL;
 			}
@@ -80,7 +80,7 @@ namespace Wind {
 			//@ref https://groups.google.com/forum/#!topic/personal-kdbplus/pjsugT7590A
 			if (!okx(serialized.get())) {
 				std::cerr << "<recv> bad data: ["
-					<< ::util::hexBytes(&kG(serialized.get())[0], static_cast<std::size_t>(serialized->n))
+					<< ::util::hexBytes(&kG(serialized.get())[0], static_cast<size_t>(serialized->n))
 					<< ']' << std::endl;
 				return K_NIL;
 			}
@@ -136,8 +136,8 @@ namespace Wind {
 			}
 			int sent = ::send(*socks[SERVER], reinterpret_cast<char const*>(&event.RequestID), sizeof(::WQID), 0);
 			SEND_CHECK(sizeof(::WQID), "WQID incomplete");
-			std::size_t const len = static_cast<std::size_t>(serialized->n);
-			if (len > static_cast<std::size_t>(std::numeric_limits<int>::max())) {
+			size_t const len = static_cast<size_t>(serialized->n);
+			if (len > static_cast<size_t>(std::numeric_limits<int>::max())) {
 				std::cerr << "<send> serialized data (" << len << ") > 2G" << std::endl;
 				return false;
 			}

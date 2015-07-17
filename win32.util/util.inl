@@ -16,7 +16,7 @@ util::hexByteGenerator util::hexBytes(T const& p) {
 template <typename Char, typename Traits>
 std::basic_ostream<Char, Traits>& util::operator<<(std::basic_ostream<Char, Traits>& os, util::hexByteGenerator const& hex) {
 	hexByteGenerator::iterator begin, end;
-	std::size_t increment;
+	size_t increment;
 	if (hex.reverse_) {
 		begin = hex.end_ - 1;
 		end = hex.begin_ - 1;

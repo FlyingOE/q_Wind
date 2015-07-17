@@ -38,7 +38,7 @@ char const* Wind::util::eventType2Text(::WQEventType type) {
 	}
 }
 
-std::wstring Wind::util::q2tmStr(K data, std::size_t maxLen, wchar_t const* fmt) throw(std::string) {
+std::wstring Wind::util::q2tmStr(K data, size_t maxLen, wchar_t const* fmt) throw(std::string) {
 	// Special treatment of millisecond format
 	std::vector<wchar_t> f(fmt, fmt + std::wcslen(fmt) + 1);
 	while (wchar_t* p = std::wcsstr(&f[0], L"%##")) {
@@ -48,7 +48,7 @@ std::wstring Wind::util::q2tmStr(K data, std::size_t maxLen, wchar_t const* fmt)
 	q::tm_ext const tm = q::q2tm(data);
 	std::vector<wchar_t> buffer(maxLen + 1, L'\0');
 	assert(fmt != NULL);
-	std::size_t const count = std::wcsftime(&buffer[0], buffer.size(), &f[0], &tm);
+	size_t const count = std::wcsftime(&buffer[0], buffer.size(), &f[0], &tm);
 	assert(count + 1 == buffer.size());
 	assert(*buffer.rbegin() == L'\0');
 
@@ -63,7 +63,7 @@ std::wstring Wind::util::q2tmStr(K data, std::size_t maxLen, wchar_t const* fmt)
 	return &buffer[0];
 }
 
-std::vector<std::wstring> Wind::util::qList2tmStr(K data, std::size_t maxLen, wchar_t const* fmt) throw(std::string) {
+std::vector<std::wstring> Wind::util::qList2tmStr(K data, size_t maxLen, wchar_t const* fmt) throw(std::string) {
 	// Special treatment of millisecond format
 	std::vector<wchar_t> f(fmt, fmt + std::wcslen(fmt) + 1);
 	while (wchar_t* p = std::wcsstr(&f[0], L"%##")) {
@@ -77,8 +77,8 @@ std::vector<std::wstring> Wind::util::qList2tmStr(K data, std::size_t maxLen, wc
 	wchar_t ms[4] = { L'\0' };
 	auto const pms = stdext::make_unchecked_array_iterator(ms);
 	assert(fmt != NULL);
-	for (std::size_t i = 0; i < tms.size(); ++i) {
-		std::size_t const count = std::wcsftime(&buffer[0], buffer.size(), &f[0], &tms[i]);
+	for (size_t i = 0; i < tms.size(); ++i) {
+		size_t const count = std::wcsftime(&buffer[0], buffer.size(), &f[0], &tms[i]);
 		assert(count + 1 == buffer.size());
 		assert(*buffer.rbegin() == L'\0');
 

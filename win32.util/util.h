@@ -31,8 +31,8 @@ namespace util {
 		friend std::basic_ostream<Char, Traits>& operator<<(std::basic_ostream<Char, Traits>& os, hexByteGenerator const& hex);
 	};
 
-	hexByteGenerator hexBytes(char const* p, std::size_t n, bool reverse = false);
-	hexByteGenerator hexBytes(unsigned char const* p, std::size_t n, bool reverse = false);
+	hexByteGenerator hexBytes(char const* p, size_t n, bool reverse = false);
+	hexByteGenerator hexBytes(unsigned char const* p, size_t n, bool reverse = false);
 	template <typename T>
 	hexByteGenerator hexBytes(T* const& p);
 	template <typename T>

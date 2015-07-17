@@ -33,7 +33,7 @@ std::string TDF::util::join(Delim const& delim, It begin, It end) {
 template <typename Char, typename Traits>
 std::basic_ostream<Char, Traits>& operator<<(std::basic_ostream<Char, Traits>& os, ::TDF_OPEN_SETTING_EXT const& settings) {
 	os << "{[";
-	for (std::size_t i = 0; i < settings.nServerNum; ++i) {
+	for (size_t i = 0; i < settings.nServerNum; ++i) {
 		os << "{\"" << settings.siServer[i].szIp << "\", "
 			<< '"' << settings.siServer[i].szPort << "\", "
 			<< '"' << settings.siServer[i].szUser << "\", "

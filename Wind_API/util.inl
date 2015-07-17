@@ -105,19 +105,19 @@ K Wind::util::qConvertArray3D(K array) throw() {
 
 	assert((array->t == 0) && (array->n >= 0));
 	q::K_ptr result(ktn(0, array->n));
-	for (std::size_t z = 0; z < array->n; ++z) {
+	for (size_t z = 0; z < array->n; ++z) {
 		K const arrayZ = kK(array)[z];
 		assert(arrayZ != K_NIL);
 		K& resultZ = kK(result.get())[z];
 		assert((arrayZ->t == 0) && (arrayZ->n >= 0));
 		resultZ = ktn(0, arrayZ->n);
-		for (std::size_t y = 0; y < arrayZ->n; ++y) {
+		for (size_t y = 0; y < arrayZ->n; ++y) {
 			K const arrayY = kK(arrayZ)[y];
 			assert(arrayY != K_NIL);
 			K& resultY = kK(resultZ)[y];
 			assert((arrayY->t == qSrcTraits::TYPE_NUM) && (arrayY->n >= 0));
 			resultY = ktn(qDstTraits::TYPE_NUM, arrayY->n);
-			for (std::size_t x = 0; x < arrayY->n; ++x) {
+			for (size_t x = 0; x < arrayY->n; ++x) {
 				qDstTraits::index(resultY)[x] = qDstTraits::convert(qSrcTraits::index(arrayY)[x]);
 			}
 		}

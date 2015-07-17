@@ -18,11 +18,11 @@ namespace Wind {
 		char const* eventType2Text(::WQEventType eventType);
 
 		// Convert a q date or datetime into a C++ string
-		std::wstring q2tmStr(K data, std::size_t maxLen, wchar_t const* fmt) throw(std::string);
+		std::wstring q2tmStr(K data, size_t maxLen, wchar_t const* fmt) throw(std::string);
 		std::wstring q2DateStr(K data) throw(std::string);
 		std::wstring q2DateTimeStr(K data) throw(std::string);
 
-		std::vector<std::wstring> qList2tmStr(K data, std::size_t maxLen, wchar_t const* fmt) throw(std::string);
+		std::vector<std::wstring> qList2tmStr(K data, size_t maxLen, wchar_t const* fmt) throw(std::string);
 		std::vector<std::wstring> qList2DateStr(K data) throw(std::string);
 		std::vector<std::wstring> qList2DateTimeStr(K data) throw(std::string);
 

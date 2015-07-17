@@ -42,7 +42,7 @@ std::vector<long long> q::qList2Dec(K data) throw(std::string) {
 		throw std::string("not a decimal list");
 	}
 	assert(data->n >= 0);
-	std::vector<long long> result(static_cast<std::size_t>(data->n), 0L);
+	std::vector<long long> result(static_cast<size_t>(data->n), 0L);
 	switch (data->t) {
 	case KB: {
 		struct Converter {
@@ -97,7 +97,7 @@ std::vector<double> q::qList2Fp(K data) throw(std::string) {
 		throw std::string("not a floating-point list");
 	}
 	assert(data->n >= 0);
-	std::vector<double> result(static_cast<std::size_t>(data->n), 0.);
+	std::vector<double> result(static_cast<size_t>(data->n), 0.);
 	switch (data->t) {
 	case KB:
 	case KG:
@@ -153,14 +153,14 @@ std::vector<std::string> q::qList2String(K data) throw(std::string) {
 	switch (data->t) {
 	case 0:													// char list list (a.k.a. string list)
 		assert(data->n >= 0);
-		result.reserve(static_cast<std::size_t>(data->n));
+		result.reserve(static_cast<size_t>(data->n));
 		for (J i = 0; i < data->n; ++i) {
 			result.push_back(q2String(kK(data)[i]));
 		}
 		break;
 	case KS:												// symbol list
 		assert(data->n >= 0);
-		result.reserve(static_cast<std::size_t>(data->n));
+		result.reserve(static_cast<size_t>(data->n));
 		for (J i = 0; i < data->n; ++i) {
 			result.push_back(kS(data)[i]);
 		}
@@ -170,7 +170,7 @@ std::vector<std::string> q::qList2String(K data) throw(std::string) {
 			K_ptr syms(k(0, "value", r1(data), K_NIL));
 			assert(syms && (syms->n == data->n));
 			assert(syms->n >= 0);
-			result.reserve(static_cast<std::size_t>(syms->n));
+			result.reserve(static_cast<size_t>(syms->n));
 			for (J i = 0; i < data->n; ++i) {
 				result.push_back(kS(syms)[i]);
 			}
@@ -265,15 +265,15 @@ std::vector<q::tm_ext> q::qList2tm(K data) throw(std::string) {
 		throw std::string("not a date or datetime list");
 	}
 	assert(data->n >= 0);
-	std::vector<tm_ext> result(static_cast<std::size_t>(data->n));
+	std::vector<tm_ext> result(static_cast<size_t>(data->n));
 	switch (data->t) {
 	case KD:
-		for (std::size_t i = 0; i < data->n; ++i) {
+		for (size_t i = 0; i < data->n; ++i) {
 			Cookbook::gt_r((kI(data)[i] == ni) ? 0 : kI(data)[i], &result[i]);
 		}
 		break;
 	case KZ:
-		for (std::size_t i = 0; i < data->n; ++i) {
+		for (size_t i = 0; i < data->n; ++i) {
 			Cookbook::gt_r((kF(data)[i] == nf) ? 0. : kF(data)[i], &result[i]);
 		}
 		break;

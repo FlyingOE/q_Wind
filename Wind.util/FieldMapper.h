@@ -4,6 +4,7 @@
 #include "FieldAccessors.h"
 
 #include <string>
+#include <vector>
 #include <map>
 
 namespace Wind {
@@ -17,6 +18,7 @@ namespace Wind {
 
 		public:
 			K getFields() const;
+			void getFields(std::vector<std::string>& list) const;
 
 			void addField(char const* fieldName, field_accessor* accessor) throw(std::string);
 			void addField(std::string const& fieldName, field_accessor* accessor) throw(std::string);

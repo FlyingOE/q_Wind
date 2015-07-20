@@ -35,7 +35,7 @@ namespace TDF {
 			}
 		}
 
-		std::size_t setServerInfos(K const servers, ::TDF_SERVER_INFO out[MAXSERVER])
+		size_t setServerInfos(K const servers, ::TDF_SERVER_INFO out[MAXSERVER])
 			throw(std::string)
 		{
 			if (servers == K_NIL) throw std::string("null servers");
@@ -50,14 +50,14 @@ namespace TDF {
 
 			assert(kK(table)[0]->t >= 0);
 			assert(kK(table)[0]->n >= 0);
-			std::size_t const count = static_cast<std::size_t>(kK(table)[0]->n);
+			size_t const count = static_cast<size_t>(kK(table)[0]->n);
 			if (count > MAXSERVER) {
 				throw std::string("too many servers");
 			}
 
 			std::vector<std::string> hosts, uids, pwds;
 			std::vector<long long> ports;
-			for (std::size_t c = 0; c < table->n; ++c) {
+			for (size_t c = 0; c < table->n; ++c) {
 				if (cols[c] == "host") {
 					hosts = q::qList2String(kK(table)[c]);
 				}
@@ -75,7 +75,7 @@ namespace TDF {
 				}
 			}
 
-			for (std::size_t i = 0; i < count; ++i) {
+			for (size_t i = 0; i < count; ++i) {
 				setServerInfo(hosts[i], out[i].szIp, "host/IP", i);
 				setServerInfo(uids[i], out[i].szUser, "username", i);
 				setServerInfo(pwds[i], out[i].szPwd, "password", i);
@@ -133,12 +133,12 @@ TDF_API K K_DECL TDF_subscribe(K servers, K markets, K windCodes, K msgTypes, K 
 #	endif
 	assert(settings.pfnMsgHandler != NULL);
 	assert(settings.pfnSysMsgNotify != NULL);
-	TDF::ResetMsgHandlers();
+	TDF::TickHandler::getInstance();
 	::TDF_ERR result = TDF_ERR_UNKOWN;
 	::THANDLE tdf = ::TDF_OpenExt(&settings, &result);
 	if (result == TDF_ERR_SUCCESS) {
 		std::cerr << "<TDF> connecting as [";
-		for (std::size_t i = 0; i < settings.nServerNum; ++i) {
+		for (size_t i = 0; i < settings.nServerNum; ++i) {
 			std::cerr << settings.siServer[i].szUser;
 			if (i + 1 < settings.nServerNum) std::wcerr << ';';
 		}

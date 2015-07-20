@@ -64,4 +64,9 @@ namespace TDF {
 	//NOTE: szUser & szPwd in this variable shall _not_ be used!
 	extern ::TDF_OPEN_SETTING_EXT SETTINGS;
 
+	// Initializations - only WinSock for now...
+	BOOL prepare();
+	// Finalizations - only WinSock2 for now...
+	BOOL finalize();
+
 }//namespace TDF

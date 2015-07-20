@@ -9,12 +9,21 @@ static_assert(0, "Include Wind.util/FieldMapper.h instead!");
 
 template <typename T>
 K Wind::mapper::Fields<T>::getFields() const {
-	q::K_ptr result(ktn(KS, fields_.size()));
-	size_t i = 0;
-	for (auto f = fields_.cbegin(); f != fields_.cend(); ++f, ++i) {
-		kS(result.get())[i] = ss(const_cast<S>(f->first.c_str()));
+	std::vector<std::string> list;
+	getFields(list);
+	q::K_ptr result(ktn(KS, list.size()));
+	for (size_t i = 0; i < list.size(); ++i) {
+		kS(result.get())[i] = ss(const_cast<S>(list[i].c_str()));
 	}
 	return result.release();
+}
+
+template <typename T>
+void Wind::mapper::Fields<T>::getFields(std::vector<std::string>& list) const {
+	list.reserve(fields_.size());
+	for (auto f = fields_.cbegin(); f != fields_.cend(); ++f) {
+		list.push_back(f->first);
+	}
 }
 
 template <typename T>

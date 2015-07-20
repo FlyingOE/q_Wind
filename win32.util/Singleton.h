@@ -2,6 +2,7 @@
 #define __SINGLETON_H__
 
 #include <memory>
+#include <mutex>
 
 template <typename T>
 class Singleton {
@@ -15,8 +16,10 @@ public:
 	static void destroyInstance();
 
 private:
+	static std::mutex mutex_;
 	static std::unique_ptr<singleton_type> instance_;
 
+	typedef std::lock_guard<std::mutex> lock_guard;
 };
 
 #include "Singleton.inl"

@@ -3,6 +3,7 @@
 
 #include "TDF_API_handler.h"
 
+#include "win32.util/SocketPair.h"
 #include "kdb+.util/type_traits.h"
 #include "kdb+.util/type_convert.h"
 
@@ -11,11 +12,24 @@
 
 ::TDF_OPEN_SETTING_EXT TDF::SETTINGS = {
 	{ 0 }, 0,
-	&TDF::onDataMsg, &TDF::onSystemMsg,
+	&TDF::TickHandler::DataMsgCallback, &TDF::TickHandler::SystemMsgCallback,
 	"BBQ", "", 0,
 	0xFFFFFFFF,
 	__COUNTER__
 };
+
+BOOL TDF::prepare() {
+	bool result = true;
+	result = result && SockPair::prepare();
+	result = result && !!TDF::TickHandler::getInstance();
+	return result;
+}
+
+BOOL TDF::finalize() {
+	bool result = true;
+	result = result && SockPair::finalize();
+	return result;
+}
 
 namespace TDF {
 	namespace util {

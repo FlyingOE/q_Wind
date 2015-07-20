@@ -30,17 +30,16 @@ TDF_API K K_DECL TDF_codeTable(K h, K market) {
 	assert(codeCount >= 0);
 
 	q::K_ptr data(ktn(0, 6));
-	typedef Wind::accessor::SymbolAccessor<::TDF_CODE, char[32]> SymbolAccessor_;
 	kK(data.get())[0] =		//Wind Code: AG1312.SHF
-		SymbolAccessor_(&::TDF_CODE::szWindCode).extract(codes.get(), codeCount);
+		Wind::accessor::SymbolAccessor<::TDF_CODE, char[32]>(&::TDF_CODE::szWindCode).extract(codes.get(), codeCount);
 	kK(data.get())[1] =		//market code: SHF
-		Wind::accessor::SymbolAccessor<::TDF_CODE, char[8]>(&::TDF_CODE::szMarket).extract(codes.get(), codeCount);
+		Wind::accessor::SymbolAccessor<::TDF_CODE, char[ 8]>(&::TDF_CODE::szMarket).extract(codes.get(), codeCount);
 	kK(data.get())[2] =		//original code: ag1312
-		SymbolAccessor_(&::TDF_CODE::szCode).extract(codes.get(), codeCount);
+		Wind::accessor::SymbolAccessor<::TDF_CODE, char[32]>(&::TDF_CODE::szCode).extract(codes.get(), codeCount);
 	kK(data.get())[3] =
-		SymbolAccessor_(&::TDF_CODE::szENName).extract(codes.get(), codeCount);
+		Wind::accessor::SymbolAccessor<::TDF_CODE, char[32]>(&::TDF_CODE::szENName).extract(codes.get(), codeCount);
 	kK(data.get())[4] =		//Chinese name: »¦Òø1302
-		Wind::accessor::SymbolAccessor<::TDF_CODE, char[32], Wind::encoder::GB18030Encoder>(&::TDF_CODE::szCNName).extract(codes.get(), codeCount);
+		Wind::accessor::SymbolAccessor<::TDF_CODE, char[32], Wind::encoder::GB18030_UTF8>(&::TDF_CODE::szCNName).extract(codes.get(), codeCount);
 	kK(data.get())[5] =
 		Wind::accessor::IntAccessor<::TDF_CODE, G>(&::TDF_CODE::nType).extract(codes.get(), codeCount);
 	return data.release();
@@ -68,7 +67,7 @@ TDF_API K K_DECL TDF_optionCodeInfo(K h, K windCode) {
 	kK(data.get())[0 +  1] = ks(const_cast<S>(info.basicCode.szMarket));
 	kK(data.get())[0 +  2] = ks(const_cast<S>(info.basicCode.szCode));
 	kK(data.get())[0 +  3] = ks(const_cast<S>(info.basicCode.szENName));
-	kK(data.get())[0 +  4] = ks(const_cast<S>(Wind::encoder::GB18030Encoder()(info.basicCode.szCNName).c_str()));
+	kK(data.get())[0 +  4] = ks(const_cast<S>(Wind::encoder::GB18030_UTF8::encode(info.basicCode.szCNName).c_str()));
 	kK(data.get())[0 +  5] = kg(info.basicCode.nType);
 	kK(data.get())[6 +  0] = ks(const_cast<S>(info.szContractID));
 	kK(data.get())[6 +  1] = ks(const_cast<S>(info.szUnderlyingSecurityID));

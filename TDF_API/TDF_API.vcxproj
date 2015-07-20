@@ -154,6 +154,7 @@
     <ClCompile Include="TDF_API_helper.cpp" />
     <ClCompile Include="TDF_auth.cpp" />
     <ClCompile Include="TDF_code.cpp" />
+    <ClCompile Include="TDF_info.cpp" />
     <ClCompile Include="util.cpp" />
   </ItemGroup>
   <ItemGroup>

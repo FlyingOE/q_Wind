@@ -42,10 +42,17 @@ optionCodeInfo:{[F;h;c]
         )!F[h;c]
     }DLL 2:(`TDF_optionCodeInfo;2);
 
+/q) .tdf.index_fields h
+/q) .tdf.market_fields h
+/q) .tdf.future_fields h
+index_fields:DLL 2:(`TDF_index_fields;1);
+/market_fields:DLL 2:(`TDF_market_fields;1);
+/future_fields:DLL 2:(`TDF_future_fields;1);
+
 \d .
 \
 __EOD__
 ===============================================================================
 
-h:.tdf.start[`:.tdf.connects;`SH`SZ;`;`;0]
+h:0N!.tdf.start[`:.tdf.connects;`SH`SZ;`;`;0]
 .tdf.codeTable[h]`SZ

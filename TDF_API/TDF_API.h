@@ -53,6 +53,10 @@ extern "C" {
 		K windCode	//-11h or 10h
 		);
 
+	TDF_API K K_DECL TDF_index_fields(K/*NOTE: at least one argument required by `2:'*/);
+	TDF_API K K_DECL TDF_market_fields(K/*NOTE: at least one argument required by `2:'*/);
+	TDF_API K K_DECL TDF_future_fields(K/*NOTE: at least one argument required by `2:'*/);
+
 #ifdef __cplusplus
 }//extern "C"
 #endif

@@ -19,7 +19,6 @@ namespace Wind {
 		public:
 			FieldAccessor(q::TypeNum typeNum) : TYPE_NUM(typeNum) {}
 			K extract(struct_type const* dataArray, size_t arrayLen) const;
-		protected:
 			virtual void setElement(K out, size_t index, struct_type const& data) const = 0;
 		};
 
@@ -44,10 +43,12 @@ namespace Wind {
 		template <typename T> struct DateAccessor;
 		template <typename T> struct TimeAccessor;
 		template <typename T, typename FieldT, typename Encoder = encoder::Passthrough> struct SymbolAccessor;
-		template <typename T, typename FieldT, typename Encoder = encoder::Passthrough> struct StringAccessor;		
+		template <typename T, typename FieldT, typename Encoder = encoder::Passthrough> struct StringAccessor;
+
 		template <typename T, typename... NestedTs> struct NestedAccessor;
-		template <typename T> struct NestedAccessor<T>;
+		template <typename T> struct NestedAccessor<T>;		//terminal condition
 		template <typename T, typename NestedT0, typename... NestedTn> struct NestedAccessor<T, NestedT0, NestedTn...>;
+		template <typename T, typename NestedT0, typename... NestedTn> struct NestedAccessor<T, NestedT0*, NestedTn...>;
 
 	}//namespace Wind::accessor
 }//namespace Wind

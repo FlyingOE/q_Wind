@@ -2,9 +2,7 @@
 #include "TDF_API_handler.h"
 
 #include "util.h"
-
-#include "win32.util/Singleton.h"
-#include "Wind.util/FieldMapper.h"
+#include "TDF_API_helper.h"
 
 #include <iostream>
 
@@ -134,60 +132,6 @@ void TDF::TickHandler::processMsg(::THANDLE const tdf, ::TDF_MSG const& msg,
 	assert(instance != NULL);
 	(instance->*processor)(tdf, msg.nConnectId);
 }
-
-namespace TDF {
-	namespace traits {
-
-		// Traits to assist symbolic retrieval of tick data fields from TDBDefine_Order.
-		struct Index : public Wind::mapper::Fields<::TDF_INDEX_DATA> {
-			typedef Singleton<Index> accessor_map;
-			typedef ::TDF_INDEX_DATA tdf_result_type;
-
-			Index() : Wind::mapper::Fields<tdf_result_type>() { registerAllFields(); }
-
-			typedef Wind::accessor::SymbolAccessor<tdf_result_type, char[32]> SymbolAccessor;
-			typedef Wind::accessor::DateAccessor<tdf_result_type> DateAccessor;
-			typedef Wind::accessor::TimeAccessor<tdf_result_type> TimeAccessor;
-			typedef Wind::accessor::IntAccessor<tdf_result_type, I> IntAccessor;
-			typedef Wind::accessor::CharAccessor<tdf_result_type> CharAccessor;
-			template <typename FieldT>
-			using FloatAccessor = Wind::accessor::FloatAccessor<tdf_result_type, FieldT>;
-
-			// Data fields -- always keep in sync with TDBDefine_Order
-			void registerAllFields() {
-				// 600001.SH
-				addField("WindCode", new SymbolAccessor(&tdf_result_type::szWindCode));
-				// 原始Code
-				addField("Code", new SymbolAccessor(&tdf_result_type::szCode));
-				// 业务发生日(自然日)
-				addField("Date", new DateAccessor(&tdf_result_type::nActionDay));
-				// 时间（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
-				addField("Time", new TimeAccessor(&tdf_result_type::nTime));
-				// 交易日
-				addField("TradeDate", new DateAccessor(&tdf_result_type::nTradingDay));
-				// 今开盘指数
-				addField("Open", new FloatAccessor<int>(&tdf_result_type::nOpenIndex));
-				// 最高指数
-				addField("High", new FloatAccessor<int>(&tdf_result_type::nHighIndex));
-				// 最低指数
-				addField("Low", new FloatAccessor<int>(&tdf_result_type::nLowIndex));
-				// 最新指数
-				addField("Last", new FloatAccessor<int>(&tdf_result_type::nLastIndex));
-				// 参与计算相应指数的交易数量
-				addField("Volume", new FloatAccessor<__int64>(&tdf_result_type::iTotalVolume));
-				// 参与计算相应指数的成交金额
-				addField("Turnover", new FloatAccessor<__int64>(&tdf_result_type::iTurnover));
-				// 前盘指数
-				addField("PreClose", new FloatAccessor<int>(&tdf_result_type::nPreCloseIndex));
-						/*
-					CodeType,	//TDF_CODE_INFO: 证券类型
-					Name,		//TDF_CODE_INFO: 汉语证券名称
-					*/
-			}
-		};
-
-	}//nmespace TDF::traits
-}//namespace TDF
 
 // 指数数据
 void TDF::TickHandler::onDataIndex(::THANDLE const tdf, int connectId, ::TDF_INDEX_DATA const& data) {

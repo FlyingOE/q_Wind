@@ -15,6 +15,172 @@ namespace TDF {
 
 	void parseTdfHandle(K h, ::THANDLE& tdf) throw(std::string);
 
+	namespace accessor {
+		
+		template <typename T>
+		struct CodeInfoAccessor : public Wind::accessor::NestedAccessor<T, ::TDF_CODE_INFO*> {
+			typedef Wind::accessor::NestedAccessor<T, ::TDF_CODE_INFO*> base_type;
+			CodeInfoAccessor(typename base_type::field_accessor_type* field)
+				: base_type(field, &T::pCodeInfo) {}
+		};
+
+		typedef Wind::accessor::IntAccessor<::TDF_CODE_INFO, G> CodeTypeAccessor;
+		typedef Wind::accessor::SymbolAccessor<::TDF_CODE_INFO, char[64], Wind::encoder::GB18030_UTF8> CodeNameAccessor;
+
+		template <typename T>
+		struct ExCodeInfoAccessor : public Wind::accessor::NestedAccessor<T, ::TDF_CODE_INFO*, ::TD_EXCODE_INFO> {
+			typedef Wind::accessor::NestedAccessor<T, ::TDF_CODE_INFO*, ::TD_EXCODE_INFO> base_type;
+			ExCodeInfoAccessor(typename base_type::field_accessor_type* field)
+				: base_type(field, &T::pCodeInfo, &::TDF_CODE_INFO::exCodeInfo) {}
+		};
+
+		typedef Wind::accessor::DateAccessor<::TD_EXCODE_INFO> ExCodeDateAccessor;
+		typedef Wind::accessor::CharAccessor<::TD_EXCODE_INFO> ExCodeCharAccessor;
+		typedef Wind::accessor::IntAccessor<::TD_EXCODE_INFO, I> ExCodeIntAccessor;
+		typedef Wind::accessor::FloatAccessor<::TD_EXCODE_INFO, int> ExCodeFloatAccessor;
+		typedef Wind::accessor::SymbolAccessor<::TD_EXCODE_INFO, char[32]> ExCodeSymbolAccessor;
+
+	}//namespace TDF::accessor
+
+	namespace traits {
+
+		// Traits to assist symbolic retrieval of tick data fields from TDF_INDEX_DATA.
+		struct Index : public Wind::mapper::Fields<::TDF_INDEX_DATA> {
+			typedef Singleton<Index> accessor_map;
+			typedef ::TDF_INDEX_DATA tdf_result_type;
+
+			Index() : Wind::mapper::Fields<tdf_result_type>() { registerAllFields(); }
+
+			typedef Wind::accessor::SymbolAccessor<tdf_result_type, char[32]> SymbolAccessor;
+			typedef Wind::accessor::DateAccessor<tdf_result_type> DateAccessor;
+			typedef Wind::accessor::TimeAccessor<tdf_result_type> TimeAccessor;
+			template <typename FieldT>
+			using FloatAccessor = Wind::accessor::FloatAccessor<tdf_result_type, FieldT>;
+
+			typedef TDF::accessor::CodeInfoAccessor<tdf_result_type> CodeInfoAccessor;
+			typedef TDF::accessor::CodeTypeAccessor CodeTypeAccessor;
+			typedef TDF::accessor::CodeNameAccessor CodeNameAccessor;
+
+			// Data fields -- always keep in sync with TDF_INDEX_DATA
+			void registerAllFields() {
+				// 600001.SH
+				addField("WindCode", new SymbolAccessor(&tdf_result_type::szWindCode));
+				// 原始Code
+				addField("Code", new SymbolAccessor(&tdf_result_type::szCode));
+				// 业务发生日(自然日)
+				addField("Date", new DateAccessor(&tdf_result_type::nActionDay));
+				// 交易日
+				addField("TradeDate", new DateAccessor(&tdf_result_type::nTradingDay));
+				// 时间（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
+				addField("Time", new TimeAccessor(&tdf_result_type::nTime));
+				// 今开盘指数
+				addField("Open", new FloatAccessor<int>(&tdf_result_type::nOpenIndex));
+				// 最高指数
+				addField("High", new FloatAccessor<int>(&tdf_result_type::nHighIndex));
+				// 最低指数
+				addField("Low", new FloatAccessor<int>(&tdf_result_type::nLowIndex));
+				// 最新指数
+				addField("Last", new FloatAccessor<int>(&tdf_result_type::nLastIndex));
+				// 参与计算相应指数的交易数量
+				addField("Volume", new FloatAccessor<__int64>(&tdf_result_type::iTotalVolume));
+				// 参与计算相应指数的成交金额
+				addField("Turnover", new FloatAccessor<__int64>(&tdf_result_type::iTurnover, .01));
+				// 前盘指数
+				addField("PreClose", new FloatAccessor<int>(&tdf_result_type::nPreCloseIndex));
+				//（TDF_CODE_INFO）证券类型
+				addField("CodeType", new CodeInfoAccessor(new CodeTypeAccessor(&::TDF_CODE_INFO::nType)));
+				//（TDF_CODE_INFO）汉语证券名称
+				addField("CodeName", new CodeInfoAccessor(new CodeNameAccessor(&::TDF_CODE_INFO::chName)));
+			}
+		};
+
+		// Traits to assist symbolic retrieval of tick data fields from TDF_MARKET_DATA.
+		struct Market : public Wind::mapper::Fields<::TDF_MARKET_DATA> {
+			typedef Singleton<Index> accessor_map;
+			typedef ::TDF_MARKET_DATA tdf_result_type;
+
+			Market() : Wind::mapper::Fields<tdf_result_type>() { registerAllFields(); }
+
+			typedef Wind::accessor::SymbolAccessor<tdf_result_type, char[32]> SymbolAccessor;
+			typedef Wind::accessor::DateAccessor<tdf_result_type> DateAccessor;
+			typedef Wind::accessor::TimeAccessor<tdf_result_type> TimeAccessor;
+			template <typename FieldT>
+			using FloatAccessor = Wind::accessor::FloatAccessor<tdf_result_type, FieldT>;
+			template <typename FieldT>
+			using FloatAccessors = Wind::accessor::FloatsAccessor<tdf_result_type, FieldT>;
+
+			typedef TDF::accessor::CodeInfoAccessor<tdf_result_type> CodeInfoAccessor;
+			typedef TDF::accessor::CodeTypeAccessor CodeTypeAccessor;
+			typedef TDF::accessor::CodeNameAccessor CodeNameAccessor;
+
+			// Data fields -- always keep in sync with TDF_MARKET_DATA
+			void registerAllFields() {
+				// 600001.SH
+				addField("WindCode", new SymbolAccessor(&tdf_result_type::szWindCode));
+				// 原始Code
+				addField("Code", new SymbolAccessor(&tdf_result_type::szCode));
+				// 业务发生日(自然日)
+				addField("Date", new DateAccessor(&tdf_result_type::nActionDay));
+				// 交易日
+				addField("TradeDate", new DateAccessor(&tdf_result_type::nTradingDay));
+				// 时间（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
+				addField("Time", new TimeAccessor(&tdf_result_type::nTime));
+				/*
+				int			 nStatus;				//状态
+
+				// 前收盘价
+				addField("PreClose", new FloatAccessor<unsigned int>(&tdf_result_type::nPreClose));
+
+				unsigned int nOpen;					//开盘价
+				unsigned int nHigh;					//最高价
+				unsigned int nLow;					//最低价
+				unsigned int nMatch;				//最新价
+				unsigned int nAskPrice[10];			//申卖价
+				unsigned int nAskVol[10];			//申卖量
+				unsigned int nBidPrice[10];			//申买价
+				unsigned int nBidVol[10];			//申买量
+				unsigned int nNumTrades;			//成交笔数
+				__int64		 iVolume;				//成交总量
+				__int64		 iTurnover;				//成交总金额
+				__int64		 nTotalBidVol;			//委托买入总量
+				__int64		 nTotalAskVol;			//委托卖出总量
+				unsigned int nWeightedAvgBidPrice;	//加权平均委买价格
+				unsigned int nWeightedAvgAskPrice;  //加权平均委卖价格
+				int			 nIOPV;					//IOPV净值估值
+				int			 nYieldToMaturity;		//到期收益率
+				unsigned int nHighLimited;			//涨停价
+				unsigned int nLowLimited;			//跌停价
+				char		 chPrefix[4];			//证券信息前缀
+				int			 nSyl1;					//市盈率1
+				int			 nSyl2;					//市盈率2
+				int			 nSD2;					//升跌2（对比上一笔）
+
+
+				// 今开盘指数
+				addField("Open", new FloatAccessor<int>(&tdf_result_type::nOpenIndex));
+				// 最高指数
+				addField("High", new FloatAccessor<int>(&tdf_result_type::nHighIndex));
+				// 最低指数
+				addField("Low", new FloatAccessor<int>(&tdf_result_type::nLowIndex));
+				// 最新指数
+				addField("Last", new FloatAccessor<int>(&tdf_result_type::nLastIndex));
+				// 参与计算相应指数的交易数量
+				addField("Volume", new FloatAccessor<__int64>(&tdf_result_type::iTotalVolume));
+				// 参与计算相应指数的成交金额
+				addField("Turnover", new FloatAccessor<__int64>(&tdf_result_type::iTurnover));
+				// 前盘指数
+				addField("PreClose", new FloatAccessor<int>(&tdf_result_type::nPreCloseIndex));
+				//（TDF_CODE_INFO）证券类型
+				addField("CodeType", new CodeInfoAccessor(new CodeTypeAccessor(&::TDF_CODE_INFO::nType)));
+				//（TDF_CODE_INFO）汉语证券名称
+				addField("CodeName", new CodeInfoAccessor(new CodeNameAccessor(&::TDF_CODE_INFO::chName)));
+				*/
+			}
+		};
+
+	}//nmespace TDF::traits
+
+	/*
 	namespace traits {
 
 		// Traits to assist symbolic retrieval of tick data fields from TD_EXCODE_INFO::TD_OptionCodeInfo.
@@ -109,11 +275,12 @@ namespace TDF {
 				addField("EndDate", new DateAccessor(&tdf_result_type::nEndDate));
 				addField("ExeDate", new DateAccessor(&tdf_result_type::nExerciseDate));
 				addField("ExpDate", new DateAccessor(&tdf_result_type::nExpireDate));
-				*/
+				* /
 			}
 		};
 
 	}//namespace TDB::traits
+	*/
 }//naemspace TDF
 
 #endif//__TDF_API_HELPER_H__

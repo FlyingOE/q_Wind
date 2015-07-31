@@ -33,8 +33,9 @@ extern "C" {
 
 	WIND_API K K_DECL Wind_logout(K/*NOTE: at least one argument required by `2:'*/);
 
+	// (1 x windCodes + n x indicators) or (n x windCodes + 1 x indicators) 
 	WIND_API K K_DECL Wind_wsd(
-		K windCode,		//-11h or 10h
+		K windCodes,	//-11h or 11h or 10h or 0h=(10h;...)
 		K indicators,	//-11h or 11h
 		K beginDate,	//-14h
 		K endDate,		//-14h

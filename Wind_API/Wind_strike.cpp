@@ -84,10 +84,10 @@ namespace Wind {
 	}//namespace Wind::callback
 }//namespace Wind
 
-WIND_API K K_DECL Wind_wsd(K windCode, K indicators, K beginDate, K endDate, K params) {
-	std::wstring code, indis, begin, end, paras;
+WIND_API K K_DECL Wind_wsd(K windCodes, K indicators, K beginDate, K endDate, K params) {
+	std::wstring codes, indis, begin, end, paras;
 	try {
-		code = q::q2WString(windCode);
+		codes = Wind::util::qList2WStringJoin(windCodes, L',');
 		indis = Wind::util::qList2WStringJoin(indicators, L',');
 		begin = Wind::util::q2DateStr(beginDate);
 		end   = Wind::util::q2DateStr(endDate);
@@ -98,7 +98,7 @@ WIND_API K K_DECL Wind_wsd(K windCode, K indicators, K beginDate, K endDate, K p
 	}
 
 	Wind::callback::Result result;
-	::WQID const qid = ::WSD(code.c_str(), indis.c_str(), begin.c_str(), end.c_str(), paras.c_str(),
+	::WQID const qid = ::WSD(codes.c_str(), indis.c_str(), begin.c_str(), end.c_str(), paras.c_str(),
 		&Wind::callback::strike, result.dup());
 	return result.waitFor(qid);
 }

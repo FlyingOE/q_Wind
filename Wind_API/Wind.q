@@ -24,10 +24,11 @@ start:{
     };
 
 /q) .wind.WSD[`000001.SZ;`open`high`low`close`volume;2014.01.01;.z.D;()]
+/q) .wind.WSD[`000001.SZ`600000.SH;`volume;2014.01.01;.z.D;()]
 WSD:dateSeq:{[F;c;i;b;e;p]
      delete code from
         update`date$ts,sym:`$code from
-            impl.quantData2Table F[c;(),i;b;e;impl.dict2Strings p]
+            impl.quantData2Table F[(),c;(),i;b;e;impl.dict2Strings p]
     }DLL 2:(`Wind_wsd;5);
 
 /q) .wind.WSS[`000001.SZ`000002.SZ`600000.SH;`open`high`low`close`volume;`tradeDate`cycle!(2015.02.12;`W)]

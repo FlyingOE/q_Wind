@@ -11,6 +11,11 @@ Wind::Event::Event(::WQEvent const& event) : ::WQEvent(event) {
 	this->pQuantData = (event.pQuantData == NULL) ? NULL : new Data(*event.pQuantData);
 }
 
+Wind::Event::Event(::WQEvent& event, Wind::Event::TakeOver const&) : ::WQEvent(event) {
+	this->pQuantData = event.pQuantData;
+	event.pQuantData = NULL;	// ownership transfer
+}
+
 Wind::Event::~Event() throw() {
 	clear();
 }

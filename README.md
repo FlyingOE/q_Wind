@@ -22,9 +22,14 @@ This project provides kdb+/q support for 3 distinct sets of APIs provided by [Wi
 
 ### Build
 
-如果您使用正版的Visual Studio 2013，则本工程只需要[Kx][]的[`k.h`][k.h]和[`q.lib`][q.lib]即可编译通过。
+如果您使用正版的Visual Studio 2013，则本工程只需要[Kx][]的[`k.h`][k.h]（须作[少许改动](#modification)）和[`q.lib`][q.lib]即可编译通过。
 
 如果您使用的是免费版的Visual Studio Express 2013，则本工程还额外需要[Windows Driver Kit (WDK) v7.1.0][WDK]中的头文件和库方可编译。为方便直接使用，[压缩包](./packaged/)里还包括了工程编译后生成的DLL（在Release目录中）。
+
+#### <a name="modification"></a>对[`k.h`][k.h]所作的改动：
+
+1. Line 90: `extern double log(double);`   
+   Comment out this line to avoid conflicting signature in `math.h` from MSVC.
 
 ### Change Log
 

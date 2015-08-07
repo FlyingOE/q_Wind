@@ -181,7 +181,10 @@ namespace Wind {
 	}//namespace Wind::pubsub
 }//namespace Wind
 
-WIND_API K K_DECL Wind_wsq(K windCodes, K indicators, K params, K callback) {
+K Wind_subscribe(::WQID(WINAPI *func)(LPCWSTR, LPCWSTR, LPCWSTR, ::IEventHandler, LPVOID),
+	K windCodes, K indicators, K params, K callback)
+{
+	assert(NULL != func);
 	std::wstring codes, indis, paras;
 	std::string cb;
 	try {
@@ -210,7 +213,7 @@ WIND_API K K_DECL Wind_wsq(K windCodes, K indicators, K params, K callback) {
 
 	// Setup subscription
 	static_assert(sizeof(::SOCKET) == sizeof(I), "SOCKET vs I: type mismatch!");
-	::WQID const qid = ::WSQ(codes.c_str(), indis.c_str(), paras.c_str(),
+	::WQID const qid = func(codes.c_str(), indis.c_str(), paras.c_str(),
 		&Wind::pubsub::subscribe, socks.get());
 	if (qid <= 0) {
 		std::ostringstream buffer;
@@ -224,6 +227,14 @@ WIND_API K K_DECL Wind_wsq(K windCodes, K indicators, K params, K callback) {
 		static_assert(std::is_same<::WQID, J>::value, "WQID data type mismatch");
 		return kj(qid);
 	}
+}
+
+WIND_API K K_DECL Wind_wsq(K windCodes, K indicators, K params, K callback) {
+	return Wind_subscribe(&::WSQ, windCodes, indicators, params, callback);
+}
+
+WIND_API K K_DECL Wind_tdq(K windCodes, K indicators, K params, K callback) {
+	return Wind_subscribe(&::TDQ, windCodes, indicators, params, callback);
 }
 
 WIND_API K K_DECL Wind_cr(K qid) {

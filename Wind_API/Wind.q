@@ -85,9 +85,13 @@ WSET:dataSet:{[F;r;p]
 
 /q) cb:.wind.rtCallback{show(x;.z.P;y)}
 /q) qid:.wind.WSQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();`cb]
+/q) qid:.wind.TDQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();`cb]
 WSQ:rtQuotes:{[F;c;i;p;f]
 	F[(),c;(),i;impl.dict2Strings$[p~();()!();p],(1#`REALTIME)!1#1b;f]
 	}DLL 2:(`Wind_wsq;4);
+TDQ:tdQuotes:{[F;c;i;p;f]
+	F[(),c;(),i;impl.dict2Strings$[p~();()!();p],(1#`REALTIME)!1#1b;f]
+	}DLL 2:(`Wind_tdq;4);
 rtCallback:{[f;q;d]
     f[q;]delete code from
         update sym:`$code from impl.quantData2Table d

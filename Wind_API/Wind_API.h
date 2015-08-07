@@ -75,6 +75,12 @@ extern "C" {
 		K params,		//0h=() or 11h!0h
 		K callback		//-11h
 		);
+	WIND_API K K_DECL Wind_tdq(
+		K windCodes,	//-11h or 11h or 10h or 0h=(10h;...)
+		K indicators,	//-11h or 11h
+		K params,		//0h=() or 11h!0h
+		K callback		//-11h
+		);
 
 	WIND_API K K_DECL Wind_cr(K qid);
 	WIND_API K K_DECL Wind_car(K/*NOTE: at least one argument required by `2:'*/);

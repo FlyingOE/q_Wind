@@ -10,20 +10,46 @@
 #include <cassert>
 
 Wind::Data::Data(::WQData const& data) {
-	DateTimeArray dateTimes(data.ArrDateTime);
-	WindCodeArray windCodes(data.ArrWindCode);
-	WindFieldsArray windFields(data.ArrWindFields);
+	::VariantInit(&this->MatrixData);
+	copyData(this->MatrixData, data.MatrixData);
+	this->ArrDateTime = DateTimeArray(data.ArrDateTime).release();
+	this->ArrWindCode = WindCodeArray(data.ArrWindCode).release();
+	this->ArrWindFields = WindFieldsArray(data.ArrWindFields).release();
+}
 
-	::VariantInit(&MatrixData);
-	::HRESULT const result = ::VariantCopy(&this->MatrixData, &data.MatrixData);
-	assert(!FAILED(result));
-	this->ArrDateTime = dateTimes.release();
-	this->ArrWindCode = windCodes.release();
-	this->ArrWindFields = windFields.release();
+Wind::Data::Data(::WQData& data) {
+	::VariantInit(&this->MatrixData);
+	moveData(this->MatrixData, data.MatrixData);
+	/*
+	//TODO This doesn't work!
+	this->ArrDateTime = data.ArrDateTime;
+	static_cast<DateTimeArray&>(data.ArrDateTime).reset();
+	this->ArrWindCode = data.ArrWindCode;
+	static_cast<WindCodeArray&>(data.ArrWindCode).reset();
+	this->ArrWindFields = data.ArrWindFields;
+	static_cast<WindFieldsArray&>(data.ArrWindFields).reset();
+	/*/
+	this->ArrDateTime = DateTimeArray(data.ArrDateTime).release();
+	this->ArrWindCode = WindCodeArray(data.ArrWindCode).release();
+	this->ArrWindFields = WindFieldsArray(data.ArrWindFields).release();
+	//*/
 }
 
 Wind::Data::~Data() throw() {
 	clear();
+}
+
+void Wind::Data::copyData(::VARIANT& dst, ::VARIANT const& src) {
+	::HRESULT const result = ::VariantCopy(&dst, &src);
+	assert(!FAILED(result));
+}
+
+void Wind::Data::moveData(::VARIANT& dst, ::VARIANT& src) {
+	::HRESULT const result = ::VariantClear(&dst);
+	assert(!FAILED(result));
+	::VARIANT const empty = dst;
+	dst = src;
+	src = empty;
 }
 
 void Wind::Data::clear() {

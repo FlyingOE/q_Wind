@@ -8,10 +8,8 @@
 namespace Wind {
 
 	struct Event : ::WQEvent {
-		struct TakeOver {};
-
 		explicit Event(::WQEvent const& event);
-		Event(::WQEvent& event, TakeOver const&);
+		explicit Event(::WQEvent& event);	//NOTE: Takes over data ownership!
 		~Event() throw();
 		void clear();
 		::WQEvent release();

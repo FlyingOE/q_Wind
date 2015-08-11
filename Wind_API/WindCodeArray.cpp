@@ -17,16 +17,19 @@ Wind::WindCodeArray::~WindCodeArray() throw() {
 }
 
 void Wind::WindCodeArray::clear() {
-	this->arrLen = 0;
 	delete[] codeArray;
-	this->codeArray = NULL;
+	reset();
 }
 
 ::WQWindCodeArray Wind::WindCodeArray::release() {
 	::WQWindCodeArray dup(*this);	// ownership transfer
-	this->codeArray = NULL;
-	this->arrLen = 0;
+	reset();
 	return dup;
+}
+
+void Wind::WindCodeArray::reset() {
+	this->arrLen = 0;
+	this->codeArray = NULL;
 }
 
 struct Wind::WindCodeArray::qTypeTraits : q::type_traits<void>{

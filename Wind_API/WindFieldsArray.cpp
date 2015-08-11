@@ -17,16 +17,19 @@ Wind::WindFieldsArray::~WindFieldsArray() throw() {
 }
 
 void Wind::WindFieldsArray::clear() {
-	this->arrLen = 0;
 	delete[] fieldsArray;
-	this->fieldsArray = NULL;
+	reset();
 }
 
 ::WQWindFieldsArray Wind::WindFieldsArray::release() {
 	::WQWindFieldsArray dup(*this);	// ownership transfer
-	this->fieldsArray = NULL;
-	this->arrLen = 0;
+	reset();
 	return dup;
+}
+
+void Wind::WindFieldsArray::reset() {
+	this->arrLen = 0;
+	this->fieldsArray = NULL;
 }
 
 struct Wind::WindFieldsArray::qTypeTraits : q::type_traits<S>{

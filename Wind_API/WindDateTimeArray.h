@@ -11,6 +11,7 @@ namespace Wind {
 		~DateTimeArray() throw();
 		void clear();
 		::WQDateTimeArray release();
+		void reset();
 		K parse() const throw();
 
 	private:

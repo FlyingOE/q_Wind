@@ -11,6 +11,7 @@ namespace Wind {
 		~WindCodeArray() throw();
 		void clear();
 		::WQWindCodeArray release();
+		void reset();
 		K parse() const throw();
 
 	private:

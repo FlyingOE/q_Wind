@@ -18,16 +18,19 @@ Wind::DateTimeArray::~DateTimeArray() throw() {
 }
 
 void Wind::DateTimeArray::clear() {
-	this->arrLen = 0;
 	delete[] timeArray;
-	this->timeArray = NULL;
+	reset();
 }
 
 ::WQDateTimeArray Wind::DateTimeArray::release() {
 	::WQDateTimeArray dup(*this);	// ownership transfer
+	reset();
+	return dup;
+}
+
+void Wind::DateTimeArray::reset() {
 	this->timeArray = NULL;
 	this->arrLen = 0;
-	return dup;
 }
 
 struct Wind::DateTimeArray::qTypeTraits : q::type_traits<F> {

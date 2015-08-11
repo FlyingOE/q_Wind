@@ -11,6 +11,7 @@ namespace Wind {
 		~WindFieldsArray() throw();
 		void clear();
 		::WQWindFieldsArray release();
+		void reset();
 		K parse() const throw();
 
 	private:

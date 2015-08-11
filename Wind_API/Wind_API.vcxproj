@@ -123,6 +123,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="Wind_API.h" />
+    <ClInclude Include="Wind_strike.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -146,6 +147,7 @@
     <ClCompile Include="WindFieldsArray.cpp" />
     <ClCompile Include="Wind_API.cpp" />
     <ClCompile Include="Wind_auth.cpp" />
+    <ClCompile Include="Wind_backTest.cpp" />
     <ClCompile Include="Wind_strike.cpp" />
     <ClCompile Include="Wind_subscribe.cpp" />
   </ItemGroup>

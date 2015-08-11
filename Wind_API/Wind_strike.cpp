@@ -1,88 +1,73 @@
 #include "stdafx.h"
-#include "Wind_API.h"
+#include "Wind_strike.h"
 
 #include "util.h"
-#include "WindEvent.h"
 
 #include "kdb+.util/util.h"
 #include "kdb+.util/type_convert.h"
-#include <memory>	//C++11: std::shared_ptr<>, std::unique_ptr<>
-#include <future>	//C++11
 #include <sstream>
 
-namespace Wind {
-	namespace callback {
+Wind::callback::Result::Result() : result_(new Wind::callback::Result::promise_ptr::element_type) {}
 
-		// A manager to take care of memory management for Wind's asynchronous callbacks
-		class Result {
-		public:
-			typedef std::shared_ptr<std::promise<::WQEvent*> > promise_ptr;
-
-			Result() : result_(new promise_ptr::element_type) {}
-
-			promise_ptr* dup() const {
-				return new promise_ptr(result_);
-			}
+Wind::callback::Result::promise_ptr* Wind::callback::Result::dup() const {
+	return new promise_ptr(result_);
+}
 			
-			K waitFor(::WQID qid, std::chrono::milliseconds const& timeout = Wind::ASYNC_TIMEOUT) {
-				if (qid == 0) {
-					return q::error2q("unknown request ID");
-				}
-				else if (qid < 0) {
-					std::ostringstream buffer;
-					buffer << "<WQ> strike result error: " << util::error2Text(static_cast<::WQErr>(qid));
-					return q::error2q(buffer.str());
-				}
+K Wind::callback::Result::waitFor(::WQID qid, std::chrono::milliseconds const& timeout) {
+	if (qid == 0) {
+		return q::error2q("unknown request ID");
+	}
+	else if (qid < 0) {
+		std::ostringstream buffer;
+		buffer << "<WQ> strike result error: " << util::error2Text(static_cast<::WQErr>(qid));
+		return q::error2q(buffer.str());
+	}
 
-				assert(result_);
-				std::future<::WQEvent*> outcome = result_->get_future();
-				switch (outcome.wait_for(timeout)) {
-				case std::future_status::ready:
-					try {
-						std::unique_ptr<Event> event(static_cast<Event*>(outcome.get()));
-						assert(event.get());
-						return event->parse();
-					}
-					catch (std::runtime_error& error) {	// Error from Wind::Callback::strike(...)
-						return q::error2q(error.what());
-					}
-					catch (std::string const& error) {	// Error from Wind::Event::parse()
-						return q::error2q(error);
-					}
-				case std::future_status::timeout:
-					return q::error2q("request timed out");
-				default:
-					return q::error2q("TODO request differed or ...?!");
-				}
-			}
-
-		private:
-			promise_ptr result_;
-		};
-
-		int WINAPI strike(::WQEvent* pEvent, LPVOID lpUserParam) {
-			std::unique_ptr<Result::promise_ptr> pResult(static_cast<Result::promise_ptr*>(lpUserParam));
-			assert(pResult);
-			Result::promise_ptr& result(*pResult);
-			assert(result);
-
-			assert(pEvent != NULL);
-			switch (pEvent->EventType) {
-			case eWQResponse:
-			case eWQErrorReport:
-				result->set_value(new Wind::Event(*pEvent));
-				return true;
-			default: {
-					std::ostringstream buffer;
-					buffer << "<WQ> unsupported strike response: " << *pEvent;
-					result->set_exception(std::make_exception_ptr(std::runtime_error(buffer.str())));
-					return false;
-				}
-			}
+	assert(result_);
+	std::future<Event*> outcome = result_->get_future();
+	switch (outcome.wait_for(timeout)) {
+	case std::future_status::ready:
+		try {
+			std::unique_ptr<Event> event(outcome.get());
+			assert(event);
+			return event->parse();
 		}
+		catch (std::runtime_error& error) {	// Error from Wind::Callback::strike(...)
+			return q::error2q(error.what());
+		}
+		catch (std::string const& error) {	// Error from Wind::Event::parse()
+			return q::error2q(error);
+		}
+	case std::future_status::timeout:
+		return q::error2q((::CancelRequest(qid) == WQERR_OK)
+			? "request timed out, cancelled"
+			: "request timed out");
+	default:
+		return q::error2q("TODO request differed or ...?!");
+	}
+}
 
-	}//namespace Wind::callback
-}//namespace Wind
+int WINAPI Wind::callback::strike(::WQEvent* pEvent, LPVOID lpUserParam) {
+	std::unique_ptr<Result::promise_ptr> pResult(static_cast<Result::promise_ptr*>(lpUserParam));
+	assert(pResult);
+	Result::promise_ptr& result(*pResult);
+	assert(result);
+
+	assert(pEvent != NULL);
+	switch (pEvent->EventType) {
+	case eWQResponse:
+	case eWQErrorReport:
+		result->set_value(new Event(*pEvent));
+		return true;
+	default: {
+			std::ostringstream buffer;
+			buffer << "<WQ> unsupported strike response: " << *pEvent;
+			result->set_exception(std::make_exception_ptr(std::runtime_error(buffer.str())));
+			return false;
+		}
+	}
+}
+
 
 WIND_API K K_DECL Wind_wsd(K windCodes, K indicators, K beginDate, K endDate, K params) {
 	std::wstring codes, indis, begin, end, paras;

@@ -119,6 +119,27 @@ extern "C" {
 		K params		//0h=() or 11h!0h
 		);
 
+	/*
+	WIND_API K K_DECL Wind_bktStart(
+		K strategyName,	//-11h or 10h
+		K beginDate,	//-14h
+		K endDate,		//-14h
+		K params		//0h=() or 11h!0h
+		);
+
+	WIND_API K K_DECL Wind_bktEnd(
+		K params		//0h=() or 11h!0h
+		);
+
+	WIND_API K K_DECL Wind_bktOrder(
+		K time,			//-14h
+		K windCode,		//-11h or 10h
+		K side,			//-11h or 10h
+		K volume,		//-8h or -9h
+		K params		//0h=() or 11h!0h
+		);
+	*/
+
 #ifdef __cplusplus
 }//extern "C"
 #endif

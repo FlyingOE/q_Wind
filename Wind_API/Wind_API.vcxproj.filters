@@ -57,6 +57,9 @@
     <ClInclude Include="WindEvent.inl">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Wind_strike.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -96,6 +99,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Wind_subscribe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Wind_backTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

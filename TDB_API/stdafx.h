@@ -14,6 +14,7 @@
 
 #define KXVER 3
 #include <k.h>
+#pragma comment(lib, "q.lib")
 
 // TODO: reference additional headers your program requires here
 #include <TDBAPI.h>

@@ -7,6 +7,8 @@
 #include <cassert>
 #include <vector>
 
+UINT const q::DEFAULT_CP = CP_UTF8;
+
 UINT const ml::CP_GB18030 = 54936;
 
 std::wstring ml::convert(UINT frCP, char const* inStr) {

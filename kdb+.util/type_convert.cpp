@@ -2,7 +2,6 @@
 #include "type_convert.h"
 
 #include "util.h"
-#include "multilang.h"
 #include "K_ptr.h"
 #include <cassert>
 #include <cmath>

@@ -1,9 +1,8 @@
 #ifndef __TYPE_CONVERT_H__
 #define __TYPE_CONVERT_H__
 #pragma comment(lib, "kdb+.util.lib")
-#pragma comment(lib, "q.lib")
 
-#include "util.h"
+#include "multilang.h"
 
 #include <string>
 #include <vector>

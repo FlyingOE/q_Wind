@@ -4,6 +4,7 @@
 #include "util.h"
 #include "WindEvent.h"
 
+#include "kdb+.util/util.h"
 #include "kdb+.util/K_ptr.h"
 #include "kdb+.util/type_convert.h"
 #if KX_USE_OKX

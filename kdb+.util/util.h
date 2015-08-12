@@ -1,14 +1,12 @@
 #ifndef __KDB__UTIL_H__
 #define __KDB__UTIL_H__
 #pragma comment(lib, "kdb+.util.lib")
-#pragma comment(lib, "q.lib")
+
+#include "multilang.h"
 
 #include <string>
 
 namespace q {
-
-	// Default code page used by kdb+
-	extern UINT const DEFAULT_CP;
 
 	// Convert error or system errors into an K error object
 	K error2q(char const* error, bool isSystemError = false) throw();

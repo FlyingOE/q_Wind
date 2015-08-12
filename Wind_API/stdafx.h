@@ -16,5 +16,6 @@
 
 #define KXVER 3
 #include <k.h>
+#pragma comment(lib, "q.lib")
 
 #include <WindQuantAPI.h>

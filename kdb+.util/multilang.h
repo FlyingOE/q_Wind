@@ -4,6 +4,18 @@
 
 #include <string>
 
+namespace q {
+
+	// Default code page used by kdb+
+	extern UINT const DEFAULT_CP;
+
+	std::string convert(UINT frCP, UINT toCP, char const* str);
+	std::string convert(UINT frCP, UINT toCP, std::string const& str);
+
+	K convert(UINT frCP, UINT toCP, K str) throw();
+
+}//namespace q
+
 namespace ml {
 
 	extern UINT const CP_GB18030;
@@ -18,14 +30,5 @@ namespace ml {
 	std::string  convert(UINT frCP, UINT toCP, char const* inStr);
 
 }//namespace ml
-
-namespace q {
-
-	std::string convert(UINT frCP, UINT toCP, char const* str);
-	std::string convert(UINT frCP, UINT toCP, std::string const& str);
-
-	K convert(UINT frCP, UINT toCP, K str) throw();
-
-}//namespace q
 
 #endif//__MULTILANG_H__

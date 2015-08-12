@@ -4,6 +4,7 @@
 #include "TDB_API_helper.h"
 
 #include "win32.util/Singleton.h"
+#include "kdb+.util/util.h"
 #include "kdb+.util/K_ptr.h"
 #include "kdb+.util/type_convert.h"
 #include "Wind.util/FieldMapper.h"

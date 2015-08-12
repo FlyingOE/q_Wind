@@ -4,6 +4,7 @@ static_assert(0, "Include Wind_API/MatrixDataParser.h instead!");
 
 #include "util.h"
 
+#include "kdb+.util/util.h"
 #include "kdb+.util/type_convert.h"
 #include "kdb+.util/type_traits.h"
 #include "kdb+.util/multilang.h"

@@ -3,6 +3,7 @@
 
 #include "TDB_API_helper.h"
 
+#include "kdb+.util/util.h"
 #include "kdb+.util/types.h"
 #include "kdb+.util/type_convert.h"
 

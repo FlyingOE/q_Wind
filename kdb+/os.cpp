@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "kdb+.h"
 
-#include "kdb+.util/util.h"
+#include "kdb+.util/types.h"
 #include "kdb+.util/multilang.h"
 #include <cassert>
 #include <vector>

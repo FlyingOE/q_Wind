@@ -3,6 +3,7 @@
 
 #include "TDB_API_helper.h"
 
+#include "kdb+.util/util.h"
 #include "kdb+.util/K_ptr.h"
 #include "Wind.util/FieldAccessors.h"
 #include <string>

@@ -1,11 +1,8 @@
 #include "stdafx.h"
 #include "util.h"
 
-#include "multilang.h"
 #include <cassert>
 #include <algorithm>
-
-UINT const q::DEFAULT_CP = CP_UTF8;
 
 namespace q {
 	namespace impl {

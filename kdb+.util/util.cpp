@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "util.h"
 
+#include "kdb+.hack/hack.h"
+
 #include <cassert>
 #include <algorithm>
 
@@ -12,7 +14,7 @@ namespace q {
 
 K q::error2q(char const* error, bool isSystemError) throw() {
 	impl::ERROR_STR = error;
-	K(*const reporter)(const S) = isSystemError ? orr : krr;
+	K(*const reporter)(S const) = isSystemError ? q::orr : q::krr;
 	return reporter(const_cast<S>(impl::ERROR_STR.c_str()));
 }
 

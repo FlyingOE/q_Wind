@@ -2,7 +2,7 @@
 #define __K_PTR_H__
 #pragma comment(lib, "kdb+.util.lib")
 
-#include "util.h"
+#include "types.h"
 
 #include <type_traits>
 #include <memory>	//C++11: std::unique_ptr<>

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Wind_API.h"
 
+#include "kdb+.util/types.h"
 #include "kdb+.util/util.h"
 #include "kdb+.util/type_convert.h"
 

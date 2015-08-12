@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cookbook.inl" />
+    <ClInclude Include="types.h" />
     <ClInclude Include="type_convert.h" />
     <ClInclude Include="util.h" />
     <ClInclude Include="K_ptr.h" />

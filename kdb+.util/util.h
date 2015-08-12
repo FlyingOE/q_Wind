@@ -5,8 +5,6 @@
 
 #include <string>
 
-#define K_NIL	(static_cast<K>(0))
-
 namespace q {
 
 	// Default code page used by kdb+

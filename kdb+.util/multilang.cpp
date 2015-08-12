@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "multilang.h"
 
+#include "types.h"
 #include "util.h"
 #include "type_convert.h"
 #include <cassert>

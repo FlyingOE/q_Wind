@@ -1,7 +1,9 @@
 #include "stdafx.h"
 #include "type_traits.h"
 
-#include "util.h"
+#include "types.h"
+
+#include <cmath>
 
 q::type_traits<void>::value_type const q::type_traits<void>::NULL_VAL = K_NIL;
 q::type_traits<C>::value_type const q::type_traits<C>::NULL_VAL = ' ';

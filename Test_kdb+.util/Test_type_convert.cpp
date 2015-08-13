@@ -398,6 +398,7 @@ namespace Test_q
 		TEST_METHOD(canConvertDATE)
 		{
 			double const EPSILON = .001 / 86400L / 2;
+
 			Assert::AreEqual(5703.5250254166667, q::DATE2q(42229.5250254166667), EPSILON,
 				L"DATE(2015.08.13T12:36:02.196) => D", LINE_INFO());
 

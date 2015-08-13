@@ -22,7 +22,7 @@ This project provides kdb+/q support for 3 distinct sets of APIs provided by [Wi
 
 ### Build
 
-如果您使用正版的Visual Studio 2013，则本工程只需要[Kx][]的[`k.h`][k.h]（须作[少许改动](#modification)）和[`q.lib`][q.lib]即可编译通过。
+如果您使用正版的Visual Studio 2013，则本工程只需要[Kx][]的[`k.h`][k.h]（须作[少许改动](#modification)）和[`q.lib`][q.lib]即可编译通过。（如需运行单元测试项目`Test_kdb+.util`，则还额外需要[`c.lib`][c.lib]和[`c.dll`][c.dll]。）
 
 如果您使用的是免费版的Visual Studio Express 2013，则本工程还额外需要[Windows Driver Kit (WDK) v7.1.0][WDK]中的头文件和库方可编译。为方便直接使用，[压缩包](./packaged/)里还包括了工程编译后生成的DLL（在Release目录中）。
 
@@ -49,6 +49,8 @@ This project provides kdb+/q support for 3 distinct sets of APIs provided by [Wi
 [Kx]:    http://www.kx.com
 [k.h]:   http://code.kx.com/wsvn/code/kx/kdb%2B/c/c/k.h
 [q.lib]: http://code.kx.com/wsvn/code/kx/kdb%2B/w32/q.lib
+[c.lib]: http://code.kx.com/wsvn/code/kx/kdb%2B/w32/c.lib
+[c.dll]: http://code.kx.com/wsvn/code/kx/kdb%2B/w32/c.dll
 [WDK]:   http://www.microsoft.com/en-us/download/details.aspx?id=11800
 [Wind Info]:      http://www.wind.com.cn/En/
 [Wind Quant API]: http://www.dajiangzhang.com/download

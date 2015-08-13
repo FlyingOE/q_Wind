@@ -395,10 +395,6 @@ namespace Test_q
 				L"240000000 => T", LINE_INFO());
 		}
 
-		TEST_CLASS_INITIALIZE(setUpDefaultTimeZone)
-		{
-			//q::UTC_OFFSET = 8;	// Beijing Standard Time
-		}
 		TEST_METHOD(canConvertDATE)
 		{
 			Assert::AreEqual(5703.5250254166667, q::DATE2q(42229.5250254166667), (.001 / 86400L / 2),
@@ -406,7 +402,6 @@ namespace Test_q
 
 			//@ref https://msdn.microsoft.com/en-us/library/82ab7w69.aspx
 #			pragma region
-			/*//TODO out of range for MSVC
 			Assert::AreEqual(-36529., q::DATE2q(-3.),
 				L"DATE(1899.12.27T00:00) => D", LINE_INFO());
 			Assert::AreEqual(-36527.5, q::DATE2q(-2.5),
@@ -441,7 +436,6 @@ namespace Test_q
 				L"DATE(1900.01.04T12:00) => D", LINE_INFO());
 			Assert::AreEqual(-36520.125, q::DATE2q(5.875),
 				L"DATE(1900.01.04T21:00) => D", LINE_INFO());
-			*/
 #			pragma endregion
 
 			Assert::AreEqual(-10957., q::DATE2q(25569.),

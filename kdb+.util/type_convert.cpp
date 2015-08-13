@@ -315,6 +315,44 @@ I q::date2q(std::string const& dateStr) throw(std::string) {
 	return date2q(dateStr.c_str());
 }
 
+std::time_t tm2time_t(std::tm const& tm) {
+#	ifdef _MSC_VER
+
+	//NOTE: MSVC's stdlib cannot handle anything before Unix epoch!
+	::SYSTEMTIME systime = {
+		tm.tm_year + 1900,
+		tm.tm_mon + 1,
+		tm.tm_wday,
+		tm.tm_mday,
+		tm.tm_hour,
+		tm.tm_min,
+		tm.tm_sec,
+		0
+	};
+	FILETIME filetime = { 0 };
+	if (!::SystemTimeToFileTime(&systime, &filetime))
+		return -1;
+
+	//@ref https://support.microsoft.com/en-us/kb/167296
+	LONGLONG const result = *reinterpret_cast<LONGLONG*>(&filetime) / 10000000LL - 11644473600LL;
+	if ((std::numeric_limits<std::time_t>::min() > result) || (result > std::numeric_limits<std::time_t>::max()))
+		return -1;
+	return static_cast<std::time_t>(result);
+
+#	else//_MSC_VER
+
+	// Detect local time zone offset and adjust accordingly
+	std::tm tzOffset = { 0 };
+	std::time_t tzOffsetProbe = 0;
+	std::localtime_r(&tzOffsetProbe, &tzOffset);
+	tm.tm_hour += tzOffset.tm_hour;
+	tm.tm_min += tzOffset.tm_min;
+
+	return std::mktime(&tm);
+
+#	endif//_MSC_VER
+}
+
 //@ref http://www.codeguru.com/cpp/cpp/cpp_mfc/article.php/c765/An-ATL-replacement-for-COleDateTime.htm
 //@ref http://www.codeproject.com/Articles/144159/Time-Format-Conversion-Made-Easy
 F q::DATE2q(::DATE date) throw(std::string) {
@@ -335,9 +373,9 @@ F q::DATE2q(::DATE date) throw(std::string) {
 
 	std::tm tm = { 0 };
 	// # days since 1899.12.30
-	J nDays1899 = static_cast<J>(date);
+	J nDays1899 = static_cast<J>(std::floor(date));
 	// Seconds since midnight
-	F nSecs = (date - std::floor(date)) * (60L * 60 * 24);
+	F nSecs = (date - nDays1899) * (60L * 60 * 24);
 	// # days since 0000.01.01
 	J nDaysAbs = nDays1899 + 693959L;
 	// Known: 0000.01.01 was a Saturday
@@ -416,25 +454,10 @@ F q::DATE2q(::DATE date) throw(std::string) {
 	// DST info is not available
 	tm.tm_isdst = -1;
 
-	// Detect local time zone offset and adjust accordingly
-	std::tm tzOffset = { 0 };
-	std::time_t tzOffsetProbe = 0;
-#	ifdef _MSC_VER
-	::errno_t err = ::localtime_s(&tzOffset, &tzOffsetProbe);
-	assert(err == 0);
-#	else
-	std::localtime_r(&tzOffsetProbe, &tzOffset);
-#	endif
-	tm.tm_hour += tzOffset.tm_hour;
-	tm.tm_min += tzOffset.tm_min;
-
 	// Convert back to a q datetime
-	std::time_t const time = std::mktime(&tm);
+	std::time_t const time = tm2time_t(tm);
 	if (time == -1) {
 		throw std::string("DATE out of range for system std::time_t");
-	}
-	if ((time < std::numeric_limits<I>::min()) || (std::numeric_limits<I>::max() < time)) {
-		throw std::string("DATE out of range for datetime");
 	}
 	return Cookbook::zu(time + (nSecs - nSecsOnly));
 }

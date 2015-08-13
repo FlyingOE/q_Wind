@@ -148,6 +148,7 @@
     <ClCompile Include="Wind_API.cpp" />
     <ClCompile Include="Wind_auth.cpp" />
     <ClCompile Include="Wind_backTest.cpp" />
+    <ClCompile Include="Wind_pms.cpp" />
     <ClCompile Include="Wind_strike.cpp" />
     <ClCompile Include="Wind_subscribe.cpp" />
   </ItemGroup>

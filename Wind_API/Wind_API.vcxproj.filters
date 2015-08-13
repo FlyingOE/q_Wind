@@ -104,6 +104,9 @@
     <ClCompile Include="Wind_backTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Wind_pms.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MatrixDataParser.inl">

@@ -103,19 +103,19 @@ extern "C" {
 		K params		//0h=() or 11h!0h
 		);
 
+	WIND_API K K_DECL Wind_edb(
+		K windCode,		//-11h or 10h
+		K beginTime,	//-14h or -15h
+		K endTime,		//-14h or -15h
+		K params		//0h=() or 11h!0h
+		);
+
 	WIND_API K K_DECL Wind_wupf(
 		K portfolioName,	//-11h or 10h
 		K tradeDates,	//-14h or 14h
 		K windCodes,	//-11h or 11h or 10h or 0h=(10h;...)
 		K quantities,	//-5h or 5h or -6h or 6h or -7h or 7h
 		K costPrices,	//-8h or 8h or -9h or 9h
-		K params		//0h=() or 11h!0h
-		);
-
-	WIND_API K K_DECL Wind_edb(
-		K windCode,		//-11h or 10h
-		K beginTime,	//-14h or -15h
-		K endTime,		//-14h or -15h
 		K params		//0h=() or 11h!0h
 		);
 

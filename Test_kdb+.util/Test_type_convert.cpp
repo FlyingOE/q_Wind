@@ -397,48 +397,49 @@ namespace Test_q
 
 		TEST_METHOD(canConvertDATE)
 		{
-			Assert::AreEqual(5703.5250254166667, q::DATE2q(42229.5250254166667), (.001 / 86400L / 2),
+			double const EPSILON = .001 / 86400L / 2;
+			Assert::AreEqual(5703.5250254166667, q::DATE2q(42229.5250254166667), EPSILON,
 				L"DATE(2015.08.13T12:36:02.196) => D", LINE_INFO());
 
 			//@ref https://msdn.microsoft.com/en-us/library/82ab7w69.aspx
 #			pragma region
-			Assert::AreEqual(-36529., q::DATE2q(-3.),
+			Assert::AreEqual(-36529., q::DATE2q(-3.), EPSILON,
 				L"DATE(1899.12.27T00:00) => D", LINE_INFO());
-			Assert::AreEqual(-36527.5, q::DATE2q(-2.5),
+			Assert::AreEqual(-36527.5, q::DATE2q(-2.5), EPSILON,
 				L"DATE(1899.12.28T12:00) => D", LINE_INFO());
-			Assert::AreEqual(-36528., q::DATE2q(-2.),
+			Assert::AreEqual(-36528., q::DATE2q(-2.), EPSILON,
 				L"DATE(1899.12.28T00:00) => D", LINE_INFO());
-			Assert::AreEqual(-36527., q::DATE2q(-1.),
+			Assert::AreEqual(-36527., q::DATE2q(-1.), EPSILON,
 				L"DATE(1899.12.29T00:00) => D", LINE_INFO());
-			Assert::AreEqual(-36525.25, q::DATE2q(-.75),
+			Assert::AreEqual(-36525.25, q::DATE2q(-.75), EPSILON,
 				L"DATE(1899.12.30T18:00) => D", LINE_INFO());
-			Assert::AreEqual(-36525.5, q::DATE2q(-.5),
+			Assert::AreEqual(-36525.5, q::DATE2q(-.5), EPSILON,
 				L"DATE(1899.12.30T12:00) => D", LINE_INFO());
-			Assert::AreEqual(-36525.75, q::DATE2q(-.25),
+			Assert::AreEqual(-36525.75, q::DATE2q(-.25), EPSILON,
 				L"DATE(1899.12.30T06:00) => D", LINE_INFO());
-			Assert::AreEqual(-36526., q::DATE2q(0.),
+			Assert::AreEqual(-36526., q::DATE2q(0.), EPSILON,
 				L"DATE(1899.12.30T00:00) => D", LINE_INFO());
-			Assert::AreEqual(-36525.75, q::DATE2q(.25),
+			Assert::AreEqual(-36525.75, q::DATE2q(.25), EPSILON,
 				L"DATE(1899.12.30T06:00) => D", LINE_INFO());
-			Assert::AreEqual(-36525.5, q::DATE2q(.5),
+			Assert::AreEqual(-36525.5, q::DATE2q(.5), EPSILON,
 				L"DATE(1899.12.30T12:00) => D", LINE_INFO());
-			Assert::AreEqual(-36525.25, q::DATE2q(.75),
+			Assert::AreEqual(-36525.25, q::DATE2q(.75), EPSILON,
 				L"DATE(1899.12.30T18:00) => D", LINE_INFO());
-			Assert::AreEqual(-36525., q::DATE2q(1.),
+			Assert::AreEqual(-36525., q::DATE2q(1.), EPSILON,
 				L"DATE(1899.12.31T00:00) => D", LINE_INFO());
-			Assert::AreEqual(-36524., q::DATE2q(2.),
+			Assert::AreEqual(-36524., q::DATE2q(2.), EPSILON,
 				L"DATE(1900.01.01T00:00) => D", LINE_INFO());
-			Assert::AreEqual(-36521., q::DATE2q(5.),
+			Assert::AreEqual(-36521., q::DATE2q(5.), EPSILON,
 				L"DATE(1900.01.04T00:00) => D", LINE_INFO());
-			Assert::AreEqual(-36520.75, q::DATE2q(5.25),
+			Assert::AreEqual(-36520.75, q::DATE2q(5.25), EPSILON,
 				L"DATE(1900.01.04T06:00) => D", LINE_INFO());
-			Assert::AreEqual(-36520.5, q::DATE2q(5.5),
+			Assert::AreEqual(-36520.5, q::DATE2q(5.5), EPSILON,
 				L"DATE(1900.01.04T12:00) => D", LINE_INFO());
-			Assert::AreEqual(-36520.125, q::DATE2q(5.875),
+			Assert::AreEqual(-36520.125, q::DATE2q(5.875), EPSILON,
 				L"DATE(1900.01.04T21:00) => D", LINE_INFO());
 #			pragma endregion
 
-			Assert::AreEqual(-10957., q::DATE2q(25569.),
+			Assert::AreEqual(-10957., q::DATE2q(25569.), EPSILON,
 				L"DATE(1970.01.01T00:00) => D", LINE_INFO());
 		}
 

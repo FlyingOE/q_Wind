@@ -8,8 +8,6 @@
 #include <ctime>
 #include <algorithm>
 
-int q::UTC_OFFSET = 0;
-
 #define ENUMmin	(20)
 #define ENUMmax	(76)
 
@@ -318,6 +316,7 @@ I q::date2q(std::string const& dateStr) throw(std::string) {
 }
 
 //@ref http://www.codeguru.com/cpp/cpp/cpp_mfc/article.php/c765/An-ATL-replacement-for-COleDateTime.htm
+//@ref http://www.codeproject.com/Articles/144159/Time-Format-Conversion-Made-Easy
 F q::DATE2q(::DATE date) throw(std::string) {
 	// Negative DATEs are not continuous!
 	if (date < 0) {
@@ -406,20 +405,34 @@ F q::DATE2q(::DATE date) throw(std::string) {
 	// Shortcut for integral (date-only) DATEs
 	J nSecsOnly = static_cast<J>(nSecs);
 	if (nSecs == 0.) {
-		tm.tm_hour = UTC_OFFSET;
-		tm.tm_min = tm.tm_sec = 0;
+		tm.tm_hour = tm.tm_min = tm.tm_sec = 0;
 	}
 	else {
 		tm.tm_sec = static_cast<int>(nSecsOnly % 60L);
 		J nMins = nSecsOnly / 60L;
 		tm.tm_min = static_cast<int>(nMins % 60);
-		tm.tm_hour = static_cast<int>(nMins / 60) + UTC_OFFSET;
+		tm.tm_hour = static_cast<int>(nMins / 60);
 	}
 	// DST info is not available
 	tm.tm_isdst = -1;
 
+	// Detect local time zone offset and adjust accordingly
+	std::tm tzOffset = { 0 };
+	std::time_t tzOffsetProbe = 0;
+#	ifdef _MSC_VER
+	::errno_t err = ::localtime_s(&tzOffset, &tzOffsetProbe);
+	assert(err == 0);
+#	else
+	std::localtime_r(&tzOffsetProbe, &tzOffset);
+#	endif
+	tm.tm_hour += tzOffset.tm_hour;
+	tm.tm_min += tzOffset.tm_min;
+
 	// Convert back to a q datetime
 	std::time_t const time = std::mktime(&tm);
+	if (time == -1) {
+		throw std::string("DATE out of range for system std::time_t");
+	}
 	if ((time < std::numeric_limits<I>::min()) || (std::numeric_limits<I>::max() < time)) {
 		throw std::string("DATE out of range for datetime");
 	}

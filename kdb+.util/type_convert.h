@@ -16,8 +16,6 @@
 
 namespace q {
 
-	extern int UTC_OFFSET;
-
 	struct tm_ext : std::tm {
 		int tm_millis;
 	};

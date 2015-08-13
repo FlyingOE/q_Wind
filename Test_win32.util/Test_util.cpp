@@ -13,9 +13,9 @@ namespace Test_util
 	{
 	public:
 
-		TEST_METHOD(canPrintUnsignedBytes) { printBytes<unsigned char>(); }
+		TEST_METHOD(canPrintUnsignedBytes) { testDumpBytes<unsigned char>(); }
 
-		TEST_METHOD(canPrintBytes) { printBytes<char>(); }
+		TEST_METHOD(canPrintBytes) { testDumpBytes<char>(); }
 
 		TEST_METHOD(canPrintPointer) {
 			int* const p = reinterpret_cast<int*>(69957480);
@@ -26,7 +26,7 @@ namespace Test_util
 		}
 
 		template <typename Byte>
-		void printBytes() {
+		void testDumpBytes() {
 			Byte const bytes[] = "\x00\x01\x02 0123456789ABCdef;/\xFE\xFF";
 
 			std::ostringstream buffer;

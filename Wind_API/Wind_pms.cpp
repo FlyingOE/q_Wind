@@ -7,6 +7,23 @@
 #include "kdb+.util/util.h"
 #include "kdb+.util/type_convert.h"
 
+WIND_API K K_DECL Wind_wpf(K portfolioName, K viewName, K params) {
+	std::wstring portf, view, paras;
+	try {
+		portf = q::q2WString(portfolioName);
+		view = q::q2WString(viewName);
+		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
+	}
+	catch (std::string const& error) {
+		return q::error2q(error);
+	}
+
+	Wind::callback::Result result;
+	::WQID const qid = ::WPF(portf.c_str(), view.c_str(), paras.c_str(),
+		&Wind::callback::strike, result.dup());
+	return result.waitFor(qid);
+}
+
 WIND_API K K_DECL Wind_wupf(K portfolioName, K tradeDates, K windCodes, K quantities, K costPrices, K params) {
 	std::wstring portf, dates, codes, qtys, costs, paras;
 	try {

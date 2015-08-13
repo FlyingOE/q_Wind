@@ -127,6 +127,12 @@ EDB:{[F;c;b;e;p]
             impl.quantData2Table F[c;b;e;impl.dict2Strings p]
     }DLL 2:(`Wind_edb;4);
 
+/q) .wind.WPF[`TestStrategy;...;...]
+/q) .wind.WPF[`TestStrategy;...;...]
+WPF:portfReport:{[F;n;v;p]
+    F[n;v;impl.dict2Strings p]
+    }DLL 2:(`Wind_wpf;3);
+
 /q) .wind.WUPF[`TestStrategy;2015.06.01;`600000.SH;1000;17.50;`Owner`HedgeType`Direction!`Wxxxxxxx`Spec`Long]
 /q) .wind.WUPF[`TestStrategy;2015.06.01 2015.06.02;`600000.SH`600004.SH;1000 3000;17.50 3.45;`Owner`HedgeType`Direction!(`Wxxxxxx;`Spec`Spec;`Long`Short)]
 WUPF:portfUpdate:{[F;n;d;c;q;x;p]

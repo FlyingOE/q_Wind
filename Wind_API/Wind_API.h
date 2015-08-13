@@ -110,6 +110,12 @@ extern "C" {
 		K params		//0h=() or 11h!0h
 		);
 
+	WIND_API K K_DECL Wind_wpf(
+		K portfolioName,	//-11h or 10h
+		K viewName,		//-11h or 10h
+		K params		//0h=() or 11h!0h
+		);
+
 	WIND_API K K_DECL Wind_wupf(
 		K portfolioName,	//-11h or 10h
 		K tradeDates,	//-14h or 14h

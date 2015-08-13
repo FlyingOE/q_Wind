@@ -318,7 +318,7 @@ I q::date2q(std::string const& dateStr) throw(std::string) {
 std::time_t tm2time_t(std::tm const& tm) {
 #	ifdef _MSC_VER
 
-	//NOTE: MSVC's stdlib cannot handle anything before Unix epoch!
+	//NOTE: MSVC's <time.h> cannot handle anything before Unix epoch! Use Win32 API instead.
 	::SYSTEMTIME systime = {
 		tm.tm_year + 1900,
 		tm.tm_mon + 1,
@@ -331,12 +331,12 @@ std::time_t tm2time_t(std::tm const& tm) {
 	};
 	FILETIME filetime = { 0 };
 	if (!::SystemTimeToFileTime(&systime, &filetime))
-		return -1;
+		return static_cast<std::time_t>(-1);
 
 	//@ref https://support.microsoft.com/en-us/kb/167296
 	LONGLONG const result = *reinterpret_cast<LONGLONG*>(&filetime) / 10000000LL - 11644473600LL;
 	if ((std::numeric_limits<std::time_t>::min() > result) || (result > std::numeric_limits<std::time_t>::max()))
-		return -1;
+		return static_cast<std::time_t>(-1);
 	return static_cast<std::time_t>(result);
 
 #	else//_MSC_VER
@@ -456,7 +456,7 @@ F q::DATE2q(::DATE date) throw(std::string) {
 
 	// Convert back to a q datetime
 	std::time_t const time = tm2time_t(tm);
-	if (time == -1) {
+	if (time == static_cast<std::time_t>(-1)) {
 		throw std::string("DATE out of range for system std::time_t");
 	}
 	return Cookbook::zu(time + (nSecs - nSecsOnly));

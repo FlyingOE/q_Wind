@@ -11,7 +11,7 @@
 
 #define BEGIN_ENUM_STRING(E)	\
 	template<>	\
-	struct ::enum_util::Enum<E> : public ::enum_util::EnumBase<Enum<E>, E> {	\
+	struct ::util::Enum<E> : public ::util::EnumBase<Enum<E>, E> {	\
 		static void registerAll()
 //		{
 #define ENUM_STRING(e)	\
@@ -22,7 +22,7 @@
 	}
 
 
-namespace enum_util {
+namespace util {
 
 	template <typename C, typename E>
 	class EnumBase {
@@ -58,7 +58,7 @@ namespace enum_util {
 		static void registerAll();
 	};
 
-}//namespace enum_util
+}//namespace util
 
 
 #include "EnumUtil.inl"

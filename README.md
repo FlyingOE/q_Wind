@@ -30,8 +30,17 @@ This project provides kdb+/q support for 3 distinct sets of APIs provided by [Wi
 
 #### <a name="modification"></a>对[`k.h`][k.h]所作的改动：
 
-1. Line 90: `extern double log(double);`   
-   Comment out this line to avoid conflicting signature in `math.h` from MSVC.
+1. Lines 88&ndash;89:
+        
+        #define isnan _isnan
+        #define finite _finite
+        
+   Comment out these two lines to avoid masking corresponding C++11 functions from MSVC 2013.
+2. Line 90:
+        
+        extern double log(double);
+
+   Comment out this line to avoid conflicting signature in `math.h` from MSVC 2013.
 
 ### Change Log
 

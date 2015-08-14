@@ -74,22 +74,24 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="msvc.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SocketPair.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="util.h" />
+    <ClInclude Include="hexDump.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="msvc.cpp" />
     <ClCompile Include="SocketPair.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="util.cpp" />
+    <ClCompile Include="hexDump.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="util.inl">
+    <ClInclude Include="hexDump.inl">
       <FileType>Document</FileType>
     </ClInclude>
   </ItemGroup>

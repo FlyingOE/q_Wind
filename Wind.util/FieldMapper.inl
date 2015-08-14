@@ -3,7 +3,7 @@ static_assert(0, "Include Wind.util/FieldMapper.h instead!");
 #endif
 
 #include "kdb+.util/K_ptr.h"
-#include "win32.util/util.h"
+#include "win32.util/hexDump.h"
 
 #include <sstream>
 

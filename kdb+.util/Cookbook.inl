@@ -2,7 +2,7 @@
 #ifndef __COOKBOOK_INL__
 #define __COOKBOOK_INL__
 
-#include "win32.util/util.h"
+#include "win32.util/msvc.h"
 
 #include <cassert>
 #include <ctime>

@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "util.h"
+#include "msvc.h"
 
 #if defined(_MSC_VER) && (_MSC_VER <= 1800)
 //@ref http://stackoverflow.com/questions/9052224/error4error-c3861-snprintf-identifier-not-found
@@ -8,11 +8,3 @@
 #include <cstdio>
 int(*const std::snprintf)(char*, size_t, char const*, ...) = ::sprintf_s;
 #endif
-
-util::hexByteGenerator util::hexBytes(char const* p, size_t n, bool reverse) {
-	return hexBytes(reinterpret_cast<unsigned char const*>(p), n, reverse);
-}
-
-util::hexByteGenerator util::hexBytes(unsigned char const* p, size_t n, bool reverse) {
-	return hexByteGenerator(p, p + n, reverse);
-}

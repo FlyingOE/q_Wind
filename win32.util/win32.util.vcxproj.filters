@@ -27,13 +27,16 @@
     <ClInclude Include="SocketPair.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="util.h">
+    <ClInclude Include="Singleton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="util.inl">
+    <ClInclude Include="hexDump.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hexDump.inl">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Singleton.h">
+    <ClInclude Include="msvc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,7 +47,10 @@
     <ClCompile Include="SocketPair.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="util.cpp">
+    <ClCompile Include="hexDump.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="msvc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

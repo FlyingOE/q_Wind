@@ -2,11 +2,10 @@
 #include "CppUnitTest.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-#include "win32.util/util.h"
+#include "win32.util/hexDump.h"
 
 #include <sstream>
 
-#include <iostream>
 namespace Test_util
 {		
 	TEST_CLASS(Test_hexBytes)

@@ -1,5 +1,5 @@
-#ifndef __WIN32_UTIL__UTIL_H__
-static_assert(0, "Include win32.util/util.h instead!");
+#ifndef __HEXDUMP_H__
+static_assert(0, "Include win32.util/hexDump.h instead!");
 #endif
 
 template <typename T>

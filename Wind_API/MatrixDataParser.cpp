@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "MatrixDataParser.h"
 
-#include "win32.util/util.h"
+#include "win32.util/hexDump.h"
 
 
 Wind::MatrixDataParser::MatrixDataParser(::VARIANT const& array) : data_(array) {

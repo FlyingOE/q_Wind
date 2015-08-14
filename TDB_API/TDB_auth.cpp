@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "TDB_API.h"
 
-#include "win32.util/util.h"
+#include "win32.util/hexDump.h"
 #include "kdb+.util/util.h"
 #include "kdb+.util/type_convert.h"
 #include <cstdio>

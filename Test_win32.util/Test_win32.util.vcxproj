@@ -90,7 +90,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Test_util.cpp" />
+    <ClCompile Include="Test_hexDump.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\win32.util\win32.util.vcxproj">

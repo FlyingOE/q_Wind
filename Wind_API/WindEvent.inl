@@ -2,7 +2,7 @@
 static_assert(0, "Include Wind_API/WindEvent.h instead!");
 #endif
 
-#include "win32.util/util.h"
+#include "win32.util/hexDump.h"
 
 template <typename Char, typename Traits>
 std::basic_ostream<Char, Traits>& Wind::operator<<(std::basic_ostream<Char, Traits>& os, ::WQEvent const& event) {

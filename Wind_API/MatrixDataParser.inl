@@ -8,7 +8,7 @@ static_assert(0, "Include Wind_API/MatrixDataParser.h instead!");
 #include "kdb+.util/type_convert.h"
 #include "kdb+.util/type_traits.h"
 #include "kdb+.util/multilang.h"
-#include "win32.util/util.h"
+#include "win32.util/hexDump.h"
 #include <cassert>
 #include <sstream>
 

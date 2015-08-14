@@ -19,6 +19,29 @@ namespace Test_q
 		TEST_METHOD(canConvertToDecimal)
 		{
 			testNumberConvert<long long>(&q::q2Dec);
+
+			q::K_ptr data;
+
+			data.reset(kh(nh));
+			Assert::AreEqual<long long>(nh, q::q2Dec(data.get()),
+				L"q)0Nh", LINE_INFO());
+			data.reset(kh(wh));
+			Assert::AreEqual<long long>(wh, q::q2Dec(data.get()),
+				L"q)0Wh", LINE_INFO());
+
+			data.reset(ki(ni));
+			Assert::AreEqual<long long>(ni, q::q2Dec(data.get()),
+				L"q)0Ni", LINE_INFO());
+			data.reset(ki(wi));
+			Assert::AreEqual<long long>(wi, q::q2Dec(data.get()),
+				L"q)0Wi", LINE_INFO());
+
+			data.reset(kj(nj));
+			Assert::AreEqual<long long>(nj, q::q2Dec(data.get()),
+				L"q)0Nj", LINE_INFO());
+			data.reset(kj(wj));
+			Assert::AreEqual<long long>(wj, q::q2Dec(data.get()),
+				L"q)0Wj", LINE_INFO());
 		}
 
 		TEST_METHOD(canConvertToFloat)
@@ -30,10 +53,22 @@ namespace Test_q
 			data.reset(ke(967.23981));
 			Assert::AreEqual(static_cast<double>(967.23981f), q::q2Fp(data.get()), 0.,
 				L"q)967.23981e", LINE_INFO());
+			data.reset(ke(nf));
+			Assert::IsTrue(std::isnan(q::q2Fp(data.get())),
+				L"q)0Ne", LINE_INFO());
+			data.reset(ke(wf));
+			Assert::IsTrue(std::isinf(q::q2Fp(data.get())),
+				L"q)0We", LINE_INFO());
 
 			data.reset(kf(7413760.571230203088));
 			Assert::AreEqual(7413760.571230203088, q::q2Fp(data.get()), 0.,
 				L"q)7413760.571230203088f", LINE_INFO());
+			data.reset(kf(nf));
+			Assert::IsTrue(std::isnan(q::q2Fp(data.get())),
+				L"q)0n", LINE_INFO());
+			data.reset(kf(wf));
+			Assert::IsTrue(std::isinf(q::q2Fp(data.get())),
+				L"q)0w", LINE_INFO());
 		}
 		
 		template <typename T, typename Func>
@@ -63,6 +98,7 @@ namespace Test_q
 			data.reset(kj(7413760571230203088L));
 			NUMCONV_TESTER(7413760571230203088LL,
 				L"q)7413760571230203088j", LINE_INFO());
+
 
 #			undef NUMCONV_TESTER
 		}

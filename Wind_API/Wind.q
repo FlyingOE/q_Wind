@@ -131,15 +131,25 @@ EDB:{[F;c;b;e;p]
 /q) .wind.WPF["历史放量组合";`PMS.HoldingDaily;`owner`reportcurrency`tradedate!`W4351010`CNY,2015.08.13]
 /q) .wind.WPF["历史放量组合";`PMS.PortfolioInterval;`owner`reportcurrency`startdate`enddate!`W4351010`CNY,2015.07.13 2015.08.13]
 /q) .wind.WPF["历史放量组合";`PMS.HoldingInterval;`owner`reportcurrency`startdate`enddate!`W4351010`CNY,2015.07.13 2015.08.13]
+/q) .wind.WPF["体验产品";`AMS.PortfolioDailySerial;`reportcurrency`startdate`enddate!`CNY,2015.07.13 2015.08.13]
+/q) .wind.WPF["体验产品";`AMS.HoldingDaily;`reportcurrency`tradedate!`CNY,2015.08.13]
+/q) .wind.WPF["体验产品";`AMS.PortfolioInterval;`reportcurrency`startdate`enddate!`CNY,2015.07.13 2015.08.13]
+/q) .wind.WPF["体验产品";`AMS.HoldingInterval;`reportcurrency`startdate`enddate!`CNY,2015.07.13 2015.08.13]
 WPF:portfReport:{[F;n;v;p]
-    fieldMaps:`PMS.PortfolioDaily`PMS.PortfolioInterval`PMS.HoldingDaily`PMS.HoldingInterval!{
+    fieldMaps:(`AMS.PortfolioDailySerial`AMS.HoldingDaily`AMS.HoldingInterval`AMS.PortfolioInterval,
+        `PMS.PortfolioDaily`PMS.PortfolioInterval`PMS.HoldingDaily`PMS.HoldingInterval)!{
+            update"D"$string trade_date from x
+        },(2#{
+            update`$asset_code,`$asset_name,{$[x~();`;`$x]}'[asset_classification],`$asset_account,`$brokers_name,`$trade_currency from x
+        }),(
+        ::
+        ),{
             update`$portfolio_name,`$report_currency,"D"$string trade_date from x
         },{
             update`$report_currency from x
         },2#{
             update`$asset_code,`$asset_name,{$[x~();`;`$x]}'[asset_classification],`$trade_currency from x
         };
-    if[(::)~fieldMaps v;'"unknown view `",string v];
     fieldMaps[v]impl.quantData2Table F[n;v;impl.dict2Strings p]
     }DLL 2:(`Wind_wpf;3);
 

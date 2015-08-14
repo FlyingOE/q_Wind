@@ -27,9 +27,6 @@
     <ClInclude Include="FieldAccessors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="EnumUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="StringEncoders.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -46,9 +43,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="EnumUtil.inl">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include="FieldAccessors.inl">
       <Filter>Source Files</Filter>
     </None>

@@ -74,6 +74,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EnumUtil.h" />
     <ClInclude Include="msvc.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="SocketPair.h" />
@@ -96,6 +97,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <None Include="EnumUtil.inl" />
     <None Include="Singleton.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

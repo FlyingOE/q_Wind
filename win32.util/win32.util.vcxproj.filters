@@ -39,6 +39,9 @@
     <ClInclude Include="msvc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EnumUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -56,6 +59,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Singleton.inl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="EnumUtil.inl">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

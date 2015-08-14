@@ -9,12 +9,15 @@
 //@ref https://msdn.microsoft.com/en-us/library/dn607301.aspx
 #include <iterator>	//MSVC: stdext::make_unchecked_array_iterator
 #endif
+#include <sstream>
 
 std::string Wind::util::error2Text(::WQErr error) {
 	TCHAR const* msg = ::WErr(error, eENG);
 	static_assert(std::is_same<TCHAR, wchar_t>::value, "UNICODE/_UNICODE not defined");
 	try {
-		return ml::convert(q::DEFAULT_CP, msg);
+		std::ostringstream buffer;
+		buffer << '(' << error << ") " << ml::convert(q::DEFAULT_CP, msg);
+		return buffer.str();
 	}
 	catch (std::string const& ex) {
 		return ex;

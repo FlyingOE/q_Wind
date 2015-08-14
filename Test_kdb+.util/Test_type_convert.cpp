@@ -12,7 +12,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace Test_q
 {		
-	TEST_CLASS(TestQ2Cpp)
+	TEST_CLASS(Test_q2cpp)
 	{
 	public:
 

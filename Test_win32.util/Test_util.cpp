@@ -9,7 +9,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 #include <iostream>
 namespace Test_util
 {		
-	TEST_CLASS(TestHexBytes)
+	TEST_CLASS(Test_hexBytes)
 	{
 	public:
 

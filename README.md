@@ -16,7 +16,7 @@ This project provides kdb+/q support for 3 distinct sets of APIs provided by [Wi
   * *暂停开发（推荐使用各种语言的TDF API直接写feedhandler程序，这样做远比把TDF封包成DLL要容易得多）*
 * [Wind TDB API][]——对应TDF API的历史市场数据接口。
 
-本项目是使用Visual Studio 2013编译的工程。与[zwz][]的《[WindKdb+数据及交易接口V1.1][WindKdb+]》不同，本工程对Wind Quant API的支持直接使用`WindQuantData.dll`的API而不须使用基于COM的`WAPIWrapperCpp.dll`。虽然没有使用`WAPIWrapperCpp.dll`，不过本接口已经把所有接数的函数封装为同步函数（`.wind.WSQ`除外），以方便在q程序内使用。
+本项目是使用Visual Studio 2013编译的工程。与[zwz][]的《[WindKdb+数据及交易接口V1.1][WindKdb+]》不同，本工程对Wind Quant API的支持直接使用`WindQuantData.dll`的API而不须使用基于COM的`WAPIWrapperCpp.dll`。虽然没有使用`WAPIWrapperCpp.dll`，不过本接口已经把所有接数的函数封装为同步函数（`WSQ`/`TDQ`数据订阅函数除外），以方便在q程序内使用。
 
 ### License
 

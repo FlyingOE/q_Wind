@@ -42,6 +42,9 @@
     <ClInclude Include="EnumUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="StringUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -62,6 +65,9 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="EnumUtil.inl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="StringUtil.inl">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

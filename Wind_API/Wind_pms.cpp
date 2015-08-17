@@ -4,6 +4,7 @@
 #include "util.h"
 #include "Wind_strike.h"
 
+#include "win32.util/StringUtil.h"
 #include "kdb+.util/util.h"
 #include "kdb+.util/type_convert.h"
 
@@ -28,7 +29,9 @@ WIND_API K K_DECL Wind_wupf(K portfolioName, K tradeDates, K windCodes, K quanti
 	std::wstring portf, dates, codes, qtys, costs, paras;
 	try {
 		portf = q::q2WString(portfolioName);
-		dates = Wind::util::qList2DateStrJoin(tradeDates, L',');
+		dates = util::replaceAll(		//TODO Why is WUPF's date format different from others?!
+			Wind::util::qList2DateStrJoin(tradeDates, L','),
+			L"-", L"");
 		codes = Wind::util::qList2WStringJoin(windCodes, L',');
 		qtys = Wind::util::qList2DecStrJoin(quantities, L',');
 		costs = Wind::util::qList2FpStrJoin(costPrices, L',');

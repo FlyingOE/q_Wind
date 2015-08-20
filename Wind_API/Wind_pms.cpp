@@ -33,7 +33,7 @@ WIND_API K K_DECL Wind_wupf(K portfolioName, K tradeDates, K windCodes, K quanti
 			Wind::util::qList2DateStrJoin(tradeDates, L','),
 			L"-", L"");
 		codes = Wind::util::qList2WStringJoin(windCodes, L',');
-		qtys = Wind::util::qList2DecStrJoin(quantities, L',');
+		qtys = Wind::util::qList2FpStrJoin(quantities, L',');
 		costs = Wind::util::qList2FpStrJoin(costPrices, L',');
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}

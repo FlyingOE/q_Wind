@@ -8,6 +8,9 @@
 
 DLL:hsym`$("Wind_API");
 
+// Wind 查询速度限制：查询间隔（milliseconds）
+QueryGap:3000;
+
 /q) .wind.getTimeout[]
 /q) .wind.setTimeout 30*1000
 getTimeout:DLL 2:(`getTimeout;1);
@@ -156,7 +159,7 @@ WPF:portfReport:{[F;n;v;p]
 /q) .wind.WUPF[`TestStrategy;2015.06.01;`600000.SH;1000;17.50;`Owner`HedgeType`Direction!`Wxxxxxxx`Spec`Long]
 /q) .wind.WUPF[`TestStrategy;2015.06.01 2015.06.02;`600000.SH`600004.SH;1000 3000;17.50 3.45;`Owner`HedgeType`Direction!(`Wxxxxxx;`Spec`Spec;`Long`Short)]
 WUPF:portfUpdate:{[F;n;d;c;q;x;p]
-    F[n;(),d;(),c;(),q;(),x;impl.dict2Strings p]
+    impl.quantData2Table F[n;(),d;(),c;(),q;(),x;impl.dict2Strings p]
     }DLL 2:(`Wind_wupf;6);
 
 /==============================================================================

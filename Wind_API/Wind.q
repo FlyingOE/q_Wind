@@ -28,28 +28,28 @@ start:{
 
 /q) .wind.WSD[`000001.SZ;`open`high`low`close`volume;2014.01.01;.z.D;()]
 /q) .wind.WSD[`000001.SZ`600000.SH;`volume;2014.01.01;.z.D;()]
-WSD:dateSeq:{[F;c;i;b;e;p]
-     delete code from
+WSD:{[F;c;i;b;e;p]
+    impl.windHack delete code from
         update`date$ts,sym:`$code from
             impl.quantData2Table F[(),c;(),i;b;e;impl.dict2Strings p]
     }DLL 2:(`Wind_wsd;5);
 
 /q) .wind.WSS[`000001.SZ`000002.SZ`600000.SH;`open`high`low`close`volume;`tradeDate`cycle!(2015.02.12;`W)]
-WSS:snapshot:{[F;c;i;p]
+WSS:{[F;c;i;p]
     delete code from
         update sym:`$code from
             impl.quantData2Table F[(),c;(),i;impl.dict2Strings p]
     }DLL 2:(`Wind_wss;3);
 
 /q) .wind.WSI[`000001.SZ;`open`high`low`close`volume;2014.01.01T00:00:00;.z.Z;(1#`BarSize)!1#1]
-WSI:intradaySeq:{[F;c;i;b;e;p]
+WSI:{[F;c;i;b;e;p]
     delete code from
         update sym:`$code from
             impl.quantData2Table F[c;(),i;b;e;impl.dict2Strings p]
     }DLL 2:(`Wind_wsi;5);
 
 /q) .wind.WST[`000001.SZ;`last`bid`ask`bid1`bsize1`ask1`asize1;2015.01.01T00:00:00;.z.Z;()]
-WST:intradayTicks:{[F;c;i;b;e;p]
+WST:{[F;c;i;b;e;p]
     delete code from
         update sym:`$code from
             impl.quantData2Table F[c;(),i;b;e;impl.dict2Strings p]
@@ -67,7 +67,7 @@ WST:intradayTicks:{[F;c;i;b;e;p]
 /q) .wind.WSET["ETFConstituent";`date`windcode!2015.04.09,`159901.OF]
 /q) .wind.WSET["LeveragedFundInfo";`date`windcode!2015.04.09,`161812.OF]
 /q) .wind.WSET["FundMarketSizeChange";`startdate`enddate`frequency!(2014.04.09;2015.04.09;"日")]
-WSET:dataSet:{[F;r;p]
+WSET:{[F;r;p]
     / Field data types normalization logic
     mapping:([]
         C:`code`enddate`wind_code`sec_name,syms;
@@ -89,10 +89,10 @@ WSET:dataSet:{[F;r;p]
 /q) cb:.wind.rtCallback{show(x;.z.P;y)}
 /q) qid:.wind.WSQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();`cb]
 /q) qid:.wind.TDQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();`cb]
-WSQ:rtQuotes:{[F;c;i;p;f]
+WSQ:{[F;c;i;p;f]
 	F[(),c;(),i;impl.dict2Strings$[p~();()!();p],(1#`REALTIME)!1#1b;f]
 	}DLL 2:(`Wind_wsq;4);
-TDQ:tdQuotes:{[F;c;i;p;f]
+TDQ:{[F;c;i;p;f]
 	F[(),c;(),i;impl.dict2Strings$[p~();()!();p],(1#`REALTIME)!1#1b;f]
 	}DLL 2:(`Wind_tdq;4);
 rtCallback:{[f;q;d]
@@ -138,7 +138,7 @@ EDB:{[F;c;b;e;p]
 /q) .wind.WPF["体验产品";`AMS.HoldingDaily;`reportcurrency`tradedate!`CNY,2015.08.13]
 /q) .wind.WPF["体验产品";`AMS.PortfolioInterval;`reportcurrency`startdate`enddate!`CNY,2015.07.13 2015.08.13]
 /q) .wind.WPF["体验产品";`AMS.HoldingInterval;`reportcurrency`startdate`enddate!`CNY,2015.07.13 2015.08.13]
-WPF:portfReport:{[F;n;v;p]
+WPF:{[F;n;v;p]
     fieldMaps:(`AMS.PortfolioDailySerial`AMS.HoldingDaily`AMS.HoldingInterval`AMS.PortfolioInterval,
         `PMS.PortfolioDaily`PMS.PortfolioInterval`PMS.HoldingDaily`PMS.HoldingInterval)!{
             update"D"$string trade_date from x
@@ -158,7 +158,7 @@ WPF:portfReport:{[F;n;v;p]
 
 /q) .wind.WUPF[`TestStrategy;2015.06.01;`600000.SH;1000;17.50;`Owner`HedgeType`Direction!`Wxxxxxxx`Spec`Long]
 /q) .wind.WUPF[`TestStrategy;2015.06.01 2015.06.02;`600000.SH`600004.SH;1000 3000;17.50 3.45;`Owner`HedgeType`Direction!(`Wxxxxxx;`Spec`Spec;`Long`Short)]
-WUPF:portfUpdate:{[F;n;d;c;q;x;p]
+WUPF:{[F;n;d;c;q;x;p]
     impl.quantData2Table F[n;(),d;(),c;(),q;(),x;impl.dict2Strings p]
     }DLL 2:(`Wind_wupf;6);
 
@@ -193,7 +193,15 @@ impl.dict2Strings:{
             '"nyi - unsupported type"]
         }each value x;
     };
-    
+
+// Hacks to deal with quirks in the data set returned from WindQuantAPI.
+impl.windHack:{[T]
+    if[`MAXUPORDOWN in cols T;
+        T:update{$[()~x;0Ni;-6h=type x;x;`int$x]}each MAXUPORDOWN
+            from T];
+    :T
+    };
+
 \d .
 
 \

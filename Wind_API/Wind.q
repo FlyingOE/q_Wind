@@ -28,6 +28,7 @@ start:{
 
 /q) .wind.WSD[`000001.SZ;`open`high`low`close`volume;2014.01.01;.z.D;()]
 /q) .wind.WSD[`000001.SZ`600000.SH;`volume;2014.01.01;.z.D;()]
+/q) .wind.WSD[`000001.SZ;`open`high`low`close`volume;"ED-1M";.z.D;()]     /Latest 1-month data
 WSD:{[F;c;i;b;e;p]
     impl.windHack delete code from
         update`date$ts,sym:`$code from

@@ -74,8 +74,18 @@ WIND_API K K_DECL Wind_wsd(K windCodes, K indicators, K beginDate, K endDate, K 
 	try {
 		codes = Wind::util::qList2WStringJoin(windCodes, L',');
 		indis = Wind::util::qList2WStringJoin(indicators, L',');
-		begin = Wind::util::q2DateStr(beginDate);
-		end   = Wind::util::q2DateStr(endDate);
+		try {
+			begin = Wind::util::q2DateStr(beginDate);
+		}
+		catch (std::string const& dateError) {
+			try {
+				begin = q::q2WString(beginDate);
+			}
+			catch (std::string const& strError) {
+				throw dateError + " & " + strError;
+			}
+		}
+		end = Wind::util::q2DateStr(endDate);
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
 	catch (std::string const& error) {

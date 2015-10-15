@@ -37,7 +37,7 @@ extern "C" {
 	WIND_API K K_DECL Wind_wsd(
 		K windCodes,	//-11h or 11h or 10h or 0h=(10h;...)
 		K indicators,	//-11h or 11h
-		K beginDate,	//-14h
+		K beginDate,	//-14h or 10h
 		K endDate,		//-14h
 		K params		//0h=() or 11h!0h
 		);

@@ -231,7 +231,14 @@ K Wind_subscribe(::WQID(WINAPI *func)(LPCWSTR, LPCWSTR, LPCWSTR, ::IEventHandler
 }
 
 WIND_API K K_DECL Wind_wsq(K windCodes, K indicators, K params, K callback) {
-	return Wind_subscribe(&::WSQ, windCodes, indicators, params, callback);
+	if ((callback != K_NIL) && (callback->t == 101) && (callback->g == 0)) {
+		// (::) => strike
+		return Wind_wsq_strike(windCodes, indicators, params);
+	}
+	else {
+		// (`*) => subscribe
+		return Wind_subscribe(&::WSQ, windCodes, indicators, params, callback);
+	}
 }
 
 WIND_API K K_DECL Wind_tdq(K windCodes, K indicators, K params, K callback) {

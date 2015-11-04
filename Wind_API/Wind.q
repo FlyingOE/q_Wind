@@ -30,30 +30,26 @@ start:{
 /q) .wind.WSD[`000001.SZ`600000.SH;`volume;2014.01.01;.z.D;()]
 /q) .wind.WSD[`000001.SZ;`open`high`low`close`volume;"ED-1M";.z.D;()]     /Latest 1-month data
 WSD:{[F;c;i;b;e;p]
-    impl.windHack delete code from
-        update`date$ts,sym:`$code from
-            impl.quantData2Table F[(),c;(),i;b;e;impl.dict2Strings p]
+    impl.windHack delete code from update`date$ts,sym:`$code from
+        impl.quantData2Table F[(),c;(),i;b;e;impl.dict2Strings p]
     }DLL 2:(`Wind_wsd;5);
 
 /q) .wind.WSS[`000001.SZ`000002.SZ`600000.SH;`open`high`low`close`volume;`tradeDate`cycle!(2015.02.12;`W)]
 WSS:{[F;c;i;p]
-    delete code from
-        update sym:`$code from
-            impl.quantData2Table F[(),c;(),i;impl.dict2Strings p]
+    delete code from update sym:`$code from
+        impl.quantData2Table F[(),c;(),i;impl.dict2Strings p]
     }DLL 2:(`Wind_wss;3);
 
 /q) .wind.WSI[`000001.SZ;`open`high`low`close`volume;2014.01.01T00:00:00;.z.Z;(1#`BarSize)!1#1]
 WSI:{[F;c;i;b;e;p]
-    delete code from
-        update sym:`$code from
-            impl.quantData2Table F[c;(),i;b;e;impl.dict2Strings p]
+    delete code from update sym:`$code from
+        impl.quantData2Table F[c;(),i;b;e;impl.dict2Strings p]
     }DLL 2:(`Wind_wsi;5);
 
 /q) .wind.WST[`000001.SZ;`last`bid`ask`bid1`bsize1`ask1`asize1;2015.01.01T00:00:00;.z.Z;()]
 WST:{[F;c;i;b;e;p]
-    delete code from
-        update sym:`$code from
-            impl.quantData2Table F[c;(),i;b;e;impl.dict2Strings p]
+    delete code from update sym:`$code from
+        impl.quantData2Table F[c;(),i;b;e;impl.dict2Strings p]
     }DLL 2:(`Wind_wst;5);
 
 /q) .wind.WSET[`SectorConstituent;`date`sector!(2015.02.13;"全部A股")]
@@ -88,10 +84,13 @@ WSET:{[F;r;p]
     }DLL 2:(`Wind_wset;2);
 
 /q) cb:.wind.rtCallback{show(x;.z.P;y)}
-/q) qid:.wind.WSQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();`cb]
+/q) qid:.wind.WSQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();`cb]    //subscribe
+/q)     .wind.WSQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();::]     //strike
 /q) qid:.wind.TDQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();`cb]
 WSQ:{[F;c;i;p;f]
-	F[(),c;(),i;impl.dict2Strings$[p~();()!();p],(1#`REALTIME)!1#1b;f]
+    $[not(::)~f;(::);
+        {delete code from update sym:`$code from impl.quantData2Table x}]
+        F[(),c;(),i;impl.dict2Strings$[p~();()!();p],(1#`REALTIME)!1#not(::)~f;f]
 	}DLL 2:(`Wind_wsq;4);
 TDQ:{[F;c;i;p;f]
 	F[(),c;(),i;impl.dict2Strings$[p~();()!();p],(1#`REALTIME)!1#1b;f]
@@ -126,9 +125,8 @@ tDaysCount:{[F;b;e;p]
 
 /q) .wind.EDB[`M0009808;2011.01.01;2015.06.29;()]
 EDB:{[F;c;b;e;p]
-    delete ts,code from
-        update date:"d"$ts,sym:`$code from
-            impl.quantData2Table F[c;b;e;impl.dict2Strings p]
+    delete ts,code from update date:"d"$ts,sym:`$code from
+        impl.quantData2Table F[c;b;e;impl.dict2Strings p]
     }DLL 2:(`Wind_edb;4);
 
 /q) .wind.WPF["历史放量组合";`PMS.PortfolioDaily;`owner`reportcurrency`startdate`enddate!`W4351010`CNY,2015.07.13 2015.08.13]

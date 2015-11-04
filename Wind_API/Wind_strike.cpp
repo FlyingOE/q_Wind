@@ -59,6 +59,7 @@ int WINAPI Wind::callback::strike(::WQEvent* pEvent, LPVOID lpUserParam) {
 	case eWQErrorReport:
 		result->set_value(new Event(*pEvent));
 		return true;
+	case eWQPartialResponse:
 	default: {
 			std::ostringstream buffer;
 			buffer << "<WQ> unsupported strike response: " << *pEvent;
@@ -149,6 +150,23 @@ WIND_API K K_DECL Wind_wst(K windCode, K indicators, K beginTime, K endTime, K p
 
 	Wind::callback::Result result;
 	::WQID const qid = ::WST(code.c_str(), indis.c_str(), begin.c_str(), end.c_str(), paras.c_str(),
+		&Wind::callback::strike, result.dup());
+	return result.waitFor(qid);
+}
+
+WIND_API K K_DECL Wind_wsq_strike(K windCodes, K indicators, K params) {
+	std::wstring codes, indis, paras;
+	try {
+		codes = Wind::util::qList2WStringJoin(windCodes, L',');
+		indis = Wind::util::qList2WStringJoin(indicators, L',');
+		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
+	}
+	catch (std::string const& error) {
+		return q::error2q(error);
+	}
+
+	Wind::callback::Result result;
+	::WQID const qid = ::WSQ(codes.c_str(), indis.c_str(), paras.c_str(),
 		&Wind::callback::strike, result.dup());
 	return result.waitFor(qid);
 }

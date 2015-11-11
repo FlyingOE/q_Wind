@@ -242,7 +242,11 @@ WIND_API K K_DECL Wind_wsq(K windCodes, K indicators, K params, K callback) {
 }
 
 WIND_API K K_DECL Wind_tdq(K windCodes, K indicators, K params, K callback) {
+	//*/
+	return q::error2q("<WQ> nyi");
+	/*/
 	return Wind_subscribe(&::TDQ, windCodes, indicators, params, callback);
+	//*/
 }
 
 WIND_API K K_DECL Wind_cr(K qid) {

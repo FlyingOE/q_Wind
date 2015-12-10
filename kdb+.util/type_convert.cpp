@@ -243,10 +243,20 @@ q::tm_ext q::q2tm(K data) throw(std::string) {
 	std::memset(&result, 0, sizeof(tm_ext));
 	switch (data->t) {
 	case -KD:
-		Cookbook::gt_r((data->i == ni) ? 0 : data->i, &result);
+		if ((data->i == wi) || (data->i == -wi)) {
+			throw std::string("+/-inf date");
+		}
+		else {
+			Cookbook::gt_r((data->i == ni) ? 0 : data->i, &result);
+		}
 		break;
 	case -KZ:
-		Cookbook::gt_r((data->f == nf) ? 0. : data->f, &result);
+		if ((data->f == wf) || (data->f == -wf)) {
+			throw std::string("+/-inf datetime");
+		}
+		else {
+			Cookbook::gt_r((data->f == nf) ? 0. : data->f, &result);
+		}
 		break;
 	default:
 		throw std::string("not a date or datetime");
@@ -266,12 +276,24 @@ std::vector<q::tm_ext> q::qList2tm(K data) throw(std::string) {
 	switch (data->t) {
 	case KD:
 		for (size_t i = 0; i < data->n; ++i) {
-			Cookbook::gt_r((kI(data)[i] == ni) ? 0 : kI(data)[i], &result[i]);
+			I const& d = kI(data)[i];
+			if ((d == wi) || (d == -wi)) {
+				throw std::string("+/-inf date in list");
+			}
+			else {
+				Cookbook::gt_r((d == ni) ? 0 : d, &result[i]);
+			}
 		}
 		break;
 	case KZ:
 		for (size_t i = 0; i < data->n; ++i) {
-			Cookbook::gt_r((kF(data)[i] == nf) ? 0. : kF(data)[i], &result[i]);
+			F const& f = kF(data)[i];
+			if ((f == wf) || (f == -wf)) {
+				throw std::string("+/-inf datetime in list");
+			}
+			else {
+				Cookbook::gt_r((f == nf) ? 0. : f, &result[i]);
+			}
 		}
 		break;
 	default:

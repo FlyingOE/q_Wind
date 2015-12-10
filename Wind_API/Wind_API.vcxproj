@@ -72,7 +72,8 @@
     </PostBuildEvent>
     <PreBuildEvent>
       <Message>Copy driver script to target directory</Message>
-      <Command>@XCOPY "$(ProjectDir)\Wind.q" "$(TargetDir)" /F /Y</Command>
+      <Command>@XCOPY "$(ProjectDir)\Wind.q" "$(TargetDir)" /F /Y
+@IF NOT EXIST "$(TargetDir)\.wind.pass" XCOPY "$(ProjectDir)\.wind.pass" "$(TargetDir)" /F /Y /C</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -106,7 +107,8 @@
     </PostBuildEvent>
     <PreBuildEvent>
       <Message>Copy driver script to target directory</Message>
-      <Command>@XCOPY "$(ProjectDir)\Wind.q" "$(TargetDir)" /F /Y</Command>
+      <Command>@XCOPY "$(ProjectDir)\Wind.q" "$(TargetDir)" /F /Y
+@IF NOT EXIST "$(TargetDir)\.wind.pass" XCOPY "$(ProjectDir)\.wind.pass" "$(TargetDir)" /F /Y /C</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -153,6 +155,10 @@
     <ClCompile Include="Wind_subscribe.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include=".wind.pass">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <FileType>Document</FileType>
+    </Text>
     <None Include="MatrixDataParser.inl" />
     <ClInclude Include="util.inl">
       <FileType>Document</FileType>

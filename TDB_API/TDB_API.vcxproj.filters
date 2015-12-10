@@ -79,5 +79,8 @@
     <None Include="TDB_API_helper.inl">
       <Filter>Source Files</Filter>
     </None>
+    <None Include=".tdb.connect">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

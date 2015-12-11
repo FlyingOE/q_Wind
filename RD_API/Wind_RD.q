@@ -12,9 +12,22 @@ if[0>=count key`.odbc;system"l odbc.k"];
 /q) .rd.logout h
 / OR
 /q) h:.rd.start hsym`connection
-login:.odbc.open;
+login:{
+    dsn:$[
+        -11h=t:type x;
+            :.odbc.open x;
+        10h=t;
+            x;
+        /default;
+            'string x];
+    if[not upper[dsn]like"*APP=*";
+        dsn,:"APP=Wind_RD.q;"];
+    if[not upper[dsn]like"*WSID=*";
+        dsn,:"WSID=",("."sv string`int$0x0 vs .z.a),";"];
+    :.odbc.open dsn
+    };
 logout:.odbc.close;
-start:{.odbc.open first read0 hsym x};
+start:{login first read0 hsym x};
 
 /q) .rd.use[h]`filesync
 use:{[h;db]
@@ -43,22 +56,23 @@ use:{[h;db]
 
 impl.stringize:{
     $[-11h=t:type x;
-        "[",string[x],"]";                  /`column => [column]
+        "[",string[x],"]";                              /`column => [column]
       -14h=t;
-        "'",string[x][0 1 2 3 5 6 8 9],"'"; /YYYY.MM.DD => 'YYYYMMDD'
+        "'",string[x][0 1 2 3 5 6 8 9],"'";             /YYYY.MM.DD => 'YYYYMMDD'
       10h=t;
-        "'",ssr[x;"'","''"],"'";            /"string's" => 'string''s'
+        "'",.text.utf8_gb18030[ssr[;"'","''"]x],"'";    /"string's" => 'string''s'
       11h=t;
-        "."sv .z.s'[x];                     /`schema`table`column => [schema].[table].[column]
+        "."sv .z.s'[x];                                 /`schema`table`column => [schema].[table].[column]
       /default;
         .Q.s1 x
         ]
     };
     
 impl.textEncoding:{
+    if[98h<>type x;:x];
     fs:exec c from meta x where t="C";
     $[0>=count fs;::;![;();0b;fs!.text.gb18030_utf8,/:fs]]x
-    }
+    };
 
 \d .
 \
@@ -71,7 +85,9 @@ h:.rd.start`:.rd.connect;
 .rd.tables h
 .rd.views h
 
-exec c from K where t="C"
+.rd.eval[h]("sp_columns %1";`AShareEODPrices)
 
 .rd.eval[h]("SELECT trade_dt,s_info_windcode,s_dq_open,s_dq_high,s_dq_low,s_dq_close,s_dq_tradestatus,s_dq_pctchange FROM %1 WHERE TRADE_DT=%2";
     (`AShareEODPrices;.z.D-1)   )
+
+.rd.logout h

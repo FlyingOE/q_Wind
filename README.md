@@ -2,19 +2,21 @@
 
 ## kdb+/q interface for Wind APIs (non-COM version)
 
-This project provides kdb+/q support for 3 distinct sets of APIs provided by [Wind Information Co., Ltd][Wind Info], a Chinese financial information and solutions provider:
+This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wind Information Co., Ltd][Wind Info], a Chinese financial information and solutions provider:
 * [Wind Quant API][], a Quants API that also provides some market data feeds;
 * [Wind TDF API][], a read-time data feed API for Chinese financial market data;
   * *Development suspended (prefer utilizing TDF API for any supported languages to construct feedhandler executables directly, which should be much easier than building TDF into a DLL).*
-* [Wind TDB API][], a historical database API for what is provided by TDF API at real-time.
+* [Wind TDB API][], a historical database API for what is provided by TDF API at real-time;
+* [Wind RD Database][], a Quants research database for global markets.
 
 ## Wind 万得 kdb+/q 数据接口（non-COM version）
 
-本项目提供了三个kdb+/q的接口，用于连接[万得Wind][Wind Info]几个不同的编程接口：
+本项目提供了四个kdb+/q的接口，用于连接[万得Wind][Wind Info]几个不同的编程接口：
 * [Wind Quant API][]——量化编程接口（机构版）；
 * [Wind TDF API][]——实时市场数据流接口；
   * *暂停开发（推荐使用各种语言的TDF API直接写feedhandler程序，这样做远比把TDF封包成DLL要容易得多）*
-* [Wind TDB API][]——对应TDF API的历史市场数据接口。
+* [Wind TDB API][]——对应TDF API的历史市场数据接口；
+* [Wind RD Database][]——量化研究数据库。
 
 本项目是使用Visual Studio 2013编译的工程。与[zwz][]的《[WindKdb+数据及交易接口V1.1][WindKdb+]》不同，本工程对Wind Quant API的支持直接使用`WindQuantData.dll`的API而不须使用基于COM的`WAPIWrapperCpp.dll`。虽然没有使用`WAPIWrapperCpp.dll`，不过本接口已经把所有接数的函数封装为同步函数（`WSQ`/`TDQ`数据订阅函数除外），以方便在q程序内使用。
 
@@ -54,6 +56,11 @@ This project provides kdb+/q support for 3 distinct sets of APIs provided by [Wi
   * Various bug fixes
 * 2015.07
   * Added support for Wind TDF/TDB APIs -- Only part of the APIs have been implemented, still work in progress...
+* 2015.08
+  * Suspended development for TDF API due to the lack of need
+  * More complete API support for TDB
+* 2015.12
+  * Added simple ODBC-based wrapper for RD database
 
 ### References
 
@@ -67,6 +74,7 @@ This project provides kdb+/q support for 3 distinct sets of APIs provided by [Wi
 [Wind Quant API]: http://www.dajiangzhang.com/download
 [Wind TDF API]: -
 [Wind TDB API]: -
+[Wind RD Database]: -
 [zwz]:            http://www.dajiangzhang.com/u?4bf215b5-2c07-4b70-91ec-09d8269e48e2
 [WindKdb+]:       http://www.dajiangzhang.com/q?fc42e518-3ced-4b97-833e-5f6673a7127b
 

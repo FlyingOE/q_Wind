@@ -11,6 +11,8 @@ if[0>=count key`.odbc;system"l odbc.k"];
 /q) h:.rd.login`DSN_name
 /q) .rd.logout h
 / OR
+/q) h:.rd.login"DRIVER=SQL Server;SERVER=...;DATABASE=filesync;UID=...;PWD=...;"
+/ OR
 /q) h:.rd.start hsym`connection
 login:{
     dsn:$[

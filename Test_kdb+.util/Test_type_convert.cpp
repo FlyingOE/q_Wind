@@ -351,7 +351,7 @@ namespace Test_q
 				L"q)(2015.08.13T12:36:02.196).millis", LINE_INFO());
 		}
 
-		TEST_METHOD(cannotConvertNotDateTime)
+		TEST_METHOD(cannotConvertNonDateTime)
 		{
 			q::K_ptr data;
 			auto const tester = [&]{ q::q2tm(data.get()); };
@@ -373,6 +373,47 @@ namespace Test_q
 			kF(data.get())[0] = 5703.5250254207986;
 			Assert::ExpectException<std::string>(tester,
 				L"fail on datetime list", LINE_INFO());
+		}
+
+		TEST_METHOD(cannotConvertInfDateTime)
+		{
+			q::K_ptr data;
+			auto const tester = [&]{ q::q2tm(data.get()); };
+
+			data.reset(kd(wi));
+			Assert::ExpectException<std::string>(tester,
+				L"fail on +0Wd", LINE_INFO());
+			data.reset(kd(-wi));
+			Assert::ExpectException<std::string>(tester,
+				L"fail on -0Wd", LINE_INFO());
+
+			data.reset(kf(wf));
+			Assert::ExpectException<std::string>(tester,
+				L"fail on +0Wz", LINE_INFO());
+			data.reset(kf(-wf));
+			Assert::ExpectException<std::string>(tester,
+				L"fail on -0Wz", LINE_INFO());
+
+			data.reset(ktn(KD, 1));
+			kI(data.get())[0] = wi;
+			Assert::ExpectException<std::string>(tester,
+				L"fail on (+0Wd)", LINE_INFO());
+			data.reset(ktn(KD, 2));
+			kI(data.get())[0] = 5703;
+			kI(data.get())[1] = -wi;
+			Assert::ExpectException<std::string>(tester,
+				L"fail on (2015.08.13 -0Wd)", LINE_INFO());
+
+			data.reset(ktn(KZ, 1));
+			kF(data.get())[0] = wf;
+			Assert::ExpectException<std::string>(tester,
+				L"fail on (+0Wz)", LINE_INFO());
+
+			data.reset(ktn(KZ, 2));
+			kF(data.get())[0] = 5703.5250254207986;
+			kF(data.get())[1] = -wf;
+			Assert::ExpectException<std::string>(tester,
+				L"fail on (2015.08.13T12:36:02.196 -0Wz)", LINE_INFO());
 		}
 
 		TEST_METHOD(canConvertDateString)

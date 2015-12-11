@@ -44,7 +44,7 @@ use:{[h;db]
 /q) .rd.eval[h]"SELECT ..."
 /q) .rd.eval[h]("SELECT * FROM %1 WHERE TRADE_DT=%2";(`AShareEODPrices;2015.12.10))
 .rd.eval:{[h;query]
-    impl.textEncoding .odbc.eval[h;]$[
+    impl.textEncoding .odbc.eval[h;]0N!.text.utf8_gb18030$[
         10h=type query:(),query;
             query;
         (2=count query)and(10h=type query 0);
@@ -58,13 +58,13 @@ use:{[h;db]
 
 impl.stringize:{
     $[-11h=t:type x;
-        "[",string[x],"]";                              /`column => [column]
+        "[",string[x],"]";                  /`column => [column]
       -14h=t;
-        "'",string[x][0 1 2 3 5 6 8 9],"'";             /YYYY.MM.DD => 'YYYYMMDD'
+        "'",string[x][0 1 2 3 5 6 8 9],"'"; /YYYY.MM.DD => 'YYYYMMDD'
       10h=t;
-        "'",.text.utf8_gb18030[ssr[;"'","''"]x],"'";    /"string's" => 'string''s'
+        "'",ssr[x;"'";"''"],"'";            /"string's" => 'string''s'
       11h=t;
-        "."sv .z.s'[x];                                 /`schema`table`column => [schema].[table].[column]
+        "."sv .z.s'[x];                     /`schema`table`column => [schema].[table].[column]
       /default;
         .Q.s1 x
         ]

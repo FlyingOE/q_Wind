@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.31101.0
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kdb+", "kdb+\kdb+.vcxproj", "{8B865083-762C-42AA-82AD-00C577B9E1EF}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -40,6 +40,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_win32.util", "Test_win32.util\Test_win32.util.vcxproj", "{3FDFFF67-CBF2-4173-8FAB-FD9F3E55DD0C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kdb+.hack", "kdb+.hack\kdb+.hack.vcxproj", "{0D958CB7-1F8E-4F2E-81DA-5ECD1CC4FDFE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RD_API", "RD_API\RD_API.vcxproj", "{55BBFDE1-EA31-4060-B13E-E9E0F75375C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{0D958CB7-1F8E-4F2E-81DA-5ECD1CC4FDFE}.Debug|Win32.Build.0 = Debug|Win32
 		{0D958CB7-1F8E-4F2E-81DA-5ECD1CC4FDFE}.Release|Win32.ActiveCfg = Release|Win32
 		{0D958CB7-1F8E-4F2E-81DA-5ECD1CC4FDFE}.Release|Win32.Build.0 = Release|Win32
+		{55BBFDE1-EA31-4060-B13E-E9E0F75375C8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{55BBFDE1-EA31-4060-B13E-E9E0F75375C8}.Debug|Win32.Build.0 = Debug|Win32
+		{55BBFDE1-EA31-4060-B13E-E9E0F75375C8}.Release|Win32.ActiveCfg = Release|Win32
+		{55BBFDE1-EA31-4060-B13E-E9E0F75375C8}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

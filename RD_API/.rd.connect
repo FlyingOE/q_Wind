@@ -1,0 +1,1 @@
+DRIVER=SQL Server;SERVER=aaa.bbb.ccc.ddd;DATABASE=filesync;UID=user;PWD=password;

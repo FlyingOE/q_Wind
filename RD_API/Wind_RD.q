@@ -43,16 +43,18 @@ use:{[h;db]
 
 /q) .rd.eval[h]"SELECT ..."
 /q) .rd.eval[h]("SELECT * FROM %1 WHERE TRADE_DT=%2";(`AShareEODPrices;2015.12.10))
+/q) .rd.prepare("SELECT * FROM %1 WHERE TRADE_DT=%2";(`AShareEODPrices;2015.12.10))
 .rd.eval:{[h;query]
-    impl.textEncoding .odbc.eval[h;]0N!.text.utf8_gb18030$[
-        10h=type query:(),query;
-            query;
-        (2=count query)and(10h=type query 0);
-            ssr/[query 0;"%",/:string 1+til count(),query 1;impl.stringize'[(),query 1]];
-        /default;
-            impl.stringize query
-        ]
+    impl.textEncoding .odbc.eval[h;] .text.utf8_gb18030 .rd.prepare query
     };
+.rd.prepare:{[query]
+    $[10h=type query:(),query;
+    	query;
+      (2=count query)and(10h=type query 0);
+      	ssr/[query 0;"%",/:string 1+til count(),query 1;impl.stringize'[(),query 1]];
+      /default;
+        impl.stringize query
+	]};
 
 ///////////////////////////////////////////////////////////////////////////////
 

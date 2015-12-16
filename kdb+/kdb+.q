@@ -43,6 +43,9 @@ cum2inc:{1_-1+(%':)reverse fills reverse fills(1#0#x),x};
 // Copy an object from another namespace to the current namespace
 copyObject:{eval(:;` sv(system"d"),y;x y)};
 
+// "Sleep"
+sleep:{system"ping -t ",string[`long$`second$x]," localhost > NUL"};
+
 \d .
 /==============================================================================
 \

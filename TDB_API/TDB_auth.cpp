@@ -9,10 +9,11 @@
 #include <string>
 #include <iostream>
 
-TDB_API K K_DECL TDB_login(K host, K port, K username, K password) {
+TDB_API K K_DECL TDB_login(K level, K host, K port, K username, K password) {
 	std::string h, uid, pwd;
-	long long p;
+	long long L, p;
 	try {
+		L = q::q2Dec(level);
 		h = q::q2String(host);
 		p = q::q2Dec(port);
 		uid = q::q2String(username);
@@ -20,6 +21,10 @@ TDB_API K K_DECL TDB_login(K host, K port, K username, K password) {
 	}
 	catch (std::string const& error) {
 		return q::error2q(error);
+	}
+
+	if ((L < 1) || (2 < L)) {
+		return q::error2q(std::string("invalid data level"));
 	}
 
 	::OPEN_SETTINGS settings = ::TDB::SETTINGS;
@@ -53,6 +58,8 @@ TDB_API K K_DECL TDB_login(K host, K port, K username, K password) {
 	::THANDLE tdb = ::TDB_Open(&settings, &result);
 	if (tdb) {
 		std::cerr << "<TDB> logged in as " << uid << " (0x" << util::hexBytes(tdb) << ')' << std::endl;
+		auto const result = TDB::LEVELS.insert(std::make_pair(tdb, static_cast<char>(L)));
+		assert(result.second && "unexpected duplicated THANDLE");
 		static_assert(sizeof(J) >= sizeof(::THANDLE), "J is smaller than THANDLE");
 		return kj(reinterpret_cast<J>(tdb));
 	}
@@ -74,6 +81,8 @@ TDB_API K K_DECL TDB_logout(K h) {
 	if (tdb) {
 		int const error = ::TDB_Close(tdb);
 		std::cerr << "<TDB> logged out 0x" << util::hexBytes(tdb) << std::endl;
+		size_t const result = TDB::LEVELS.erase(tdb);
+		assert((result == 1) && "unregistered THANDLE");
 		return ki(error);
 	}
 	else {

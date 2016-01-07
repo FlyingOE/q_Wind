@@ -18,17 +18,24 @@ setTimeout:{[F;x]
     getTimeout`
     }DLL 2:(`setTimeout;3);
 
-/q) h:.tdb.login[`host:port;`w*******;"********"]
+/q) .tdb.getDataSource[]
+/q) .tdb.setDataSource 0
+getDataSource:DLL 2:(`getDataSource;1);
+setDataSource:DLL 2:(`setDataSource;1);
+
+/q) h:.tdb.login[2;`host:port;`w*******;"********"]
 /q) .tdb.logout h
 / OR
-/q) h:.tdb.start hsym`connection
-login:{[F;s;u;p]
-    F .@[;1;"I"$](":"vs string s),(u;p)
-    }DLL 2:(`TDB_login;4);
+/q) h:.tdb.start hsym`:.tdb3.connect
+login:{[F;l;s;u;p]
+    F . l,@[;1;"I"$](":"vs string s),(u;p)
+    }DLL 2:(`TDB_login;5);
 logout:DLL 2:(`TDB_logout;1);
 start:{
-    login[`$l 0;;].@[;0 2](0,k,1+k:p?":")_p:(l:2#read0 x)1
+    login["H"$ll 2;`$":"sv 2#ll:":"vs l 0;;].@[;0 2](0,k,1+k:p?":")_p:(l:2#read0 x)1
     };
+
+\
 
 /q) .tdb.codeTable[h]`      /all markets
 /q) .tdb.codeTable[h]`SH
@@ -84,7 +91,8 @@ orderQueue:{[F;h;c;i;b;e]
 __EOD__
 ===============================================================================
 
-h:.tdb.start`:.tdb.connect
+h:.tdb.start`:.tdb3.connect
+.tdb.getDataSource`
 update string Type from .tdb.codeTable[h]`
 reverse update string Type from .tdb.codeTable[h]`CF
 select count Code by Market,string Type from .tdb.codeTable[h]`

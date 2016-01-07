@@ -9,6 +9,7 @@
 
 #include <cassert>
 #include <string>
+#include <sstream>
 
 ::OPEN_SETTINGS TDB::SETTINGS = {
 	"localhost",	//host
@@ -19,6 +20,10 @@
 	2,				//retries
 	0				//retry delay
 };
+
+std::map<::THANDLE, char> TDB::LEVELS;
+
+char TDB::DATA_SRC = 0;
 
 namespace TDB {
 	namespace util {
@@ -73,4 +78,28 @@ TDB_API K K_DECL setTimeout(K timeout, K retries, K delay) {
 		return q::error2q(error);
 	}
 	return getTimeout(K_NIL);
+}
+
+
+TDB_API K K_DECL getDataSource(K _) {
+	return kh(TDB::DATA_SRC);
+}
+
+TDB_API K K_DECL setDataSource(K dataSrc) {
+	long long src = 0;
+	try {
+		src = q::q2Dec(dataSrc);
+	}
+	catch (std::string const &error) {
+		return q::error2q(error);
+	}
+
+	if ((dataSrc < 0) || (std::numeric_limits<char>::max() < src)) {
+		return q::error2q(std::string("invalid data source ID"));
+	}
+	else {
+		TDB::DATA_SRC = static_cast<char>(src);
+	}
+
+	return getDataSource(K_NIL);
 }

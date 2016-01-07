@@ -17,7 +17,7 @@
 #define K_DECL
 #endif
 
-#pragma comment(lib, "TDB_API_Windows_v2.lib")
+#pragma comment(lib, "TDBAPI.lib")
 
 #ifdef __cplusplus
 extern "C" {
@@ -30,7 +30,13 @@ extern "C" {
 		K delay		//-5h or -6h or -7h
 		);
 
+	TDB_API K K_DECL getDataSource(K/*NOTE: at least one argument required by `2:'*/);
+	TDB_API K K_DECL setDataSource(
+		K source	//-4h or -5h or -6h or -7h
+		);
+
 	TDB_API K K_DECL TDB_login(
+		K level,	//-4h or -5h or -6h or -7h
 		K host,		//-11h or 10h
 		K port,		//-5h or -6h or -7h
 		K username,	//-11h or 10h
@@ -109,10 +115,18 @@ extern "C" {
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
+#include <map>
+
 namespace TDB {
 	
 	// Default settings for Wind TDB's remote calls
 	//NOTE: szUser & szPassword in this variable shall _not_ be used!
 	extern ::OPEN_SETTINGS SETTINGS;
+
+	// Default data levels (L1/L2) for Wind TDB's remote calls
+	extern std::map<::THANDLE, char> LEVELS;
+
+	// Default data source ID for Wind TDB's remote calls
+	extern char DATA_SRC;
 
 }//namespace TDB

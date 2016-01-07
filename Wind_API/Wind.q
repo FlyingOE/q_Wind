@@ -19,7 +19,7 @@ setTimeout:DLL 2:(`setTimeout;1);
 /q) .wind.login[`w*******;"********"]
 /q) .wind.logout`
 / OR
-/q) .wind.start hsym`password
+/q) .wind.start`:.wind.pass
 login: DLL 2:(`Wind_login ;2);
 logout:DLL 2:(`Wind_logout;1);
 start:{

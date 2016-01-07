@@ -13,7 +13,7 @@ if[0>=count key`.odbc;system"l odbc.k"];
 / OR
 /q) h:.rd.login"DRIVER=SQL Server;SERVER=...;DATABASE=filesync;UID=...;PWD=...;"
 / OR
-/q) h:.rd.start hsym`connection
+/q) h:.rd.start`:.rd.connect
 login:{
     dsn:$[
         -11h=t:type x;

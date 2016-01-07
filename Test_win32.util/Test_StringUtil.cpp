@@ -23,5 +23,53 @@ namespace Test_util
 				L"identity wstring replacement", LINE_INFO());
 		}
 
+		TEST_METHOD(canSplitStrings)
+		{
+			std::vector<std::string> expected, actual;
+			expected = { "Hello", "world!", "", "Next", "" };
+			actual = util::split("Hello world!  Next ", ' ');
+			Assert::IsTrue(std::equal(actual.cbegin(), actual.cend(), expected.cbegin()),
+				L"ASCII string split by space", LINE_INFO());
+
+			expected = { "username", "Password!", "group", "", "..." };
+			actual = util::split("username:Password!:group::...", ':');
+			Assert::IsTrue(std::equal(actual.cbegin(), actual.cend(), expected.cbegin()),
+				L"ASCII string split by normal character", LINE_INFO());
+
+			expected = { "No_delim" };
+			actual = util::split("No_delim", ':');
+			Assert::IsTrue(std::equal(actual.cbegin(), actual.cend(), expected.cbegin()),
+				L"ASCII single-token string split", LINE_INFO());
+
+			expected = {};
+			actual = util::split("", ':');
+			Assert::IsTrue(std::equal(actual.cbegin(), actual.cend(), expected.cbegin()),
+				L"ASCII empty string split", LINE_INFO());
+		}
+
+		TEST_METHOD(canSplitWStrings)
+		{
+			std::vector<std::wstring> expected, actual;
+			expected = { L"Hello", L"world!", L"", L"≤‚ ‘", L"" };
+			actual = util::split(L"Hello world!  ≤‚ ‘ ", L' ');
+			Assert::IsTrue(std::equal(actual.cbegin(), actual.cend(), expected.cbegin()),
+				L"Unicode string split by space", LINE_INFO());
+
+			expected = { L"username", L"Password!", L"group", L"", L"°≠°≠" };
+			actual = util::split(L"username£∫Password!£∫group£∫£∫°≠°≠", L'£∫');
+			Assert::IsTrue(std::equal(actual.cbegin(), actual.cend(), expected.cbegin()),
+				L"Unicode string split by Unicode character", LINE_INFO());
+
+			expected = { L"No_delim≤‚ ‘" };
+			actual = util::split(L"No_delim≤‚ ‘", L'£∫');
+			Assert::IsTrue(std::equal(actual.cbegin(), actual.cend(), expected.cbegin()),
+				L"Unicode single-token string split", LINE_INFO());
+
+			expected = {};
+			actual = util::split(L"", L'£∫');
+			Assert::IsTrue(std::equal(actual.cbegin(), actual.cend(), expected.cbegin()),
+				L"Unicode empty string split", LINE_INFO());
+		}
+
 	};
 }

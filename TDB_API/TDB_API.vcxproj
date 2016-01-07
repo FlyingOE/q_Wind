@@ -52,25 +52,25 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;TDB_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\inc\TDB_C++_v2;D:\q\c</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\inc\TDB_C++_v3;D:\q\c</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)\lib\TDB_C++_v2\$(PlatformTarget).Release;D:\q\c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)\lib\TDB_C++_v3\$(PlatformTarget).Release;D:\q\c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Message>Copy DLL &amp; driver script to q project directory</Message>
       <Command>FOR %%p IN ("$(SolutionDir)..\CHF.proj\") DO (
   @FOR %%t IN (x86 x64) DO (
     @FOR %%c IN (Debug Release) DO (
-      @FOR %%f IN ("$(SolutionDir)lib\TDB_C++_v2\%%t.%%c"\*.dll) DO (
+      @FOR %%f IN ("$(SolutionDir)lib\TDB_C++_v3\%%t.%%c"\*.dll) DO (
         IF EXIST %%p%%~nxf DEL /F %%p%%~nxf
       )
     )
   )
-  @FOR %%f IN ("$(SolutionDir)lib\TDB_C++_v2\$(PlatformTarget).Release"\*.dll) DO (
+  @FOR %%f IN ("$(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).Release"\*.dll) DO (
     @XCOPY %%f %%p /F /Y
   )
   @FOR %%f IN ("$(TargetPath)" "$(TargetDir)Wind_TDB.q") DO (
@@ -93,7 +93,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TDB_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\inc\TDB_C++_v2;D:\q\c</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\inc\TDB_C++_v3;D:\q\c</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -101,19 +101,19 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)\lib\TDB_C++_v2\$(PlatformTarget).Release;D:\q\c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)\lib\TDB_C++_v3\$(PlatformTarget).Release;D:\q\c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Message>Copy DLL &amp; driver script to q project directory</Message>
       <Command>FOR %%p IN ("$(SolutionDir)..\CHF.proj\") DO (
   @FOR %%t IN (x86 x64) DO (
     @FOR %%c IN (Debug Release) DO (
-      @FOR %%f IN ("$(SolutionDir)lib\TDB_C++_v2\%%t.%%c"\*.dll) DO (
+      @FOR %%f IN ("$(SolutionDir)lib\TDB_C++_v3\%%t.%%c"\*.dll) DO (
         IF EXIST %%p%%~nxf DEL /F %%p%%~nxf
       )
     )
   )
-  @FOR %%f IN ("$(SolutionDir)lib\TDB_C++_v2\$(PlatformTarget).Release"\*.dll) DO (
+  @FOR %%f IN ("$(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).Release"\*.dll) DO (
     @XCOPY %%f %%p /F /Y
   )
   @FOR %%f IN ("$(TargetPath)" "$(TargetDir)Wind_TDB.q") DO (

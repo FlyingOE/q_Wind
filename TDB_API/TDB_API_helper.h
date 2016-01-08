@@ -15,6 +15,9 @@ namespace TDB {
 
 	void parseTdbHandle(K h, ::THANDLE& tdb) throw(std::string);
 
+	std::string getMarketId(::THANDLE tdb, char const* market) throw(std::string);
+	std::string getMarketId(::THANDLE tdb, std::string const& market) throw(std::string);
+
 	template <typename FieldTraits>
 	void parseIndicators(K indicators,
 		std::vector<typename FieldTraits::field_accessor const*>& indis) throw(std::string);
@@ -26,6 +29,9 @@ namespace TDB {
 	K runQuery(::THANDLE tdb, TdbReq const& req,
 		std::vector<typename FieldTraits::field_accessor const*> const& indis,
 		int(*tdbCall)(::THANDLE, TdbReq const*, typename FieldTraits::tdb_result_type**, int*));
+
+	template <typename T, int Index, typename QType> struct MarketInfoAccessor;
+	template <typename T> using MarketIdAccessor = MarketInfoAccessor<T, 0, S>;
 
 }//namespace TDB
 

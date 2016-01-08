@@ -35,18 +35,18 @@ start:{
     login["H"$ll 2;`$":"sv 2#ll:":"vs l 0;;].@[;0 2](0,k,1+k:p?":")_p:(l:2#read0 x)1
     };
 
-\
-
 /q) .tdb.codeTable[h]`      /all markets
 /q) .tdb.codeTable[h]`SH
 codeTable:{[F;h;m]
-    flip`WindCode`Code`Market`Name`NameEN`Type!F[h;m]
+    flip`WindCode`Code`Market`Name`NameEN`Type`Level`DataSrc!F[h;m]
     }DLL 2:(`TDB_codeTable;2);
     
-/q) .tdb.codeInfo[h]`600000.SH
-codeInfo:{[F;h;c]
-    `WindCode`Code`Market`Name`NameEN`Type!F[h;c]
-    }DLL 2:(`TDB_codeInfo;2);
+/q) .tdb.codeInfo[h][`600000.SH;`SH]
+codeInfo:{[F;h;c;m]
+    `WindCode`Code`Market`Name`NameEN`Type`Level`DataSrc!F[h;c;m]
+    }DLL 2:(`TDB_codeInfo;3);
+
+\
 
 /q) .tdb.tickAB_fields h
 /q) .tdb.tickAB[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes;2015.07.01T00:00;2015.07.03T23:59:59.999]
@@ -92,7 +92,10 @@ __EOD__
 ===============================================================================
 
 h:.tdb.start`:.tdb3.connect
+.tdb.getTimeout`
 .tdb.getDataSource`
+.tdb.setDataSource 1
 update string Type from .tdb.codeTable[h]`
 reverse update string Type from .tdb.codeTable[h]`CF
-select count Code by Market,string Type from .tdb.codeTable[h]`
+select count i by Market,string Type,Level,DataSrc from .tdb.codeTable[h]`
+\\

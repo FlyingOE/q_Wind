@@ -21,9 +21,9 @@
 	0				//retry delay
 };
 
-std::map<::THANDLE, char> TDB::LEVELS;
+std::map<::THANDLE, short> TDB::LEVELS;
 
-char TDB::DATA_SRC = 0;
+short TDB::DATA_SRC = 0;
 
 namespace TDB {
 	namespace util {
@@ -94,11 +94,11 @@ TDB_API K K_DECL setDataSource(K dataSrc) {
 		return q::error2q(error);
 	}
 
-	if ((dataSrc < 0) || (std::numeric_limits<char>::max() < src)) {
+	if ((src < 0) || (std::numeric_limits<short>::max() < src)) {
 		return q::error2q(std::string("invalid data source ID"));
 	}
 	else {
-		TDB::DATA_SRC = static_cast<char>(src);
+		TDB::DATA_SRC = static_cast<short>(src);
 	}
 
 	return getDataSource(K_NIL);

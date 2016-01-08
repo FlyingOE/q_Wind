@@ -155,10 +155,10 @@
     <ClCompile Include="Wind_subscribe.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include=".wind.pass">
+    <None Include=".wind.pass">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <FileType>Document</FileType>
-    </Text>
+    </None>
     <None Include="MatrixDataParser.inl" />
     <ClInclude Include="util.inl">
       <FileType>Document</FileType>

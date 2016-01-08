@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include=".tdb.connect" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -79,7 +80,7 @@
     <None Include="TDB_API_helper.inl">
       <Filter>Source Files</Filter>
     </None>
-    <None Include=".tdb.connect">
+    <None Include=".tdb3.connect">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

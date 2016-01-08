@@ -56,7 +56,8 @@ extern "C" {
 	//获取代码的详细信息
 	TDB_API K K_DECL TDB_codeInfo(
 		K tdb,		//-7h
-		K windCode	//-11h or 10h
+		K windCode,	//-11h or 10h
+		K market	//-11h or 10h
 		);
 
 	//获取快照数据(带买卖盘口)
@@ -124,9 +125,9 @@ namespace TDB {
 	extern ::OPEN_SETTINGS SETTINGS;
 
 	// Default data levels (L1/L2) for Wind TDB's remote calls
-	extern std::map<::THANDLE, char> LEVELS;
+	extern std::map<::THANDLE, short> LEVELS;
 
 	// Default data source ID for Wind TDB's remote calls
-	extern char DATA_SRC;
+	extern short DATA_SRC;
 
 }//namespace TDB

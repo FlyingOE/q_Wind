@@ -4,7 +4,9 @@ static_assert(0, "Include TDB_API/TDB_API_helper.h instead!");
 
 #include "util.h"
 
+#include "win32.util/StringUtil.h"
 #include "kdb+.util/type_convert.h"
+#include "Wind.util/FieldAccessors.h"
 #include <cassert>
 
 template <typename FieldTraits>
@@ -58,3 +60,38 @@ K TDB::runQuery(::THANDLE tdb, TdbReq const& req,
 	}
 	return out.release();
 }
+
+template <typename T, int Index, typename QType>
+struct TDB::MarketInfoAccessor : public Wind::accessor::AccessorBase<T, char[24]>
+{
+	MarketInfoAccessor(field_accessor field)
+	: AccessorBase<struct_type, field_type>(q::type_traits<QType>::TYPE_NUM, field) {}
+
+	virtual void setElement(K out, size_t index, struct_type const& data) const override {
+		std::vector<std::string> tokens = ::util::split(data.*(this->FIELD), '-');
+		if (tokens.size() < Index + 1) {
+			q::type_traits<QType>::index(out)[index] = q::type_traits<QType>::NULL_VAL;
+		}
+		else {
+			long const value = std::strtol(tokens[Index].c_str(), NULL, 10);
+			q::type_traits<QType>::index(out)[index] = static_cast<QType>(value);
+		}
+	}
+};
+
+template <typename T>
+struct TDB::MarketInfoAccessor<T, 0, S> : public Wind::accessor::AccessorBase<T, char[24]>
+{
+	MarketInfoAccessor(field_accessor field)
+	: AccessorBase<struct_type, field_type>(KS, field) {}
+
+	virtual void setElement(K out, size_t index, struct_type const& data) const override {
+		std::vector<std::string> tokens = ::util::split(data.*(this->FIELD), '-');
+		if (tokens.empty()) {
+			q::type_traits<S>::index(out)[index] = q::type_traits<S>::NULL_VAL;
+		}
+		else {
+			q::type_traits<S>::index(out)[index] = ss(const_cast<S>(tokens[0].c_str()));
+		}
+	}
+};

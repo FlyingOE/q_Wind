@@ -362,6 +362,49 @@ namespace Test_q
 				L"q)(2015.08.13T12:36:02.196).millis", LINE_INFO());
 		}
 
+		TEST_METHOD(canConvertZeroDateTime)
+		{
+			q::K_ptr data;
+			q::tm_ext result;
+
+			data.reset(kd(0));
+			result = q::q2tm(data.get());
+			Assert::AreEqual(2000 - 1900, result.tm_year,
+				L"q)(`date$0).year", LINE_INFO());
+			Assert::AreEqual(1 - 1, result.tm_mon,
+				L"q)(`date$0).month", LINE_INFO());
+			Assert::AreEqual(1, result.tm_mday,
+				L"q)(`date$0).day", LINE_INFO());
+
+			data.reset(kt(0));
+			result = q::q2tm(data.get());
+			Assert::AreEqual(0, result.tm_hour,
+			L"q)(`time$0).hh", LINE_INFO());
+			Assert::AreEqual(0, result.tm_min,
+			L"q)(`time$0).mm", LINE_INFO());
+			Assert::AreEqual(0, result.tm_sec,
+			L"q)(`time$0).ss", LINE_INFO());
+			Assert::AreEqual(0, result.tm_millis,
+			L"q)(`time$0).millis", LINE_INFO());
+
+			data.reset(kz(0.));
+			result = q::q2tm(data.get());
+			Assert::AreEqual(2000 - 1900, result.tm_year,
+			L"q)(`datetime$0).year", LINE_INFO());
+			Assert::AreEqual(1 - 1, result.tm_mon,
+			L"q)(`datetime$0).month", LINE_INFO());
+			Assert::AreEqual(1, result.tm_mday,
+			L"q)(`datetime$0).day", LINE_INFO());
+			Assert::AreEqual(0, result.tm_hour,
+			L"q)(`datetime$0).hour", LINE_INFO());
+			Assert::AreEqual(0, result.tm_min,
+			L"q)(`datetime$0).minute", LINE_INFO());
+			Assert::AreEqual(0, result.tm_sec,
+			L"q)(`datetime$0).second", LINE_INFO());
+			Assert::AreEqual(0, result.tm_millis,
+			L"q)(`datetime$0).millis", LINE_INFO());
+		}
+
 		TEST_METHOD(cannotConvertNonDateTime)
 		{
 			q::K_ptr data;

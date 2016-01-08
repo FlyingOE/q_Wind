@@ -250,6 +250,14 @@ q::tm_ext q::q2tm(K data) throw(std::string) {
 			Cookbook::gt_r((data->i == ni) ? 0 : data->i, &result);
 		}
 		break;
+	case -KT:
+		if ((data->i == wi) || (data->i == -wi)) {
+			throw std::string("+/-inf time");
+		}
+		else {
+			Cookbook::gt_r((data->i == ni) ? 0. : data->i / (24 * 60 * 60 * 1000.), &result);
+		}
+		break;
 	case -KZ:
 		if ((data->f == wf) || (data->f == -wf)) {
 			throw std::string("+/-inf datetime");
@@ -282,6 +290,17 @@ std::vector<q::tm_ext> q::qList2tm(K data) throw(std::string) {
 			}
 			else {
 				Cookbook::gt_r((d == ni) ? 0 : d, &result[i]);
+			}
+		}
+		break;
+	case KT:
+		for (size_t i = 0; i < data->n; ++i) {
+			I const& d = kI(data)[i];
+			if ((d == wi) || (d == -wi)) {
+				throw std::string("+/-inf time in list");
+			}
+			else {
+				Cookbook::gt_r((d == ni) ? 0. : d / (24 * 60 * 60 * 1000.), &result[i]);
 			}
 		}
 		break;

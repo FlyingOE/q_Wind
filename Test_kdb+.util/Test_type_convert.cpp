@@ -333,6 +333,17 @@ namespace Test_q
 			Assert::AreEqual(13, result.tm_mday,
 				L"q)(2015.08.13).day", LINE_INFO());
 
+			data.reset(kt(40019070));
+			result = q::q2tm(data.get());
+			Assert::AreEqual(11, result.tm_hour,
+				L"q)(11:06:59.070).hh", LINE_INFO());
+			Assert::AreEqual(6, result.tm_min,
+				L"q)(11:06:59.070).mm", LINE_INFO());
+			Assert::AreEqual(59, result.tm_sec,
+				L"q)(11:06:59.070).ss", LINE_INFO());
+			Assert::AreEqual(70, result.tm_millis,
+				L"q)(11:06:59.070).millis", LINE_INFO());
+
 			data.reset(kz(5703.5250254207986));
 			result = q::q2tm(data.get());
 			Assert::AreEqual(2015 - 1900, result.tm_year,
@@ -387,6 +398,13 @@ namespace Test_q
 			Assert::ExpectException<std::string>(tester,
 				L"fail on -0Wd", LINE_INFO());
 
+			data.reset(kt(wi));
+			Assert::ExpectException<std::string>(tester,
+				L"fail on +0Wt", LINE_INFO());
+			data.reset(kt(-wi));
+			Assert::ExpectException<std::string>(tester,
+				L"fail on -0Wt", LINE_INFO());
+
 			data.reset(kf(wf));
 			Assert::ExpectException<std::string>(tester,
 				L"fail on +0Wz", LINE_INFO());
@@ -403,6 +421,16 @@ namespace Test_q
 			kI(data.get())[1] = -wi;
 			Assert::ExpectException<std::string>(tester,
 				L"fail on (2015.08.13 -0Wd)", LINE_INFO());
+
+			data.reset(ktn(KT, 1));
+			kI(data.get())[0] = wi;
+			Assert::ExpectException<std::string>(tester,
+				L"fail on (+0Wt)", LINE_INFO());
+			data.reset(ktn(KT, 2));
+			kI(data.get())[0] = 40019070;
+			kI(data.get())[1] = -wi;
+			Assert::ExpectException<std::string>(tester,
+				L"fail on (11:06:59.070 -0Wt)", LINE_INFO());
 
 			data.reset(ktn(KZ, 1));
 			kF(data.get())[0] = wf;

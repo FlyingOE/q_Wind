@@ -39,7 +39,7 @@ namespace q {
 	std::map<std::string, std::string> qDict2StringMap(K data) throw(std::string);
 	std::map<std::wstring, std::wstring> qDict2WStringMap(K data, UINT frCP = DEFAULT_CP) throw(std::string);
 
-	// Convert a date or datetime in q into a C++ std::tm
+	// Convert a date or time or datetime in q into a C++ std::tm
 	tm_ext q2tm(K data) throw(std::string);
 	std::vector<tm_ext> qList2tm(K data) throw(std::string);
 

@@ -237,7 +237,7 @@ std::map<std::wstring, std::wstring> q::qDict2WStringMap(K data, UINT frCP) thro
 
 q::tm_ext q::q2tm(K data) throw(std::string) {
 	if (data == K_NIL) {
-		throw std::string("nil date or datetime");
+		throw std::string("nil date or time or datetime");
 	}
 	tm_ext result;
 	std::memset(&result, 0, sizeof(tm_ext));

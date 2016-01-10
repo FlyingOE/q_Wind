@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "util.h"
 
+#include "kdb+.util/types.h"
 #include <sstream>
 
 std::string TDB::getError(::TDB_ERROR errorCode) {
@@ -29,6 +30,35 @@ std::string TDB::getError(::TDB_ERROR errorCode) {
 	std::ostringstream buffer;
 	buffer << "unknown errorCode=" << errorCode;
 	return buffer.str();
+}
+
+void TDB::util::fillDateTime(K data, int &date, int &time) throw(std::string) {
+	if (data == K_NIL) {
+		throw std::string("nil date or time or datetime");
+	}
+	switch (data->t) {
+	case -KH:
+		if (data->h <= 0) {
+			date = time = data->h;
+			return;
+		}
+		break;
+	case -KI:
+		if (data->i <= 0) {
+			date = time = data->i;
+			return;
+		}
+		break;
+	case -KJ:
+		if (data->j <= 0) {
+			date = time = static_cast<int>(data->j);
+			return;
+		}
+		break;
+	default:
+		;//fall through
+	}
+	tm2DateTime(q::q2tm(data), date, time);
 }
 
 void TDB::util::tm2DateTime(q::tm_ext const& tm, int &date, int &time) {

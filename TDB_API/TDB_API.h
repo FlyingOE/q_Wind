@@ -87,8 +87,9 @@ extern "C" {
 		K tdb,			//-7h
 		K windCode,		//-11h or 10h
 		K indicators,	//-11h or 11h
-		K begin,		//-15h
-		K end			//-15h
+		K date,			//-14h or -5h or -6h or -7h
+		K begin,		//-19h or -18h or -17h or -5h or -6h or -7h
+		K end			//-19h or -18h or -17h or -5h or -6h or -7h
 		);
 
 	//获取逐笔委托数据
@@ -97,8 +98,9 @@ extern "C" {
 		K tdb,			//-7h
 		K windCode,		//-11h or 10h
 		K indicators,	//-11h or 11h
-		K begin,		//-15h
-		K end			//-15h
+		K date,			//-14h or -5h or -6h or -7h
+		K begin,		//-19h or -18h or -17h or -5h or -6h or -7h
+		K end			//-19h or -18h or -17h or -5h or -6h or -7h
 		);
 
 	//获取委托队列数据

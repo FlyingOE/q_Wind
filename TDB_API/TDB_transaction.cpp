@@ -38,9 +38,9 @@ namespace TDB {
 				addField("Time", new TimeAccessor(&tdb_result_type::nTime));
 				// 成交编号(从1开始，递增1)
 				addField("Index", new IntAccessor(&tdb_result_type::nIndex));
-				// 成交代码: 'C', 0
+				// 成交代码（8931）: 'C', '0'
 				addField("Function", new CharAccessor(&tdb_result_type::chFunctionCode));
-				// 委托类别
+				// 委托类别（8930）
 				addField("OrderType", new CharAccessor(&tdb_result_type::chOrderKind));
 				// BS标志
 				addField("Side", new CharAccessor(&tdb_result_type::chBSFlag));
@@ -62,14 +62,14 @@ TDB_API K K_DECL TDB_transaction_fields(K _) {
 	return TDB::traits::Transaction::accessor_map::getInstance()->getFields();
 }
 
-TDB_API K K_DECL TDB_transaction(K h, K windCode, K indicators, K begin, K end) {
+TDB_API K K_DECL TDB_transaction(K h, K windCode, K indicators, K date, K begin, K end) {
 	::THANDLE tdb = NULL;
 	std::vector<TDB::traits::Transaction::field_accessor const*> indis;
 	::TDBDefine_ReqTransaction req = { 0 };
 	try {
 		TDB::parseTdbHandle(h, tdb);
 		TDB::parseIndicators<TDB::traits::Transaction>(indicators, indis);
-		TDB::parseTdbReq(windCode, begin, end, req);
+		TDB::parseTdbReq(windCode, date, begin, end, req);
 	}
 	catch (std::string const& error) {
 		return q::error2q(error);

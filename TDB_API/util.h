@@ -16,6 +16,7 @@ namespace TDB {
 
 	namespace util {
 
+		void fillDateTime(K data, int &date, int &time) throw(std::string);
 		void tm2DateTime(q::tm_ext const& tm, int &date, int &time);
 	
 	}//namespace TDB::util

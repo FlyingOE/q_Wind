@@ -58,14 +58,14 @@ TDB_API K K_DECL TDB_order_fields(K _) {
 	return TDB::traits::Order::accessor_map::getInstance()->getFields();
 }
 
-TDB_API K K_DECL TDB_order(K h, K windCode, K indicators, K begin, K end) {
+TDB_API K K_DECL TDB_order(K h, K windCode, K indicators, K date, K begin, K end) {
 	::THANDLE tdb = NULL;
 	std::vector<TDB::traits::Order::field_accessor const*> indis;
 	::TDBDefine_ReqOrder req = { 0 };
 	try {
 		TDB::parseTdbHandle(h, tdb);
 		TDB::parseIndicators<TDB::traits::Order>(indicators, indis);
-		TDB::parseTdbReq(windCode, begin, end, req);
+		TDB::parseTdbReq(windCode, date, begin, end, req);
 	}
 	catch (std::string const& error) {
 		return q::error2q(error);

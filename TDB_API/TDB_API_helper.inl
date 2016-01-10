@@ -24,7 +24,7 @@ void TDB::parseIndicators(K indicators, std::vector<typename FieldTraits::field_
 }
 
 template <typename TdbReq>
-void TDB::parseTdbReq(K windCode, K begin, K end, TdbReq& req) throw(std::string) {
+void TDB::parseTdbReq(K windCode, K date, K begin, K end, TdbReq& req) throw(std::string) {
 	std::memset(&req, 0, sizeof(TdbReq));
 
 	std::string const code = q::q2String(windCode);
@@ -34,8 +34,10 @@ void TDB::parseTdbReq(K windCode, K begin, K end, TdbReq& req) throw(std::string
 	std::copy(code.begin(), code.end(), req.chCode);
 	req.chCode[code.size()] = '\0';
 
-	util::tm2DateTime(q::q2tm(begin), req.nBeginDate, req.nBeginTime);
-	util::tm2DateTime(q::q2tm(end), req.nEndDate, req.nEndTime);
+	util::fillDateTime(begin, req.nDate, req.nBeginTime);
+	util::fillDateTime(end,   req.nDate, req.nEndTime  );
+	int dummy;
+	util::fillDateTime(date, req.nDate, dummy);
 }
 
 template <typename FieldTraits, typename TdbReq>

@@ -69,7 +69,8 @@ TDB_API K K_DECL TDB_transaction(K h, K windCode, K indicators, K date, K begin,
 	try {
 		TDB::parseTdbHandle(h, tdb);
 		TDB::parseIndicators<TDB::traits::Transaction>(indicators, indis);
-		TDB::parseTdbReq(tdb, windCode, date, begin, end, req);
+		TDB::parseTdbReqCode(tdb, windCode, req);
+		TDB::parseTdbReqTime(date, begin, end, req);
 	}
 	catch (std::string const& error) {
 		return q::error2q(error);

@@ -24,13 +24,6 @@ void TDB::parseIndicators(K indicators, std::vector<typename FieldTraits::field_
 }
 
 template <typename TdbReq>
-void TDB::parseTdbReq(::THANDLE const tdb, K windCode, K date, K begin, K end, TdbReq& req) throw(std::string) {
-	std::memset(&req, 0, sizeof(TdbReq));
-	parseTdbReqCode(tdb, windCode, req);
-	parseTdbReqTime(date, begin, end, req);
-}
-
-template <typename TdbReq>
 void TDB::parseTdbReqCode(::THANDLE const tdb, K windCode, TdbReq& req) throw(std::string) {
 	std::string const code = q::q2String(windCode);
 
@@ -57,9 +50,15 @@ void TDB::parseTdbReqCode(::THANDLE const tdb, K windCode, TdbReq& req) throw(st
 }
 
 template <typename TdbReq>
+void TDB::parseTdbReqTime(K beginDT, K endDT, TdbReq& req) throw(std::string) {
+	util::fillDateTime(beginDT, req.nBeginDate, req.nBeginTime);
+	util::fillDateTime(endDT,   req.nBeginDate, req.nEndTime  );
+}
+
+template <typename TdbReq>
 void TDB::parseTdbReqTime(K date, K begin, K end, TdbReq& req) throw(std::string) {
 	util::fillDateTime(begin, req.nDate, req.nBeginTime);
-	util::fillDateTime(end, req.nDate, req.nEndTime);
+	util::fillDateTime(end,   req.nDate, req.nEndTime  );
 	int dummy;
 	util::fillDateTime(date, req.nDate, dummy);
 }

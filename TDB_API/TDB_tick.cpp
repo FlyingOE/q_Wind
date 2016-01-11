@@ -161,7 +161,8 @@ TDB_API K K_DECL TDB_tick(K h, K windCode, K indicators, K date, K begin, K end)
 	try {
 		TDB::parseTdbHandle(h, tdb);
 		TDB::parseIndicators<TDB::traits::Tick>(indicators, indis);
-		TDB::parseTdbReq(tdb, windCode, date, begin, end, req);
+		TDB::parseTdbReqCode(tdb, windCode, req);
+		TDB::parseTdbReqTime(date, begin, end, req);
 	}
 	catch (std::string const& error) {
 		return q::error2q(error);

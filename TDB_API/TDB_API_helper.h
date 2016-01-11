@@ -23,10 +23,9 @@ namespace TDB {
 		std::vector<typename FieldTraits::field_accessor const*>& indis) throw(std::string);
 
 	template <typename TdbReq>
-	void parseTdbReq(::THANDLE const tdb, K windCode, K date, K begin, K end, TdbReq& req) throw(std::string);
-	
-	template <typename TdbReq>
 	void parseTdbReqCode(::THANDLE const tdb, K windCode, TdbReq& req) throw(std::string);
+	template <typename TdbReq>
+	void parseTdbReqTime(K beginDT, K endDT, TdbReq& req) throw(std::string);
 	template <typename TdbReq>
 	void parseTdbReqTime(K date, K begin, K end, TdbReq& req) throw(std::string);
 

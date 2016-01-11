@@ -5,12 +5,18 @@ static_assert(0, "Include Wind.util/FieldMapper.h instead!");
 #include "kdb+.util/K_ptr.h"
 #include "win32.util/hexDump.h"
 
+#include <set>
 #include <sstream>
 
 template <typename T>
 K Wind::mapper::Fields<T>::getFields() const {
+	return getFields(NULL);
+}
+
+template <typename T>
+K Wind::mapper::Fields<T>::getFields(char const* category) const {
 	std::vector<std::string> list;
-	getFields(list);
+	getFields(category, list);
 	q::K_ptr result(ktn(KS, list.size()));
 	for (size_t i = 0; i < list.size(); ++i) {
 		kS(result.get())[i] = ss(const_cast<S>(list[i].c_str()));
@@ -19,15 +25,52 @@ K Wind::mapper::Fields<T>::getFields() const {
 }
 
 template <typename T>
+K Wind::mapper::Fields<T>::getFields(std::string const& category) const {
+	return getFields(category.c_str());
+}
+
+template <typename T>
 void Wind::mapper::Fields<T>::getFields(std::vector<std::string>& list) const {
-	list.reserve(fields_.size());
-	for (auto f = fields_.cbegin(); f != fields_.cend(); ++f) {
-		list.push_back(f->first);
+	return getFields(NULL, list);
+}
+
+template <typename T>
+void Wind::mapper::Fields<T>::getFields(char const* category, std::vector<std::string>& list) const {
+	if (category == NULL) {
+		category = "";
+	}
+	list.empty();
+	list.reserve(catalog_.size());
+	for (auto c = catalog_.cbegin(); c != catalog_.cend(); ++c) {
+		if (c->first == category) {
+			list.push_back(c->second);
+		}
 	}
 }
 
 template <typename T>
+void Wind::mapper::Fields<T>::getFields(std::string const& category, std::vector<std::string>& list) const {
+	return getFields(category.c_str(), list);
+}
+
+template <typename T>
 void Wind::mapper::Fields<T>::addField(
+	char const* fieldName, typename Wind::mapper::Fields<T>::field_accessor* accessor)
+	throw(std::string)
+{
+	addField("", fieldName, accessor);
+}
+
+template <typename T>
+void Wind::mapper::Fields<T>::addField(
+	std::string const& fieldName, typename Wind::mapper::Fields<T>::field_accessor* accessor)
+	throw(std::string)
+{
+	addField("", fieldName.c_str(), accessor);
+}
+
+template <typename T>
+void Wind::mapper::Fields<T>::addField(char const* category,
 	char const* fieldName, typename Wind::mapper::Fields<T>::field_accessor* accessor)
 	throw(std::string)
 {
@@ -37,14 +80,35 @@ void Wind::mapper::Fields<T>::addField(
 		buffer << fieldName << " -> 0x" << util::hexBytes(accessor);
 		throw std::string(buffer.str());
 	}
+	catalog_.emplace(category, fieldName);
 }
 
 template <typename T>
-void Wind::mapper::Fields<T>::addField(
+void Wind::mapper::Fields<T>::addField(std::string const& category,
 	std::string const& fieldName, typename Wind::mapper::Fields<T>::field_accessor* accessor)
 	throw(std::string)
 {
-	addField(fieldName.c_str(), accessor);
+	addField(category.c_str(), fieldName.c_str(), accessor);
+}
+
+template <typename T>
+void Wind::mapper::Fields<T>::getCategories(std::vector<std::string>& list) const {
+	list.empty();
+	std::set<std::string> cats;
+	for (auto c = catalog_.cbegin(); c != catalog_.cend(); ++c) {
+		cats.emplace(c->first);
+	}
+	list.assign(cats.cbegin(), cats.cend());
+}
+
+template <typename T>
+bool Wind::mapper::Fields<T>::hasCategory(char const* category) const {
+	return catalog_.count(category) > 0;
+}
+
+template <typename T>
+bool Wind::mapper::Fields<T>::hasCategory(std::string const& category) const {
+	return hasCategory(category.c_str());
 }
 
 template <typename T>

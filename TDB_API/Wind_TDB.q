@@ -46,43 +46,66 @@ codeInfo:{[F;h;c;m]
     `WindCode`Code`Market`Name`NameEN`Type`Level`DataSrc!F[h;c;m]
     }DLL 2:(`TDB_codeInfo;3);
 
-\
-
-/q) .tdb.tickAB_fields h
-/q) .tdb.tickAB[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes;2015.07.01T00:00;2015.07.03T23:59:59.999]
-tickAB_fields:DLL 2:(`TDB_tickAB_fields;1);
-tickAB:{[F;h;c;i;b;e]
-    flip i!F[h;c;i:(),i;$[-15h=type b;b;"z"$b];$[-15h=type e;e;"z"$e]]
-    }DLL 2:(`TDB_tickAB;5);
-
-/q) .tdb.futureAB_fields h
-/q) .tdb.futureAB[h][`IF1507.CF;`WindCode`Code`Date`Time`Delta`Asks`AskSizes`Bids`BidSizes;2015.07.01T00:00;2015.07.03T23:59:59.999;0b]
-futureAB_fields:DLL 2:(`TDB_futureAB_fields;1);
-futureAB:{[F;h;c;i;b;e;ac]
-    flip i!F[h;c;i:(),i;$[-15h=type b;b;"z"$b];$[-15h=type e;e;"z"$e];ac]
-    }DLL 2:(`TDB_futureAB;6);
-
-/q) .tdb.txn_fields h
-/q) .tdb.txn[h][`600000.SH;`WindCode`Code`Date`Time`Side`Price`Size;2015.07.01T00:00;2015.07.03T23:59:59.999]
+/q) .tdb.txn_fields[]
+/q) .tdb.txn[h][`600000.SH;`WindCode`Code`Date`Time`Side`Price`Size;2015.07.01;00:00;23:59:59.999]
+/q) .tdb.txn[h][`600000.SH;`WindCode`Code`Date`Time`Side`Price`Size; 0        ;00:00;23:59:59.999]  /today
+/q) .tdb.txn[h][`600000.SH;`WindCode`Code`Date`Time`Side`Price`Size;-1        ;00:00;23:59:59.999]  /IPO day
+/q) .tdb.txn[h][`600000.SH;`WindCode`Code`Date`Time`Side`Price`Size;2015.07.01;0    ;23:59:59.999]  /from SOD
+/q) .tdb.txn[h][`600000.SH;`WindCode`Code`Date`Time`Side`Price`Size;2015.07.01;10:00;0           ]  /till EOD
 txn_fields:DLL 2:(`TDB_transaction_fields;1);
-txn:{[F;h;c;i;b;e]
-    flip i!F[h;c;i:(),i;$[-15h=type b;b;"z"$b];$[-15h=type e;e;"z"$e]]
-    }DLL 2:(`TDB_transaction;5);
+txn:{[F;h;c;i;d;b;e]
+    flip i!F[h;c;i:(),i;
+            $[-14h=t:type d;d;d<=0;d;$[t<0;"d";"D"]$d];
+            $[-19h=t:type b;b;b<=0;b;$[t<0;"t";"T"]$b];
+            $[-19h=t:type e;e;e<=0;e;$[t<0;"t";"T"]$e]]
+    }DLL 2:(`TDB_transaction;6);
 
-/q) .tdb.order_fields h
-/q) .tdb.order[h][`000001.SZ;`Date`Time`WindCode`Code`Index`OrderID`OrderType`Price`Size;2015.07.01T00:00;2015.07.03T23:59:59.999]
+/q) .tdb.order_fields[]
+/q) .tdb.order[h][`000001.SZ;`Date`Time`WindCode`Code`Index`OrderID`OrderType`Price`Size;2015.07.01;00:00;23:59:59.999]
+/q) .tdb.order[h][`000001.SZ;`Date`Time`WindCode`Code`Index`OrderID`OrderType`Price`Size; 0        ;00:00;23:59:59.999] /today
+/q) .tdb.order[h][`000001.SZ;`Date`Time`WindCode`Code`Index`OrderID`OrderType`Price`Size;-1        ;00:00;23:59:59.999] /IPO day
+/q) .tdb.order[h][`000001.SZ;`Date`Time`WindCode`Code`Index`OrderID`OrderType`Price`Size;2015.07.01;0    ;23:59:59.999] /from SOD
+/q) .tdb.order[h][`000001.SZ;`Date`Time`WindCode`Code`Index`OrderID`OrderType`Price`Size;2015.07.01;00:00;0           ] /till EOD
 order_fields:DLL 2:(`TDB_order_fields;1);
-order:{[F;h;c;i;b;e]
-    flip i!F[h;c;i:(),i;$[-15h=type b;b;"z"$b];$[-15h=type e;e;"z"$e]]
-    }DLL 2:(`TDB_order;5);
+order:{[F;h;c;i;d;b;e]
+    flip i!F[h;c;i:(),i;
+            $[-14h=t:type d;d;d<=0;d;$[t<0;"d";"D"]$d];
+            $[-19h=t:type b;b;b<=0;b;$[t<0;"t";"T"]$b];
+            $[-19h=t:type e;e;e<=0;e;$[t<0;"t";"T"]$e]]
+    }DLL 2:(`TDB_order;6);
 
-/q) .tdb.orderQueue_fields h
-/q) .tdb.orderQueue[h][`000001.SZ;`Date`Time`WindCode`Code`Side`Price`OrderCount`Sizes;2015.07.01T00:00;2015.07.03T23:59:59.999]
+
+/q) .tdb.orderQueue_fields[]
+/q) .tdb.orderQueue[h][`000001.SZ;`Date`Time`WindCode`Code`Side`Price`OrderCount`Sizes;2015.07.01;00:00;23:59:59.999]
+/q) .tdb.orderQueue[h][`000001.SZ;`Date`Time`WindCode`Code`Side`Price`OrderCount`Sizes; 0        ;00:00;23:59:59.999]   /today
+/q) .tdb.orderQueue[h][`000001.SZ;`Date`Time`WindCode`Code`Side`Price`OrderCount`Sizes;-1        ;00:00;23:59:59.999]   /IPO day
+/q) .tdb.orderQueue[h][`000001.SZ;`Date`Time`WindCode`Code`Side`Price`OrderCount`Sizes;2015.07.01;0    ;23:59:59.999]   /from SOD
+/q) .tdb.orderQueue[h][`000001.SZ;`Date`Time`WindCode`Code`Side`Price`OrderCount`Sizes;2015.07.01;00:00;0           ]   /till EOD
 orderQueue_fields:DLL 2:(`TDB_orderQueue_fields;1);
-orderQueue:{[F;h;c;i;b;e]
-    flip i!F[h;c;i:(),i;$[-15h=type b;b;"z"$b];$[-15h=type e;e;"z"$e]]
-    }DLL 2:(`TDB_orderQueue;5);
-    
+orderQueue:{[F;h;c;i;d;b;e]
+    flip i!F[h;c;i:(),i;
+            $[-14h=t:type d;d;d<=0;d;$[t<0;"d";"D"]$d];
+            $[-19h=t:type b;b;b<=0;b;$[t<0;"t";"T"]$b];
+            $[-19h=t:type e;e;e<=0;e;$[t<0;"t";"T"]$e]]
+    }DLL 2:(`TDB_orderQueue;6);
+
+/q) .tdb.tick_fields`
+/q) .tdb.tick_fields`FUTURES
+/q) .tdb.tick_fields`BIDASK
+/q) .tdb.tick_fields`INDEX
+/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes;2015.07.01;00:00;23:59:59.999]
+/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes; 0        ;00:00;23:59:59.999]    /today
+/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes;-1        ;00:00;23:59:59.999]    /IPO day
+/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes;2015.07.01;0    ;23:59:59.999]    /from SOD
+/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes;2015.07.01;00:00;0           ]    /till EOD
+tick_fields:DLL 2:(`TDB_tick_fields;1);
+tick:{[F;h;c;i;d;b;e]
+    flip i!F[h;c;i:(),i;
+            $[-14h=t:type d;d;d<=0;d;$[t<0;"d";"D"]$d];
+            $[-19h=t:type b;b;b<=0;b;$[t<0;"t";"T"]$b];
+            $[-19h=t:type e;e;e<=0;e;$[t<0;"t";"T"]$e]]
+    }DLL 2:(`TDB_tick;6);
+
 /TODO
 / Provide support for other Wind TDB API functions...
 
@@ -91,11 +114,38 @@ orderQueue:{[F;h;c;i;b;e]
 __EOD__
 ===============================================================================
 
-h:.tdb.start`:.tdb3.connect
+h:.tdb.start`:.tdb3_L2.connect
+hh:.tdb.start`:.tdb3_L1.connect
 .tdb.getTimeout`
 .tdb.getDataSource`
 .tdb.setDataSource 1
 update string Type from .tdb.codeTable[h]`
 reverse update string Type from .tdb.codeTable[h]`CF
+reverse update string Type from .tdb.codeTable[hh]`DCE
 select count i by Market,string Type,Level,DataSrc from .tdb.codeTable[h]`
+select count i by Market,string Type,Level,DataSrc from .tdb.codeTable[hh]`
+.tdb.codeInfo[h][`000001.SZ;`SZ]
+.tdb.txn[h][`000001.SZ;.tdb.txn_fields`;0;0;0]
+.tdb.txn[h][`000001.SZ;.tdb.txn_fields`;-1;0;0]
+.tdb.txn[h][`000001.SZ;.tdb.txn_fields`;2016.01.07;0;0]
+.tdb.txn[h][`000001.SZ;.tdb.txn_fields`;2016.01.07;09:30;09:45]
+.tdb.txn[hh][`CU1605.SHF;.tdb.txn_fields`;2016.01.07;0;0]
+.tdb.order[h][`000001.SZ;.tdb.order_fields`;0;0;0]
+.tdb.order[h][`000001.SZ;.tdb.order_fields`;-1;0;0]
+.tdb.order[h][`000001.SZ;.tdb.order_fields`;2016.01.07;0;0]
+.tdb.order[h][`000001.SZ;.tdb.order_fields`;2016.01.07;09:30;09:45]
+.tdb.order[hh][`CU1605.SHF;.tdb.order_fields`;2016.01.07;0;0]
+.tdb.orderQueue[h][`000001.SZ;.tdb.orderQueue_fields`;0;0;0]
+.tdb.orderQueue[h][`000001.SZ;.tdb.orderQueue_fields`;-1;0;0]
+.tdb.orderQueue[h][`000001.SZ;.tdb.orderQueue_fields`;2016.01.07;0;0]
+.tdb.orderQueue[h][`000001.SZ;.tdb.orderQueue_fields`;2016.01.07;09:30;09:45]
+.tdb.orderQueue[hh][`CU1605.SHF;.tdb.orderQueue_fields`;2016.01.07;0;0]
+.tdb.tick_fields each``FUTURES`BIDASK`INDEX
+.tdb.tick[h][`000001.SZ;(,/).tdb.tick_fields each``BIDASK;0;0;0]
+.tdb.tick[h][`000001.SZ;(,/).tdb.tick_fields each``BIDASK;-1;0;0]
+.tdb.tick[h][`000001.SZ;(,/).tdb.tick_fields each``BIDASK;2016.01.07;0;0]
+.tdb.tick[h][`000001.SZ;(,/).tdb.tick_fields each``BIDASK;2016.01.07;09:30;09:45]
+.tdb.tick[hh][`cu1605.SHF;(,/).tdb.tick_fields each``BIDASK;2016.01.07;0;0]
+.tdb.tick[hh][`MA605.CZC;(,/).tdb.tick_fields each``BIDASK`FUTURES;2016.01.07;0;0]
+.tdb.tick[hh][`y1605.DCE;(,/).tdb.tick_fields each``BIDASK`FUTURES;2016.01.07;0;0]
 \\

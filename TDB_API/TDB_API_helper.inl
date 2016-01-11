@@ -24,18 +24,42 @@ void TDB::parseIndicators(K indicators, std::vector<typename FieldTraits::field_
 }
 
 template <typename TdbReq>
-void TDB::parseTdbReq(K windCode, K date, K begin, K end, TdbReq& req) throw(std::string) {
+void TDB::parseTdbReq(::THANDLE const tdb, K windCode, K date, K begin, K end, TdbReq& req) throw(std::string) {
 	std::memset(&req, 0, sizeof(TdbReq));
+	parseTdbReqCode(tdb, windCode, req);
+	parseTdbReqTime(date, begin, end, req);
+}
 
+template <typename TdbReq>
+void TDB::parseTdbReqCode(::THANDLE const tdb, K windCode, TdbReq& req) throw(std::string) {
 	std::string const code = q::q2String(windCode);
+
+	size_t const dot = code.rfind('.');
+	if (dot == std::string::npos) {
+		throw std::string("windCode missing suffix");
+	}
+	std::ostringstream buffer;
+	buffer << std::string(code.cbegin() + dot + 1, code.cend())
+		<< '-' << TDB::LEVELS[tdb]
+		<< '-' << TDB::DATA_SRC;
+	std::string const market = buffer.str();
+	if (market.size() >= sizeof(req.chMarketKey)) {
+		throw std::string("windCode suffix too long");
+	}
+	std::copy(market.begin(), market.end(), req.chMarketKey);
+	req.chMarketKey[market.size()] = '\0';
+
 	if (code.size() >= sizeof(req.chCode)) {
 		throw std::string("windCode too long");
 	}
 	std::copy(code.begin(), code.end(), req.chCode);
 	req.chCode[code.size()] = '\0';
+}
 
+template <typename TdbReq>
+void TDB::parseTdbReqTime(K date, K begin, K end, TdbReq& req) throw(std::string) {
 	util::fillDateTime(begin, req.nDate, req.nBeginTime);
-	util::fillDateTime(end,   req.nDate, req.nEndTime  );
+	util::fillDateTime(end, req.nDate, req.nEndTime);
 	int dummy;
 	util::fillDateTime(date, req.nDate, dummy);
 }

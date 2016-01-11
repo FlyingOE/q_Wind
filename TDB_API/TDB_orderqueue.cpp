@@ -64,7 +64,7 @@ TDB_API K K_DECL TDB_orderQueue(K h, K windCode, K indicators, K date, K begin, 
 	try {
 		TDB::parseTdbHandle(h, tdb);
 		TDB::parseIndicators<TDB::traits::OrderQueue>(indicators, indis);
-		TDB::parseTdbReq(windCode, date, begin, end, req);
+		TDB::parseTdbReq(tdb, windCode, date, begin, end, req);
 	}
 	catch (std::string const& error) {
 		return q::error2q(error);

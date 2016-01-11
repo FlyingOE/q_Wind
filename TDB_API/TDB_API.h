@@ -60,28 +60,20 @@ extern "C" {
 		K market	//-11h or 10h
 		);
 
-	//获取快照数据(带买卖盘口)
-	TDB_API K K_DECL TDB_tickAB_fields(K/*NOTE: at least one argument required by `2:'*/);
-	TDB_API K K_DECL TDB_tickAB(
+	//获取快照数据
+	TDB_API K K_DECL TDB_tick_fields(
+		K type		//-11h
+		);
+	TDB_API K K_DECL TDB_tick(
 		K tdb,			//-7h
 		K windCode,		//-11h or 10h
 		K indicators,	//-11h or 11h
-		K begin,		//-15h
-		K end			//-15h
+		K date,			//-14h or -5h or -6h or -7h
+		K begin,		//-19h or -18h or -17h or -5h or -6h or -7h
+		K end			//-19h or -18h or -17h or -5h or -6h or -7h
 		);
 
-	//获取快照数据(带买卖盘口)
-	TDB_API K K_DECL TDB_futureAB_fields(K/*NOTE: at least one argument required by `2:'*/);
-	TDB_API K K_DECL TDB_futureAB(
-		K tdb,			//-7h
-		K windCode,		//-11h or 10h
-		K indicators,	//-11h or 11h
-		K begin,		//-15h
-		K end,			//-15h
-		K autoComplete	//-1h
-		);
-
-	//获取期货行情(带买卖盘口)
+	//获取逐笔成交数据
 	TDB_API K K_DECL TDB_transaction_fields(K/*NOTE: at least one argument required by `2:'*/);
 	TDB_API K K_DECL TDB_transaction(
 		K tdb,			//-7h
@@ -109,8 +101,9 @@ extern "C" {
 		K tdb,			//-7h
 		K windCode,		//-11h or 10h
 		K indicators,	//-11h or 11h
-		K begin,		//-15h
-		K end			//-15h
+		K date,			//-14h or -5h or -6h or -7h
+		K begin,		//-19h or -18h or -17h or -5h or -6h or -7h
+		K end			//-19h or -18h or -17h or -5h or -6h or -7h
 		);
 
 #ifdef __cplusplus

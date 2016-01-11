@@ -35,8 +35,8 @@ namespace TDB {
 		std::vector<typename FieldTraits::field_accessor const*> const& indis,
 		int(*tdbCall)(::THANDLE, TdbReq const*, typename FieldTraits::tdb_result_type**, int*));
 
-	template <typename T, int Index, typename QType> struct MarketInfoAccessor;
-	template <typename T> using MarketIdAccessor = MarketInfoAccessor<T, 0, S>;
+	template <typename T,typename QType> struct MarketInfoAccessor;
+	template <typename T> using MarketIdAccessor = MarketInfoAccessor<T, S>;
 
 }//namespace TDB
 

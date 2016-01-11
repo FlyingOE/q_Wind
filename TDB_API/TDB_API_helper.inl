@@ -87,26 +87,28 @@ K TDB::runQuery(::THANDLE tdb, TdbReq const& req,
 	return out.release();
 }
 
-template <typename T, int Index, typename QType>
+template <typename T, typename QType>
 struct TDB::MarketInfoAccessor : public Wind::accessor::AccessorBase<T, char[24]>
 {
-	MarketInfoAccessor(field_accessor field)
-	: AccessorBase<struct_type, field_type>(q::type_traits<QType>::TYPE_NUM, field) {}
+	size_t partIndex_;
+
+	MarketInfoAccessor(field_accessor field, size_t partIndex)
+	: AccessorBase<struct_type, field_type>(q::type_traits<QType>::TYPE_NUM, field), partIndex_(partIndex) {}
 
 	virtual void setElement(K out, size_t index, struct_type const& data) const override {
 		std::vector<std::string> tokens = ::util::split(data.*(this->FIELD), '-');
-		if (tokens.size() < Index + 1) {
+		if (tokens.size() < partIndex_ + 1) {
 			q::type_traits<QType>::index(out)[index] = q::type_traits<QType>::NULL_VAL;
 		}
 		else {
-			long const value = std::strtol(tokens[Index].c_str(), NULL, 10);
+			long const value = std::strtol(tokens[partIndex_].c_str(), NULL, 10);
 			q::type_traits<QType>::index(out)[index] = static_cast<QType>(value);
 		}
 	}
 };
 
 template <typename T>
-struct TDB::MarketInfoAccessor<T, 0, S> : public Wind::accessor::AccessorBase<T, char[24]>
+struct TDB::MarketInfoAccessor<T, S> : public Wind::accessor::AccessorBase<T, char[24]>
 {
 	MarketInfoAccessor(field_accessor field)
 	: AccessorBase<struct_type, field_type>(KS, field) {}

@@ -30,8 +30,7 @@ TDB_API K K_DECL TDB_codeTable(K h, K market) {
 
 	typedef Wind::accessor::SymbolAccessor<tdb_result_type, char[32]> SymbolAccessor;
 	typedef TDB::MarketIdAccessor<tdb_result_type> MarketIdAccessor;
-	typedef TDB::MarketInfoAccessor<tdb_result_type, 1, H> MarketLevelAccessor;
-	typedef TDB::MarketInfoAccessor<tdb_result_type, 2, H> DataSourceAccessor;
+	typedef TDB::MarketInfoAccessor<tdb_result_type, H> MarketInfoAccessor;
 	typedef Wind::accessor::SymbolAccessor<tdb_result_type, char[32], Wind::encoder::GB18030_UTF8> CnNameAccessor;
 	typedef Wind::accessor::IntAccessor<tdb_result_type, G> TypeAccessor;
 
@@ -49,9 +48,9 @@ TDB_API K K_DECL TDB_codeTable(K h, K market) {
 	//Ö¤È¯ÀàÐÍ
 	kK(data.get())[5] = TypeAccessor(&tdb_result_type::nType).extract(codes.get(), codeCount);
 	//Market level
-	kK(data.get())[6] = MarketLevelAccessor(&tdb_result_type::chMarket).extract(codes.get(), codeCount);
+	kK(data.get())[6] = MarketInfoAccessor(&tdb_result_type::chMarket, 1).extract(codes.get(), codeCount);
 	//Data source ID
-	kK(data.get())[7] = DataSourceAccessor(&tdb_result_type::chMarket).extract(codes.get(), codeCount);
+	kK(data.get())[7] = MarketInfoAccessor(&tdb_result_type::chMarket, 2).extract(codes.get(), codeCount);
 	return data.release();
 }
 
@@ -83,7 +82,7 @@ TDB_API K K_DECL TDB_codeInfo(K h, K windCode, K market) {
 	kK(data.get())[5] =	kg(info->nType);
 	long const level = (mktTokens.size() <= 1) ? q::type_traits<H>::NULL_VAL : std::strtol(mktTokens[1].c_str(), NULL, 10);
 	kK(data.get())[6] = kh(static_cast<H>(level));
-	long const src = (mktTokens.size() <= 1) ? q::type_traits<H>::NULL_VAL : std::strtol(mktTokens[1].c_str(), NULL, 10);
+	long const src =   (mktTokens.size() <= 2) ? q::type_traits<H>::NULL_VAL : std::strtol(mktTokens[2].c_str(), NULL, 10);
 	kK(data.get())[7] = kh(static_cast<H>(src));
 	return data.release();
 }

@@ -167,5 +167,7 @@ TDB_API K K_DECL TDB_tick(K h, K windCode, K indicators, K date, K begin, K end)
 		return q::error2q(error);
 	}
 
+	req.nAutoComplete = 0;
+
 	return TDB::runQuery<TDB::traits::Tick, ::TDBDefine_ReqTick>(tdb, req, indis, &::TDB_GetTick);
 }

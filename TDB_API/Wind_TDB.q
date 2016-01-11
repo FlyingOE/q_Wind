@@ -145,7 +145,7 @@ select count i by Market,string Type,Level,DataSrc from .tdb.codeTable[hh]`
 .tdb.tick[h][`000001.SZ;(,/).tdb.tick_fields each``BIDASK;-1;0;0]
 .tdb.tick[h][`000001.SZ;(,/).tdb.tick_fields each``BIDASK;2016.01.07;0;0]
 .tdb.tick[h][`000001.SZ;(,/).tdb.tick_fields each``BIDASK;2016.01.07;09:30;09:45]
-.tdb.tick[hh][`cu1605.SHF;(,/).tdb.tick_fields each``BIDASK;2016.01.07;0;0]
+.tdb.tick[hh][`cu1605.SHF;(,/).tdb.tick_fields each``BIDASK`FUTURES;2016.01.07;0;0]
 .tdb.tick[hh][`MA605.CZC;(,/).tdb.tick_fields each``BIDASK`FUTURES;2016.01.07;0;0]
 .tdb.tick[hh][`y1605.DCE;(,/).tdb.tick_fields each``BIDASK`FUTURES;2016.01.07;0;0]
 \\

@@ -108,7 +108,8 @@ tick:{[F;h;c;i;d;b;e]
 
 /q) .tdb.ohlc_fields[]
 /q) .tdb.ohlc[h][`600000.SH;`WindCode`Code`Date`Time`Open`High`Low`Close`Size`Amount;2015.07.01T00:00;2015.07.01T23:59:59.999;00:00:01;()]  /秒K线
-/q) .tdb.ohlc[h][`600000.SH;`WindCode`Code`Date`Time`Open`High`Low`Close`Size`Amount;2015.07.01T00:00;2015.07.01T23:59:59.999;00:00;()]     /分钟K线
+/q) .tdb.ohlc[h][`600000.SH;`WindCode`Code`Date`Time`Open`High`Low`Close`Size`Amount;2015.07.01T00:00;2015.07.01T23:59:59.999;00:00:30;()]  /30秒K线
+/q) .tdb.ohlc[h][`600000.SH;`WindCode`Code`Date`Time`Open`High`Low`Close`Size`Amount;2015.07.01T00:00;2015.07.01T23:59:59.999;00:01;()]     /分钟K线
 /q) .tdb.ohlc[h][`600000.SH;`WindCode`Code`Date`Time`Open`High`Low`Close`Size`Amount;2015.07.01T00:00;2015.12.31T23:59:59.999;"1D";()]      /日K线
 /q) .tdb.ohlc[h][`600000.SH;`WindCode`Code`Date`Time`Open`High`Low`Close`Size`Amount;2015.07.01T00:00;2015.12.31T23:59:59.999;`1W ;()]      /周K线
 /q) .tdb.ohlc[h][`600000.SH;`WindCode`Code`Date`Time`Open`High`Low`Close`Size`Amount;2015.07.01T00:00;2015.12.31T23:59:59.999;"2M";()]      /双月K线
@@ -168,6 +169,7 @@ select count i by Market,string Type,Level,DataSrc from .tdb.codeTable[hh]`
 .tdb.tick[hh][`y1605.DCE;(,/).tdb.tick_fields each``BIDASK`FUTURES;2016.01.07;0;0]
 .tdb.ohlc[h][`002075.SZ;.tdb.ohlc_fields`;2015.06.24T00:00;2015.06.24T23:59:59.999;00:01;()]
 .tdb.ohlc[h][`002075.SZ;.tdb.ohlc_fields`;2015.06.24T00:00;2015.06.24T23:59:59.999;00:00:01;()]
+.tdb.ohlc[h][`002075.SZ;.tdb.ohlc_fields`;2015.06.24T00:00;2015.06.24T23:59:59.999;00:00:30;()]
 .tdb.ohlc[h][`002075.SZ;.tdb.ohlc_fields`;2015.06.24T00:00;2015.06.24T23:59:59.999;`1T;()]
 .tdb.ohlc[h][`000001.SZ;.tdb.ohlc_fields`;2015.01.01T00:00;2016.01.08T23:59:59.999;`1D;()]
 .tdb.ohlc[h][`000001.SZ;.tdb.ohlc_fields`;2015.01.01T00:00;2016.01.08T23:59:59.999;`5D;()]

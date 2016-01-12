@@ -61,6 +61,10 @@ This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wi
   * More complete API support for TDB
 * 2015.12
   * Added simple ODBC-based wrapper for RD database
+* 2016.01
+  * Upgrade TDB to v3 API (on-the-wire data compression, faster access)
+  * Merged multiple tick data extraction functions (TDB v3 change)
+  * Added support for OHLC (a.k.a. K-line) data extraction
 
 ### References
 

@@ -56,8 +56,8 @@ txn_fields:DLL 2:(`TDB_transaction_fields;1);
 txn:{[F;h;c;i;d;b;e]
     flip i!F[h;c;i:(),i;
             $[-14h=t:type d;d;d<=0;d;$[t<0;"d";"D"]$d];
-            $[-19h=t:type b;b;b<=0;b;$[t<0;"t";"T"]$b];
-            $[-19h=t:type e;e;e<=0;e;$[t<0;"t";"T"]$e]]
+            $[-19h=t:type b;b;t in -17 -18h;"t"$b;b<=0;b;$[t<0;"t";"T"]$b];
+            $[-19h=t:type e;e;t in -17 -18h;"t"$e;e<=0;e;$[t<0;"t";"T"]$e]]
     }DLL 2:(`TDB_transaction;6);
 
 /q) .tdb.order_fields[]
@@ -70,8 +70,8 @@ order_fields:DLL 2:(`TDB_order_fields;1);
 order:{[F;h;c;i;d;b;e]
     flip i!F[h;c;i:(),i;
             $[-14h=t:type d;d;d<=0;d;$[t<0;"d";"D"]$d];
-            $[-19h=t:type b;b;b<=0;b;$[t<0;"t";"T"]$b];
-            $[-19h=t:type e;e;e<=0;e;$[t<0;"t";"T"]$e]]
+            $[-19h=t:type b;b;t in -17 -18h;"t"$b;b<=0;b;$[t<0;"t";"T"]$b];
+            $[-19h=t:type e;e;t in -17 -18h;"t"$e;e<=0;e;$[t<0;"t";"T"]$e]]
     }DLL 2:(`TDB_order;6);
 
 
@@ -85,8 +85,8 @@ orderQueue_fields:DLL 2:(`TDB_orderQueue_fields;1);
 orderQueue:{[F;h;c;i;d;b;e]
     flip i!F[h;c;i:(),i;
             $[-14h=t:type d;d;d<=0;d;$[t<0;"d";"D"]$d];
-            $[-19h=t:type b;b;b<=0;b;$[t<0;"t";"T"]$b];
-            $[-19h=t:type e;e;e<=0;e;$[t<0;"t";"T"]$e]]
+            $[-19h=t:type b;b;t in -17 -18h;"t"$b;b<=0;b;$[t<0;"t";"T"]$b];
+            $[-19h=t:type e;e;t in -17 -18h;"t"$e;e<=0;e;$[t<0;"t";"T"]$e]]
     }DLL 2:(`TDB_orderQueue;6);
 
 /q) .tdb.tick_fields`
@@ -102,8 +102,8 @@ tick_fields:DLL 2:(`TDB_tick_fields;1);
 tick:{[F;h;c;i;d;b;e]
     flip i!F[h;c;i:(),i;
             $[-14h=t:type d;d;d<=0;d;$[t<0;"d";"D"]$d];
-            $[-19h=t:type b;b;b<=0;b;$[t<0;"t";"T"]$b];
-            $[-19h=t:type e;e;e<=0;e;$[t<0;"t";"T"]$e]]
+            $[-19h=t:type b;b;t in -17 -18h;"t"$b;b<=0;b;$[t<0;"t";"T"]$b];
+            $[-19h=t:type e;e;t in -17 -18h;"t"$e;e<=0;e;$[t<0;"t";"T"]$e]]
     }DLL 2:(`TDB_tick;6);
 
 /q) .tdb.ohlc_fields[]
@@ -163,7 +163,7 @@ select count i by Market,string Type,Level,DataSrc from .tdb.codeTable[hh]`
 .tdb.tick[h][`000001.SZ;(,/).tdb.tick_fields each``BIDASK;0;0;0]
 .tdb.tick[h][`000001.SZ;(,/).tdb.tick_fields each``BIDASK;-1;0;0]
 .tdb.tick[h][`000001.SZ;(,/).tdb.tick_fields each``BIDASK;2016.01.07;0;0]
-.tdb.tick[h][`000001.SZ;(,/).tdb.tick_fields each``BIDASK;2016.01.07;09:30;09:45]
+.tdb.tick[h][`000001.SZ;(,/).tdb.tick_fields each``BIDASK;2016.01.07;09:30;09:45:00.000]
 .tdb.tick[hh][`cu1605.SHF;(,/).tdb.tick_fields each``BIDASK`FUTURES;2016.01.07;0;0]
 .tdb.tick[hh][`MA605.CZC;(,/).tdb.tick_fields each``BIDASK`FUTURES;2016.01.07;0;0]
 .tdb.tick[hh][`y1605.DCE;(,/).tdb.tick_fields each``BIDASK`FUTURES;2016.01.07;0;0]

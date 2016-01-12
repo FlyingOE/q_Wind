@@ -96,8 +96,11 @@ TDQ:{[F;c;i;p;f]
 	F[(),c;(),i;impl.dict2Strings$[p~();()!();p],(1#`REALTIME)!1#1b;f]
 	}DLL 2:(`Wind_tdq;4);
 rtCallback:{[f;q;d]
-    f[q;]delete code from
-        update sym:`$code from impl.quantData2Table d
+    if[2<>count value[f]1;'"callback should take 2 arguments"];
+    {[f;q;d]
+        f[q;]delete code from
+            update sym:`$code from impl.quantData2Table d
+        }[f;;]
     };
 
 /q) .wind.unsub 3

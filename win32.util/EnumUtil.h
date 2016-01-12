@@ -13,13 +13,13 @@
 	template<>	\
 	struct ::util::Enum<E> : public ::util::EnumBase<Enum<E>, E> {	\
 		static void registerAll()
-//		{
-#define ENUM_STRING(e)	\
-			registerEnumString(e, #e)
-//			;
-//		}
+		/*{*/
+#define ENUM_STRING2(e, en)	\
+			registerEnumString((e), (en))/*;*/
+		/*}*/
+#define ENUM_STRING(e)	ENUM_STRING2(e, #e)
 #define END_ENUM_STRING	\
-	}
+	}/*;*/
 
 
 namespace util {

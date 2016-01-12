@@ -52,7 +52,7 @@ void TDB::parseTdbReqCode(::THANDLE const tdb, K windCode, TdbReq& req) throw(st
 template <typename TdbReq>
 void TDB::parseTdbReqTime(K beginDT, K endDT, TdbReq& req) throw(std::string) {
 	util::fillDateTime(beginDT, req.nBeginDate, req.nBeginTime);
-	util::fillDateTime(endDT,   req.nBeginDate, req.nEndTime  );
+	util::fillDateTime(endDT,   req.nEndDate,   req.nEndTime  );
 }
 
 template <typename TdbReq>

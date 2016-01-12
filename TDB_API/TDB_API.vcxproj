@@ -154,6 +154,7 @@
     </ClCompile>
     <ClCompile Include="TDB_API.cpp" />
     <ClCompile Include="TDB_code.cpp" />
+    <ClCompile Include="TDB_ohlc.cpp" />
     <ClCompile Include="TDB_order.cpp" />
     <ClCompile Include="TDB_orderqueue.cpp" />
     <ClCompile Include="TDB_tick.cpp" />

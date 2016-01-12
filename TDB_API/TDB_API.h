@@ -106,6 +106,18 @@ extern "C" {
 		K end			//-19h or -18h or -17h or -5h or -6h or -7h
 		);
 
+	//获取K线数据
+	TDB_API K K_DECL TDB_ohlc_fields(K/*NOTE: at least one argument required by `2:'*/);
+	TDB_API K K_DECL TDB_ohlc(
+		K tdb,			//-7h
+		K windCode,		//-11h or 10h
+		K indicators,	//-11h or 11h
+		K beginDT,		//-15h or -12h
+		K endDT,		//-15h or -12h
+		K cycle,		//-18h or -17h or 10h or -11h
+		K params		//0h=() or 11h!0h
+		);
+
 #ifdef __cplusplus
 }//extern "C"
 #endif

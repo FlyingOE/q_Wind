@@ -79,7 +79,7 @@ WSET:{[F;r;p]
     (cols[t]inter exec C except a from mapping)_
     ![;();0b;exec a!e from mapping where C in cols t]
         t:flip{$[(not 0h=type x)or(10h=type first x);x;
-            {$[0h=type y;x;y]}[((^/)?[0h=t;0Nh;t:type'[x]])$"";]each x
+            {$[0h=type y;x;y]}[(10h^(^/)?[0h=t;0Nh;t:type'[x]])$"";]each x
             ]}peach flip impl.quantData2Table F[r;impl.dict2Strings p]
     }DLL 2:(`Wind_wset;2);
 

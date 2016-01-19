@@ -251,7 +251,7 @@ TDB_API K K_DECL TDB_ohlc(K h, K windCode, K indicators, K beginDT, K endDT, K c
 		return q::error2q(error);
 	}
 
-	req.nAutoComplete = 0;
+	req.nAutoComplete = 1;
 
 	return TDB::runQuery<TDB::traits::OHLC, ::TDBDefine_ReqKLine>(tdb, req, indis, &::TDB_GetKLine);
 }

@@ -41,12 +41,28 @@ namespace TDB {
 			Net  = 0,	//净价
 			Full = 1	//全价
 		};
+
+		//自动补齐标志
+		enum AutoFill {
+			NoFill = 0,
+			ToFill = 1
+		};
 	}
 }
 BEGIN_ENUM_STRING(TDB::Enum::PriceType)
 {
 	ENUM_STRING2(TDB::Enum::Net,  "NET" );
 	ENUM_STRING2(TDB::Enum::Full, "FULL");
+}
+END_ENUM_STRING;
+BEGIN_ENUM_STRING(TDB::Enum::AutoFill)
+{
+	ENUM_STRING2(TDB::Enum::NoFill, "0");
+	ENUM_STRING2(TDB::Enum::NoFill, "F");
+	ENUM_STRING2(TDB::Enum::NoFill, "N");
+	ENUM_STRING2(TDB::Enum::ToFill, "1");
+	ENUM_STRING2(TDB::Enum::ToFill, "T");
+	ENUM_STRING2(TDB::Enum::ToFill, "Y");
 }
 END_ENUM_STRING;
 
@@ -226,6 +242,34 @@ namespace TDB {
 					req.nQJFlag = ::util::Enum<TDB::Enum::PriceType>::fromString(priceType);
 				}
 			}
+			else if (keys[i] == "FILL") {
+				std::string fill;
+				switch (values->t) {
+				case 0:
+					fill = q::q2String(kK(values)[i]);
+					break;
+				case KS:
+					fill = kS(values)[i];
+					break;
+				case KC:
+					fill = " ";
+					fill[0] = kC(values)[i];
+					break;
+				case KB:
+					fill = !!kG(values)[i] ? "1" : "0";
+					break;
+				default:
+					throw std::string("invalid parameter FILL");
+				}
+				std::transform(fill.begin(), fill.end(), fill.begin(),
+					[](char c) { return std::toupper(c, std::locale()); });
+				if (!::util::Enum<TDB::Enum::AutoFill>::isValidString(fill)) {
+					throw std::string("incorrect parameter FILL");
+				}
+				else {
+					req.nAutoComplete = ::util::Enum<TDB::Enum::AutoFill>::fromString(fill);
+				}
+			}
 		}
 	}
 
@@ -250,8 +294,6 @@ TDB_API K K_DECL TDB_ohlc(K h, K windCode, K indicators, K beginDT, K endDT, K c
 	catch (std::string const& error) {
 		return q::error2q(error);
 	}
-
-	req.nAutoComplete = 1;
 
 	return TDB::runQuery<TDB::traits::OHLC, ::TDBDefine_ReqKLine>(tdb, req, indis, &::TDB_GetKLine);
 }

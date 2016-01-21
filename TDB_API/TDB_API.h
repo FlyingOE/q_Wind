@@ -70,7 +70,8 @@ extern "C" {
 		K indicators,	//-11h or 11h
 		K date,			//-14h or -5h or -6h or -7h
 		K begin,		//-19h or -18h or -17h or -5h or -6h or -7h
-		K end			//-19h or -18h or -17h or -5h or -6h or -7h
+		K end,			//-19h or -18h or -17h or -5h or -6h or -7h
+		K autoFill	    //-1b
 		);
 
 	//获取逐笔成交数据

@@ -154,7 +154,7 @@ TDB_API K K_DECL TDB_tick_fields(K category) {
 	}
 }
 
-TDB_API K K_DECL TDB_tick(K h, K windCode, K indicators, K date, K begin, K end) {
+TDB_API K K_DECL TDB_tick(K h, K windCode, K indicators, K date, K begin, K end, K autoFill) {
 	::THANDLE tdb = NULL;
 	std::vector<TDB::traits::Tick::field_accessor const*> indis;
 	::TDBDefine_ReqTick req = { 0 };
@@ -163,12 +163,11 @@ TDB_API K K_DECL TDB_tick(K h, K windCode, K indicators, K date, K begin, K end)
 		TDB::parseIndicators<TDB::traits::Tick>(indicators, indis);
 		TDB::parseTdbReqCode(tdb, windCode, req);
 		TDB::parseTdbReqTime(date, begin, end, req);
+		req.nAutoComplete = !!q::q2Dec(autoFill) ? 1 : 0;
 	}
 	catch (std::string const& error) {
 		return q::error2q(error);
 	}
-
-	req.nAutoComplete = 0;
 
 	return TDB::runQuery<TDB::traits::Tick, ::TDBDefine_ReqTick>(tdb, req, indis, &::TDB_GetTick);
 }

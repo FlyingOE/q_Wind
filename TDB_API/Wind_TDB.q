@@ -93,18 +93,19 @@ orderQueue:{[F;h;c;i;d;b;e]
 /q) .tdb.tick_fields`FUTURES
 /q) .tdb.tick_fields`BIDASK
 /q) .tdb.tick_fields`INDEX
-/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes;2015.07.01;00:00;23:59:59.999]
-/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes; 0        ;00:00;23:59:59.999]    /today
-/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes;-1        ;00:00;23:59:59.999]    /IPO day
-/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes;2015.07.01;0    ;23:59:59.999]    /from SOD
-/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes;2015.07.01;00:00;0           ]    /till EOD
+/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes;2015.07.01;00:00;23:59:59.999;0b]
+/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes; 0        ;00:00;23:59:59.999;0b]    /today
+/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes;-1        ;00:00;23:59:59.999;0b]    /IPO day
+/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes;2015.07.01;0    ;23:59:59.999;0b]    /from SOD
+/q) .tdb.tick[h][`600000.SH;`WindCode`Code`Date`Time`Side`Asks`AskSizes`Bids`BidSizes;2015.07.01;00:00;0           ;1b]    /till EOD, auto-fill
 tick_fields:DLL 2:(`TDB_tick_fields;1);
-tick:{[F;h;c;i;d;b;e]
+tick:{[F;h;c;i;d;b;e;f]
     flip i!F[h;c;i:(),i;
             $[-14h=t:type d;d;d<=0;d;$[t<0;"d";"D"]$d];
             $[-19h=t:type b;b;t in -17 -18h;"t"$b;b<=0;b;$[t<0;"t";"T"]$b];
-            $[-19h=t:type e;e;t in -17 -18h;"t"$e;e<=0;e;$[t<0;"t";"T"]$e]]
-    }DLL 2:(`TDB_tick;6);
+            $[-19h=t:type e;e;t in -17 -18h;"t"$e;e<=0;e;$[t<0;"t";"T"]$e];
+            f]
+    }DLL 2:(`TDB_tick;7);
 
 /q) .tdb.ohlc_fields[]
 /q) .tdb.ohlc[h][`600000.SH;`WindCode`Code`Date`Time`Open`High`Low`Close`Size`Amount;2015.07.01T00:00;2015.07.01T23:59:59.999;00:00:01;()]  /秒K线
@@ -116,7 +117,7 @@ tick:{[F;h;c;i;d;b;e]
 /q) .tdb.ohlc[h][`600000.SH;`WindCode`Code`Date`Time`Open`High`Low`Close`Size`Amount;2014.07.01T00:00;2015.12.31T23:59:59.999;"1Q";()]      /季K线
 /q) .tdb.ohlc[h][`600000.SH;`WindCode`Code`Date`Time`Open`High`Low`Close`Size`Amount;2013.07.01T00:00;2015.12.31T23:59:59.999;"1H";()]      /半年K线
 /q) .tdb.ohlc[h][`600000.SH;`WindCode`Code`Date`Time`Open`High`Low`Close`Size`Amount;2010.07.01T00:00;2015.12.31T23:59:59.999;`1Y ;()]      /年K线
-/q) .tdb.ohlc[h][`002075.SZ;`WindCode`Date`Time`Open`High`Low`Close`Size`Amount;2015.06.23T00:00;2015.07.01T23:59:59.999;00:00;`priceAdj`priceAdjDate`priceType!`B,2015.06.24,`Full]
+/q) .tdb.ohlc[h][`002075.SZ;`WindCode`Date`Time`Open`High`Low`Close`Size`Amount;2015.06.23T00:00;2015.07.01T23:59:59.999;00:00;`priceAdj`priceAdjDate`priceType`fill!`B,2015.06.24,`Full,1b]
 /q) .tdb.ohlc[h][`002075.SZ;`WindCode`Date`Time`Open`High`Low`Close`Size`Amount;2015.06.23T00:00;2015.07.01T23:59:59.999;00:00;`priceAdj`priceType!`F`Net]
 ohlc_fields:DLL 2:(`TDB_ohlc_fields;1);
 ohlc:{[F;h;c;i;b;e;cyc;p]

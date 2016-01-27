@@ -67,6 +67,8 @@ impl.stringize:{
         "'",ssr[x;"'";"''"],"'";            /"string's" => 'string''s'
       11h=t;
         "."sv .z.s'[x];                     /`schema`table`column => [schema].[table].[column]
+      0h<=t;
+        "(",(","sv .z.s'[x]),")";           /("CFFEX";"SZSE") => ('CFFEX','SZSE')
       /default;
         .Q.s1 x
         ]

@@ -59,16 +59,20 @@ use:{[h;db]
 ///////////////////////////////////////////////////////////////////////////////
 
 impl.stringize:{
-    $[-11h=t:type x;
-        "[",string[x],"]";                  /`column => [column]
-      -14h=t;
-        "'",string[x][0 1 2 3 5 6 8 9],"'"; /YYYY.MM.DD => 'YYYYMMDD'
-      10h=t;
-        "'",ssr[x;"'";"''"],"'";            /"string's" => 'string''s'
-      11h=t;
-        "."sv .z.s'[x];                     /`schema`table`column => [schema].[table].[column]
-      0h<=t;
-        "(",(","sv .z.s'[x]),")";           /("CFFEX";"SZSE") => ('CFFEX','SZSE')
+    $[-11h=t:type x;            /`column => [column]
+        "[",string[x],"]";
+      -14h=t;                   /YYYY.MM.DD => 'YYYYMMDD'
+        "'",string[x][0 1 2 3 5 6 8 9],"'";
+      10h=t;                    /"string's" => 'string''s'
+        "'",ssr[x;"'";"''"],"'";
+      11h=t;                    /`schema`table`column => [schema].[table].[column]
+        "."sv .z.s'[x];
+      0h<=t;                    /("CFFEX";"SZSE") => ('CFFEX','SZSE')
+        "(",(","sv .z.s'[x]),")";
+      t in -5 -6 -7h;           /remove suffix from integral values
+        ssr[.Q.s1 x;"[hij]";""];
+      t in -8 -9h;              /remove suffix from and add decimal point to floating-point values 
+        {x,$[0>=count where"."=x;".";""]}ssr[.Q.s1 x;"[ef]";""];
       /default;
         .Q.s1 x
         ]

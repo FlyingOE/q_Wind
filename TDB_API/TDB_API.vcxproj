@@ -62,7 +62,7 @@
     </Link>
     <PostBuildEvent>
       <Message>Copy DLL &amp; driver script to q project directory</Message>
-      <Command>FOR %%p IN ("$(SolutionDir)..\CHF.proj\") DO (
+      <Command>FOR %%p IN ("$(SolutionDir)..\CHF.proj\" "$(SolutionDir)..\database\hdb\") DO (
   @FOR %%t IN (x86 x64) DO (
     @FOR %%c IN (Debug Release) DO (
       @FOR %%f IN ("$(SolutionDir)lib\TDB_C++_v3\%%t.%%c"\*.dll) DO (
@@ -105,7 +105,7 @@
     </Link>
     <PostBuildEvent>
       <Message>Copy DLL &amp; driver script to q project directory</Message>
-      <Command>FOR %%p IN ("$(SolutionDir)..\CHF.proj\") DO (
+      <Command>FOR %%p IN ("$(SolutionDir)..\CHF.proj\" "$(SolutionDir)..\database\hdb\") DO (
   @FOR %%t IN (x86 x64) DO (
     @FOR %%c IN (Debug Release) DO (
       @FOR %%f IN ("$(SolutionDir)lib\TDB_C++_v3\%%t.%%c"\*.dll) DO (

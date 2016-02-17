@@ -189,8 +189,10 @@ impl.dict2Strings:{
             .z.s`datetime$x;
           -14h=t;
             string[x]_/4 6;
-          -15h=t:type x;
+          -15h=t;
             @[string[x]_/4 6;8;:;" "];
+          t in -17 -18 -19h;
+            string`second$x;
           /default;
             '"nyi - unsupported type"]
         }each value x;

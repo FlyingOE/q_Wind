@@ -40,10 +40,11 @@ WSS:{[F;c;i;p]
         impl.quantData2Table F[(),c;(),i;impl.dict2Strings p]
     }DLL 2:(`Wind_wss;3);
 
-/q) .wind.WSI[`000001.SZ;`open`high`low`close`volume;2014.01.01T00:00:00;.z.Z;(1#`BarSize)!1#1]
+/q) .wind.WSI[`000001.SZ`000002.SZ`600000.SH;`open`high`low`close`volume;2014.01.01T00:00:00;.z.Z;(1#`BarSize)!1#1]
+/@ref 分钟线规则：http://www.dajiangzhang.com/q?d98e4a8e-7e94-4205-8149-b5ab413024b0
 WSI:{[F;c;i;b;e;p]
     delete code from update sym:`$code from
-        impl.quantData2Table F[c;(),i;b;e;impl.dict2Strings p]
+        impl.quantData2Table F[(),c;(),i;b;e;impl.dict2Strings p]
     }DLL 2:(`Wind_wsi;5);
 
 /q) .wind.WST[`000001.SZ;`last`bid`ask`bid1`bsize1`ask1`asize1;2015.01.01T00:00:00;.z.Z;()]

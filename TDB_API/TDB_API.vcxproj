@@ -61,27 +61,32 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)\lib\TDB_C++_v3\$(PlatformTarget).Release;D:\q\c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Message>Copy DLL &amp; driver script to q project directory</Message>
-      <Command>FOR %%p IN ("$(SolutionDir)..\CHF.proj\" "$(SolutionDir)..\database\hdb\") DO (
-  @FOR %%t IN (x86 x64) DO (
-    @FOR %%c IN (Debug Release) DO (
-      @FOR %%f IN ("$(SolutionDir)lib\TDB_C++_v3\%%t.%%c"\*.dll) DO (
-        IF EXIST %%p%%~nxf DEL /F %%p%%~nxf
-      )
-    )
-  )
-  @FOR %%f IN ("$(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).Release"\*.dll) DO (
-    @XCOPY %%f %%p /F /Y
-  )
-  @FOR %%f IN ("$(TargetPath)" "$(TargetDir)Wind_TDB.q") DO (
-    @XCOPY %%f %%p /F /Y
-  )
-)</Command>
+      <Message>Copy DLL &amp; driver script(s) to project directory</Message>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(TargetDir) ^
+    $(SolutionDir)..\..\code\CapitalEdge\ ^
+    /LEV:1 /IF Wind_TDB.q
+CALL $(SolutionDir)..\ROBOCOPY ^
+    $(TargetDir) ^
+    $(SolutionDir)..\..\lib\w32\ ^
+    /LEV:1 /IF TDB_API.dll
+CALL $(SolutionDir)..\ROBOCOPY ^
+    $(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).$(ConfigurationName)\ ^
+    $(SolutionDir)..\..\lib\w32\ ^
+    /LEV:1 /IF *.dll *.pdb</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Message>Copy driver script to target directory</Message>
-      <Command>@XCOPY "$(ProjectDir)\Wind_TDB.q" "$(TargetDir)" /F /Y
-@IF NOT EXIST "$(TargetDir)\.tdb.connect" XCOPY "$(ProjectDir)\.tdb.connect" "$(TargetDir)" /F /Y /C</Command>
+      <Message>Copy driver script(s) to target directory</Message>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(ProjectDir) ^
+    $(TargetDir) ^
+    /LEV:1 /IF Wind_TDB.q
+IF NOT EXIST $(TargetDir).tdb3.connect (
+    CALL $(SolutionDir)..\ROBOCOPY ^
+        $(ProjectDir) ^
+        $(TargetDir) ^
+        /LEV:1 /IF .tdb3.connect
+)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -104,27 +109,32 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);$(SolutionDir)\lib\TDB_C++_v3\$(PlatformTarget).Release;D:\q\c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Message>Copy DLL &amp; driver script to q project directory</Message>
-      <Command>FOR %%p IN ("$(SolutionDir)..\CHF.proj\" "$(SolutionDir)..\database\hdb\") DO (
-  @FOR %%t IN (x86 x64) DO (
-    @FOR %%c IN (Debug Release) DO (
-      @FOR %%f IN ("$(SolutionDir)lib\TDB_C++_v3\%%t.%%c"\*.dll) DO (
-        IF EXIST %%p%%~nxf DEL /F %%p%%~nxf
-      )
-    )
-  )
-  @FOR %%f IN ("$(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).Release"\*.dll) DO (
-    @XCOPY %%f %%p /F /Y
-  )
-  @FOR %%f IN ("$(TargetPath)" "$(TargetDir)Wind_TDB.q") DO (
-    @XCOPY %%f %%p /F /Y
-  )
-)</Command>
+      <Message>Copy DLL &amp; driver script(s) to project directory</Message>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(TargetDir) ^
+    $(SolutionDir)..\..\code\CapitalEdge\ ^
+    /LEV:1 /IF Wind_TDB.q
+CALL $(SolutionDir)..\ROBOCOPY ^
+    $(TargetDir) ^
+    $(SolutionDir)..\..\lib\w32\ ^
+    /LEV:1 /IF TDB_API.dll
+CALL $(SolutionDir)..\ROBOCOPY ^
+    $(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).$(ConfigurationName)\ ^
+    $(SolutionDir)..\..\lib\w32\ ^
+    /LEV:1 /IF *.dll *.pdb</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Message>Copy driver script to target directory</Message>
-      <Command>@XCOPY "$(ProjectDir)\Wind_TDB.q" "$(TargetDir)" /F /Y
-@IF NOT EXIST "$(TargetDir)\.tdb.connect" XCOPY "$(ProjectDir)\.tdb.connect" "$(TargetDir)" /F /Y /C</Command>
+      <Message>Copy driver script(s) to target directory</Message>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(ProjectDir) ^
+    $(TargetDir) ^
+    /LEV:1 /IF Wind_TDB.q
+IF NOT EXIST $(TargetDir).tdb3.connect (
+    CALL $(SolutionDir)..\ROBOCOPY ^
+        $(ProjectDir) ^
+        $(TargetDir) ^
+        /LEV:1 /IF .tdb3.connect
+)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

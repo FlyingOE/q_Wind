@@ -61,18 +61,24 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);D:\q\c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>FOR %%p IN ("$(SolutionDir)..\arbitrage\" "$(SolutionDir)..\CHF.proj\") DO (
-  @FOR %%f IN ("$(TargetPath)" "$(TargetDir)kdb+.q") DO (
-    @XCOPY %%f %%p /F /Y
-  )
-)</Command>
-      <Message>Copy DLL &amp; driver script to q project directory</Message>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(TargetDir) ^
+    $(SolutionDir)..\..\code\CapitalEdge\ ^
+    /LEV:1 /IF kdb+.q
+CALL $(SolutionDir)..\ROBOCOPY ^
+    $(TargetDir) ^
+    $(SolutionDir)..\..\lib\w32\ ^
+    /LEV:1 /IF kdb+.dll kdb+.pdb</Command>
+      <Message>Copy DLL &amp; driver script(s) to project directory</Message>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>@XCOPY "$(ProjectDir)\kdb+.q" "$(TargetDir)" /F /Y</Command>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(ProjectDir) ^
+    $(TargetDir) ^
+    /LEV:1 /IF kdb+.q</Command>
     </PreBuildEvent>
     <PreBuildEvent>
-      <Message>Copy driver script to target directory</Message>
+      <Message>Copy driver script(s) to target directory</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -95,18 +101,24 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);D:\q\c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>FOR %%p IN ("$(SolutionDir)..\arbitrage\" "$(SolutionDir)..\CHF.proj\") DO (
-  @FOR %%f IN ("$(TargetPath)" "$(TargetDir)kdb+.q") DO (
-    @XCOPY %%f %%p /F /Y
-  )
-)</Command>
-      <Message>Copy DLL &amp; driver script to q project directory</Message>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(TargetDir) ^
+    $(SolutionDir)..\..\code\CapitalEdge\ ^
+    /LEV:1 /IF kdb+.q
+CALL $(SolutionDir)..\ROBOCOPY ^
+    $(TargetDir) ^
+    $(SolutionDir)..\..\lib\w32\ ^
+    /LEV:1 /IF kdb+.dll kdb+.pdb</Command>
+      <Message>Copy DLL &amp; driver script(s) to project directory</Message>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>@XCOPY "$(ProjectDir)\kdb+.q" "$(TargetDir)" /F /Y</Command>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(ProjectDir) ^
+    $(TargetDir) ^
+    /LEV:1 /IF kdb+.q</Command>
     </PreBuildEvent>
     <PreBuildEvent>
-      <Message>Copy driver script to target directory</Message>
+      <Message>Copy driver script(s) to target directory</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

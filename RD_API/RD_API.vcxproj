@@ -49,17 +49,24 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Message>Copy driver script to target directory</Message>
-      <Command>@XCOPY "$(ProjectDir)\Wind_RD.q" "$(TargetDir)" /F /Y
-@IF NOT EXIST "$(TargetDir)\.rd.connect" XCOPY "$(ProjectDir)\.rd.connect" "$(TargetDir)" /F /Y /C</Command>
+      <Message>Copy driver script(s) to target directory</Message>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(ProjectDir) ^
+    $(TargetDir) ^
+    /LEV:1 /IF Wind_RD.q
+IF NOT EXIST $(TargetDir).rd.connect THEN (
+    CALL $(SolutionDir)..\ROBOCOPY ^
+        $(ProjectDir) ^
+        $(TargetDir) ^
+        /LEV:1 /IF .rd.connect
+)</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Message>Copy DLL &amp; driver script to q project directory</Message>
-      <Command>FOR %%p IN ("$(SolutionDir)..\CHF.proj\") DO (
-  @FOR %%f IN ("$(TargetPath)" "$(TargetDir)Wind_RD.q") DO (
-    @XCOPY %%f %%p /F /Y
-  )
-)</Command>
+      <Message>Copy driver script(s) to project directory</Message>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(TargetDir) ^
+    $(SolutionDir)..\..\code\CapitalEdge\ ^
+    /LEV:1 /IF Wind_RD.q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -76,17 +83,24 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Message>Copy driver script to target directory</Message>
-      <Command>@XCOPY "$(ProjectDir)\Wind_RD.q" "$(TargetDir)" /F /Y
-@IF NOT EXIST "$(TargetDir)\.rd.connect" XCOPY "$(ProjectDir)\.rd.connect" "$(TargetDir)" /F /Y /C</Command>
+      <Message>Copy driver script(s) to target directory</Message>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(ProjectDir) ^
+    $(TargetDir) ^
+    /LEV:1 /IF Wind_RD.q
+IF NOT EXIST $(TargetDir).rd.connect THEN (
+    CALL $(SolutionDir)..\ROBOCOPY ^
+        $(ProjectDir) ^
+        $(TargetDir) ^
+        /LEV:1 /IF .rd.connect
+)</Command>
     </PreBuildEvent>
     <PostBuildEvent>
-      <Message>Copy DLL &amp; driver script to q project directory</Message>
-      <Command>FOR %%p IN ("$(SolutionDir)..\CHF.proj\") DO (
-  @FOR %%f IN ("$(TargetPath)" "$(TargetDir)Wind_RD.q") DO (
-    @XCOPY %%f %%p /F /Y
-  )
-)</Command>
+      <Message>Copy driver script(s) to project directory</Message>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(TargetDir) ^
+    $(SolutionDir)..\..\code\CapitalEdge\ ^
+    /LEV:1 /IF Wind_RD.q</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

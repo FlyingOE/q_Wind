@@ -61,19 +61,30 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);D:\q\c;D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>FOR %%p IN ("$(SolutionDir)..\arbitrage\" "$(SolutionDir)..\CHF.proj\") DO (
-  @FOR %%f IN ("$(TargetPath)" "$(TargetDir)Wind.q") DO (
-    @XCOPY %%f %%p /F /Y
-  )
-)</Command>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(TargetDir) ^
+    $(SolutionDir)..\..\code\CapitalEdge\ ^
+    /LEV:1 /IF WInd.q
+CALL $(SolutionDir)..\ROBOCOPY ^
+    $(TargetDir) ^
+    $(SolutionDir)..\..\lib\w32\ ^
+    /LEV:1 /IF Wind_API.dll Wind_API.pdb</Command>
     </PostBuildEvent>
     <PostBuildEvent>
-      <Message>Copy DLL &amp; driver script to q project directory</Message>
+      <Message>Copy DLL &amp; driver script(s) to project directory</Message>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Message>Copy driver script to target directory</Message>
-      <Command>@XCOPY "$(ProjectDir)\Wind.q" "$(TargetDir)" /F /Y
-@IF NOT EXIST "$(TargetDir)\.wind.pass" XCOPY "$(ProjectDir)\.wind.pass" "$(TargetDir)" /F /Y /C</Command>
+      <Message>Copy driver script(s) to target directory</Message>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(ProjectDir) ^
+    $(TargetDir) ^
+    /LEV:1 /IF Wind.q
+IF NOT EXIST $(TargetDir).wind.pass (
+    CALL $(SolutionDir)..\ROBOCOPY ^
+        $(ProjectDir) ^
+        $(TargetDir) ^
+        /LEV:1 /IF .wind.pass
+)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -96,19 +107,30 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);D:\q\c;D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>FOR %%p IN ("$(SolutionDir)..\arbitrage\" "$(SolutionDir)..\CHF.proj\") DO (
-  @FOR %%f IN ("$(TargetPath)" "$(TargetDir)Wind.q") DO (
-    @XCOPY %%f %%p /F /Y
-  )
-)</Command>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(TargetDir) ^
+    $(SolutionDir)..\..\code\CapitalEdge\ ^
+    /LEV:1 /IF WInd.q
+CALL $(SolutionDir)..\ROBOCOPY ^
+    $(TargetDir) ^
+    $(SolutionDir)..\..\lib\w32\ ^
+    /LEV:1 /IF Wind_API.dll Wind_API.pdb</Command>
     </PostBuildEvent>
     <PostBuildEvent>
-      <Message>Copy DLL &amp; driver script to q project directory</Message>
+      <Message>Copy DLL &amp; driver script(s) to project directory</Message>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Message>Copy driver script to target directory</Message>
-      <Command>@XCOPY "$(ProjectDir)\Wind.q" "$(TargetDir)" /F /Y
-@IF NOT EXIST "$(TargetDir)\.wind.pass" XCOPY "$(ProjectDir)\.wind.pass" "$(TargetDir)" /F /Y /C</Command>
+      <Message>Copy driver script(s) to target directory</Message>
+      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
+    $(ProjectDir) ^
+    $(TargetDir) ^
+    /LEV:1 /IF Wind.q
+IF NOT EXIST $(TargetDir).wind.pass (
+    CALL $(SolutionDir)..\ROBOCOPY ^
+        $(ProjectDir) ^
+        $(TargetDir) ^
+        /LEV:1 /IF .wind.pass
+)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

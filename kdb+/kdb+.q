@@ -19,8 +19,8 @@ stringize:{x _.Q.s y}$[.z.o like"w*";2;1]
     args:(key[cfg]!count[cfg]#enlist""),.Q.opt z_x;
     if[0<count unknown:key[args]except key cfg;
         '","sv"-",/:string unknown];
-	:(first')type'[cfg key args]$'args
-	};
+    :(first')type'[cfg key args]$'args
+    };
 
 /==============================================================================
 \d .math
@@ -30,9 +30,12 @@ scale:{round[y;]z%x};
 
 // Exponential average
 /@ref http://www.timestored.com/b/exponential-moving-average-ema-kdb/
-ema:$[(.z.K>=3.1)and(.z.k>=2013.07.07);
-	{first[y](1-x)\x*y};	/ Weird specialization of `\', but much more efficient!
-	{{z+x*y}\[first y;1-x;x*y]}];
+$[(.z.K>=3.4)and(.z.k>=2016.06.05);
+	.math.ema:ema;
+	.math.ema:.q.ema:$[(.z.K>=3.1)and(.z.k>=2013.07.07);
+        {first[y]("f"$1-x)\x*y};	/ Weird specialization of `\', but much more efficient!
+        {{z+x*y}\[first y;1-x;x*y]}]
+	];
 
 // Convert cumulative rate to incremetal rate
 cum2inc:{1_-1+(%':)reverse fills reverse fills(1#0#x),x};

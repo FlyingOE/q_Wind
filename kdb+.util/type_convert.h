@@ -48,7 +48,7 @@ namespace q {
 	I date2q(char const* dateStr) throw(std::string);
 	I date2q(std::string const& dateStr) throw(std::string);
 
-	// Convert a ATL DATE value to a q datetime
+	// Convert an ATL DATE value to a q datetime
 	F DATE2q(::DATE date) throw(std::string);
 
 	// Convert a C++ time string to a q time

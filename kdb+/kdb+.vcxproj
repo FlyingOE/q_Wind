@@ -74,7 +74,8 @@ IF EXIST $(SolutionDir)..\..\lib\ (
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>CALL $(SolutionDir)ROBOCOPY ^
+      <Command>DEL $(IntDir)version.obj
+CALL $(SolutionDir)ROBOCOPY ^
     $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF kdb+.q</Command>
     </PreBuildEvent>
@@ -115,7 +116,8 @@ IF EXIST $(SolutionDir)..\..\lib\ (
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>CALL $(SolutionDir)ROBOCOPY ^
+      <Command>DEL $(IntDir)version.obj
+CALL $(SolutionDir)ROBOCOPY ^
     $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF kdb+.q</Command>
     </PreBuildEvent>

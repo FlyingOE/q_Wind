@@ -8,6 +8,9 @@
 
 DLL:hsym`$("Wind_API");
 
+// DLL version
+version:DLL 2:(`version;1);
+
 // Wind 查询速度限制：查询间隔（milliseconds）
 QueryGap:3000;
 

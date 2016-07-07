@@ -8,6 +8,9 @@
 
 DLL:hsym`$("TDB_API");
 
+// DLL version
+version:DLL 2:(`version;1);
+
 /q) .tdb.getTimeout[]
 /q) .tdb.setTimeout`timeout`retries`gap!120000 3 1000
 getTimeout:{[F;x]

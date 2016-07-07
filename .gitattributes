@@ -3,6 +3,11 @@
 ###############################################################################
 * text=auto
 
+#######################################
+# @ref http://stackoverflow.com/questions/16524225/how-can-i-populate-the-git-commit-id-into-a-file-when-i-commit
+#######################################
+version.cpp ident
+
 ###############################################################################
 # Set default behavior for command prompt diff.
 #

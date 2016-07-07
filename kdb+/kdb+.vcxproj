@@ -147,6 +147,7 @@ IF EXIST $(SolutionDir)..\..\lib\ (
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="test.cpp" />
+    <ClCompile Include="version.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="kdb+.q">

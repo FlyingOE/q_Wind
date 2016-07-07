@@ -62,29 +62,28 @@
     </Link>
     <PostBuildEvent>
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(TargetDir) ^
-    $(SolutionDir)..\..\code\CapitalEdge\ ^
-    /LEV:1 /IF Wind_TDB.q
-CALL $(SolutionDir)..\ROBOCOPY ^
-    $(TargetDir) ^
-    $(SolutionDir)..\..\lib\w32\ ^
-    /LEV:1 /IF TDB_API.dll
-CALL $(SolutionDir)..\ROBOCOPY ^
-    $(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).$(ConfigurationName)\ ^
-    $(SolutionDir)..\..\lib\w32\ ^
-    /LEV:1 /IF *.dll *.pdb</Command>
+      <Command>IF EXIST $(SolutionDir)..\..\code\ (
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(TargetDir)     $(SolutionDir)..\..\code\CapitalEdge\ ^
+        /LEV:1 /IF Wind_TDB.q
+)
+IF EXIST $(SolutionDir)..\..\lib\ (
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(TargetDir)     $(SolutionDir)..\..\lib\w32\ ^
+        /LEV:1 /IF TDB_API.dll
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).$(ConfigurationName)\     $(SolutionDir)..\..\lib\w32\ ^
+        /LEV:1 /IF *.dll *.pdb
+)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Message>Copy driver script(s) to target directory</Message>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(ProjectDir) ^
-    $(TargetDir) ^
+      <Command>CALL $(SolutionDir)ROBOCOPY ^
+    $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF Wind_TDB.q
 IF NOT EXIST $(TargetDir).tdb3.connect (
-    CALL $(SolutionDir)..\ROBOCOPY ^
-        $(ProjectDir) ^
-        $(TargetDir) ^
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(ProjectDir)     $(TargetDir) ^
         /LEV:1 /IF .tdb3.connect
 )</Command>
     </PreBuildEvent>
@@ -110,29 +109,28 @@ IF NOT EXIST $(TargetDir).tdb3.connect (
     </Link>
     <PostBuildEvent>
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(TargetDir) ^
-    $(SolutionDir)..\..\code\CapitalEdge\ ^
-    /LEV:1 /IF Wind_TDB.q
-CALL $(SolutionDir)..\ROBOCOPY ^
-    $(TargetDir) ^
-    $(SolutionDir)..\..\lib\w32\ ^
-    /LEV:1 /IF TDB_API.dll
-CALL $(SolutionDir)..\ROBOCOPY ^
-    $(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).$(ConfigurationName)\ ^
-    $(SolutionDir)..\..\lib\w32\ ^
-    /LEV:1 /IF *.dll *.pdb</Command>
+      <Command>IF EXIST $(SolutionDir)..\..\code\ (
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(TargetDir)     $(SolutionDir)..\..\code\CapitalEdge\ ^
+        /LEV:1 /IF Wind_TDB.q
+)
+IF EXIST $(SolutionDir)..\..\lib\ (
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(TargetDir)     $(SolutionDir)..\..\lib\w32\ ^
+        /LEV:1 /IF TDB_API.dll
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).$(ConfigurationName)\     $(SolutionDir)..\..\lib\w32\ ^
+        /LEV:1 /IF *.dll *.pdb
+)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Message>Copy driver script(s) to target directory</Message>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(ProjectDir) ^
-    $(TargetDir) ^
+      <Command>CALL $(SolutionDir)ROBOCOPY ^
+    $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF Wind_TDB.q
 IF NOT EXIST $(TargetDir).tdb3.connect (
-    CALL $(SolutionDir)..\ROBOCOPY ^
-        $(ProjectDir) ^
-        $(TargetDir) ^
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(ProjectDir)     $(TargetDir) ^
         /LEV:1 /IF .tdb3.connect
 )</Command>
     </PreBuildEvent>

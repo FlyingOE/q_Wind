@@ -61,28 +61,28 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);D:\q\c;D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(TargetDir) ^
-    $(SolutionDir)..\..\code\CapitalEdge\ ^
-    /LEV:1 /IF WInd.q
-CALL $(SolutionDir)..\ROBOCOPY ^
-    $(TargetDir) ^
-    $(SolutionDir)..\..\lib\w32\ ^
-    /LEV:1 /IF Wind_API.dll Wind_API.pdb</Command>
+      <Command>IF EXIST $(SolutionDir)..\..\code\ (
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(TargetDir)     $(SolutionDir)..\..\code\CapitalEdge\ ^
+        /LEV:1 /IF WInd.q
+)
+IF EXIST $(SolutionDir)..\..\lib\ (
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(TargetDir)     $(SolutionDir)..\..\lib\w32\ ^
+        /LEV:1 /IF Wind_API.dll Wind_API.pdb
+)</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>
     </PostBuildEvent>
     <PreBuildEvent>
       <Message>Copy driver script(s) to target directory</Message>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(ProjectDir) ^
-    $(TargetDir) ^
+      <Command>CALL $(SolutionDir)ROBOCOPY ^
+    $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF Wind.q
 IF NOT EXIST $(TargetDir).wind.pass (
-    CALL $(SolutionDir)..\ROBOCOPY ^
-        $(ProjectDir) ^
-        $(TargetDir) ^
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(ProjectDir)     $(TargetDir) ^
         /LEV:1 /IF .wind.pass
 )</Command>
     </PreBuildEvent>
@@ -107,28 +107,28 @@ IF NOT EXIST $(TargetDir).wind.pass (
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);D:\q\c;D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(TargetDir) ^
-    $(SolutionDir)..\..\code\CapitalEdge\ ^
-    /LEV:1 /IF WInd.q
-CALL $(SolutionDir)..\ROBOCOPY ^
-    $(TargetDir) ^
-    $(SolutionDir)..\..\lib\w32\ ^
-    /LEV:1 /IF Wind_API.dll Wind_API.pdb</Command>
+      <Command>IF EXIST $(SolutionDir)..\..\code\ (
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(TargetDir)     $(SolutionDir)..\..\code\CapitalEdge\ ^
+        /LEV:1 /IF WInd.q
+)
+IF EXIST $(SolutionDir)..\..\lib\ (
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(TargetDir)     $(SolutionDir)..\..\lib\w32\ ^
+        /LEV:1 /IF Wind_API.dll Wind_API.pdb
+)</Command>
     </PostBuildEvent>
     <PostBuildEvent>
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>
     </PostBuildEvent>
     <PreBuildEvent>
       <Message>Copy driver script(s) to target directory</Message>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(ProjectDir) ^
-    $(TargetDir) ^
+      <Command>CALL $(SolutionDir)ROBOCOPY ^
+    $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF Wind.q
 IF NOT EXIST $(TargetDir).wind.pass (
-    CALL $(SolutionDir)..\ROBOCOPY ^
-        $(ProjectDir) ^
-        $(TargetDir) ^
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(ProjectDir)     $(TargetDir) ^
         /LEV:1 /IF .wind.pass
 )</Command>
     </PreBuildEvent>

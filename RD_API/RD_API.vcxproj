@@ -50,23 +50,22 @@
     </Link>
     <PreBuildEvent>
       <Message>Copy driver script(s) to target directory</Message>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(ProjectDir) ^
-    $(TargetDir) ^
+      <Command>CALL $(SolutionDir)ROBOCOPY ^
+    $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF Wind_RD.q
 IF NOT EXIST $(TargetDir).rd.connect THEN (
-    CALL $(SolutionDir)..\ROBOCOPY ^
-        $(ProjectDir) ^
-        $(TargetDir) ^
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(ProjectDir)     $(TargetDir) ^
         /LEV:1 /IF .rd.connect
 )</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Message>Copy driver script(s) to project directory</Message>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(TargetDir) ^
-    $(SolutionDir)..\..\code\CapitalEdge\ ^
-    /LEV:1 /IF Wind_RD.q</Command>
+      <Command>IF EXIST $(SolutionDir)..\..\code\ (
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(TargetDir)     $(SolutionDir)..\..\code\CapitalEdge\ ^
+        /LEV:1 /IF Wind_RD.q
+)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -84,23 +83,22 @@ IF NOT EXIST $(TargetDir).rd.connect THEN (
     </Link>
     <PreBuildEvent>
       <Message>Copy driver script(s) to target directory</Message>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(ProjectDir) ^
-    $(TargetDir) ^
+      <Command>CALL $(SolutionDir)ROBOCOPY ^
+    $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF Wind_RD.q
 IF NOT EXIST $(TargetDir).rd.connect THEN (
-    CALL $(SolutionDir)..\ROBOCOPY ^
-        $(ProjectDir) ^
-        $(TargetDir) ^
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(ProjectDir)     $(TargetDir) ^
         /LEV:1 /IF .rd.connect
 )</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Message>Copy driver script(s) to project directory</Message>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(TargetDir) ^
-    $(SolutionDir)..\..\code\CapitalEdge\ ^
-    /LEV:1 /IF Wind_RD.q</Command>
+      <Command>IF EXIST $(SolutionDir)..\..\code\ (
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(TargetDir)     $(SolutionDir)..\..\code\CapitalEdge\ ^
+        /LEV:1 /IF Wind_RD.q
+)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

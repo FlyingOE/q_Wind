@@ -119,7 +119,7 @@ WIND_API K K_DECL Wind_wss(K windCodes, K indicators, K params) {
 WIND_API K K_DECL Wind_wsi(K windCode, K indicators, K beginTime, K endTime, K params) {
 	std::wstring code, indis, begin, end, paras;
 	try {
-		code = q::q2WString(windCode);
+		code = Wind::util::qList2WStringJoin(windCode, L',');
 		indis = Wind::util::qList2WStringJoin(indicators, L',');
 		begin = Wind::util::q2DateTimeStr(beginTime);
 		end = Wind::util::q2DateTimeStr(endTime);

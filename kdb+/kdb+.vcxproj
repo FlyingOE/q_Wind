@@ -61,20 +61,21 @@
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);D:\q\c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(TargetDir) ^
-    $(SolutionDir)..\..\code\CapitalEdge\ ^
-    /LEV:1 /IF kdb+.q
-CALL $(SolutionDir)..\ROBOCOPY ^
-    $(TargetDir) ^
-    $(SolutionDir)..\..\lib\w32\ ^
-    /LEV:1 /IF kdb+.dll kdb+.pdb</Command>
+      <Command>IF EXIST $(SolutionDir)..\..\code\ (
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(TargetDir)     $(SolutionDir)..\..\code\CapitalEdge\ ^
+        /LEV:1 /IF kdb+.q
+)
+IF EXIST $(SolutionDir)..\..\lib\ (
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(TargetDir)     $(SolutionDir)..\..\lib\w32\ ^
+        /LEV:1 /IF kdb+.dll kdb+.pdb
+)</Command>
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(ProjectDir) ^
-    $(TargetDir) ^
+      <Command>CALL $(SolutionDir)ROBOCOPY ^
+    $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF kdb+.q</Command>
     </PreBuildEvent>
     <PreBuildEvent>
@@ -101,20 +102,21 @@ CALL $(SolutionDir)..\ROBOCOPY ^
       <AdditionalLibraryDirectories>$(SolutionDir)$(Configuration);D:\q\c;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(TargetDir) ^
-    $(SolutionDir)..\..\code\CapitalEdge\ ^
-    /LEV:1 /IF kdb+.q
-CALL $(SolutionDir)..\ROBOCOPY ^
-    $(TargetDir) ^
-    $(SolutionDir)..\..\lib\w32\ ^
-    /LEV:1 /IF kdb+.dll kdb+.pdb</Command>
+      <Command>IF EXIST $(SolutionDir)..\..\code\ (
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(TargetDir)     $(SolutionDir)..\..\code\CapitalEdge\ ^
+        /LEV:1 /IF kdb+.q
+)
+IF EXIST $(SolutionDir)..\..\lib\ (
+    CALL $(SolutionDir)ROBOCOPY ^
+        $(TargetDir)     $(SolutionDir)..\..\lib\w32\ ^
+        /LEV:1 /IF kdb+.dll kdb+.pdb
+)</Command>
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>CALL $(SolutionDir)..\ROBOCOPY ^
-    $(ProjectDir) ^
-    $(TargetDir) ^
+      <Command>CALL $(SolutionDir)ROBOCOPY ^
+    $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF kdb+.q</Command>
     </PreBuildEvent>
     <PreBuildEvent>

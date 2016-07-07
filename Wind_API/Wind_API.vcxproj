@@ -77,7 +77,8 @@ IF EXIST $(SolutionDir)..\..\lib\ (
     </PostBuildEvent>
     <PreBuildEvent>
       <Message>Copy driver script(s) to target directory</Message>
-      <Command>CALL $(SolutionDir)ROBOCOPY ^
+      <Command>DEL $(IntDir)version.obj
+CALL $(SolutionDir)ROBOCOPY ^
     $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF Wind.q
 IF NOT EXIST $(TargetDir).wind.pass (
@@ -123,7 +124,8 @@ IF EXIST $(SolutionDir)..\..\lib\ (
     </PostBuildEvent>
     <PreBuildEvent>
       <Message>Copy driver script(s) to target directory</Message>
-      <Command>CALL $(SolutionDir)ROBOCOPY ^
+      <Command>DEL $(IntDir)version.obj
+CALL $(SolutionDir)ROBOCOPY ^
     $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF Wind.q
 IF NOT EXIST $(TargetDir).wind.pass (
@@ -164,6 +166,7 @@ IF NOT EXIST $(TargetDir).wind.pass (
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="util.cpp" />
+    <ClCompile Include="version.cpp" />
     <ClCompile Include="WindCodeArray.cpp" />
     <ClCompile Include="WindData.cpp" />
     <ClCompile Include="WindDateTimeArray.cpp" />

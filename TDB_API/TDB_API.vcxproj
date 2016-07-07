@@ -78,7 +78,8 @@ IF EXIST $(SolutionDir)..\..\lib\ (
     </PostBuildEvent>
     <PreBuildEvent>
       <Message>Copy driver script(s) to target directory</Message>
-      <Command>CALL $(SolutionDir)ROBOCOPY ^
+      <Command>DEL $(IntDir)version.obj
+CALL $(SolutionDir)ROBOCOPY ^
     $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF Wind_TDB.q
 IF NOT EXIST $(TargetDir).tdb3.connect (
@@ -125,7 +126,8 @@ IF EXIST $(SolutionDir)..\..\lib\ (
     </PostBuildEvent>
     <PreBuildEvent>
       <Message>Copy driver script(s) to target directory</Message>
-      <Command>CALL $(SolutionDir)ROBOCOPY ^
+      <Command>DEL $(IntDir)version.obj
+CALL $(SolutionDir)ROBOCOPY ^
     $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF Wind_TDB.q
 IF NOT EXIST $(TargetDir).tdb3.connect (
@@ -168,6 +170,7 @@ IF NOT EXIST $(TargetDir).tdb3.connect (
     <ClCompile Include="TDB_tick.cpp" />
     <ClCompile Include="TDB_transaction.cpp" />
     <ClCompile Include="util.cpp" />
+    <ClCompile Include="version.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include=".tdb.connect">

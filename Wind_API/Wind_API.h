@@ -23,6 +23,8 @@
 extern "C" {
 #endif
 
+	WIND_API K K_DECL version(K/*NOTE: at least one argument required by `2:'*/);
+
 	WIND_API K K_DECL getTimeout(K/*NOTE: at least one argument required by `2:'*/);
 	WIND_API K K_DECL setTimeout(K timeout);
 

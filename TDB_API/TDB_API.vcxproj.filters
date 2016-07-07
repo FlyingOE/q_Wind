@@ -72,6 +72,9 @@
     <ClCompile Include="TDB_ohlc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="version.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Wind_TDB.q">

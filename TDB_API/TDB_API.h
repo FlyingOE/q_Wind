@@ -23,6 +23,8 @@
 extern "C" {
 #endif
 
+	TDB_API K K_DECL version(K/*NOTE: at least one argument required by `2:'*/);
+
 	TDB_API K K_DECL getTimeout(K/*NOTE: at least one argument required by `2:'*/);
 	TDB_API K K_DECL setTimeout(
 		K timeout,	//-5h or -6h or -7h

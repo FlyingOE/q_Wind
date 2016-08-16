@@ -22,6 +22,8 @@ namespace Wind {
 		std::wstring q2DateStr(K data) throw(std::string);
 		std::wstring q2DateTimeStr(K data) throw(std::string);
 
+		std::wstring q2StrOrX(K data, std::wstring(*alt)(K)) throw(std::string);
+
 		std::vector<std::wstring> qList2tmStr(K data, size_t maxLen, wchar_t const* fmt) throw(std::string);
 		std::vector<std::wstring> qList2DateStr(K data) throw(std::string);
 		std::vector<std::wstring> qList2DateTimeStr(K data) throw(std::string);

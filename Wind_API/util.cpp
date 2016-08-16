@@ -111,3 +111,16 @@ std::wstring Wind::util::q2DateTimeStr(K data) throw(std::string) {
 std::vector<std::wstring> Wind::util::qList2DateTimeStr(K data) throw(std::string) {
 	return qList2tmStr(data, 10 + 1 + 8 + 1 + 3, L"%Y-%m-%d %H:%M:%S.%##");
 }
+
+std::wstring Wind::util::q2StrOrX(K data, std::wstring(*alt)(K)) throw(std::string) {
+	if (data == K_NIL) {
+		throw std::string("nil symbol or date or time or datetime");
+	}
+	switch (data->t) {
+	case -KS:
+	case KC:
+		return q::q2WString(data);
+	default:
+		return alt(data);
+	}
+}

@@ -69,24 +69,13 @@ int WINAPI Wind::callback::strike(::WQEvent* pEvent, LPVOID lpUserParam) {
 	}
 }
 
-
 WIND_API K K_DECL Wind_wsd(K windCodes, K indicators, K beginDate, K endDate, K params) {
 	std::wstring codes, indis, begin, end, paras;
 	try {
 		codes = Wind::util::qList2WStringJoin(windCodes, L',');
 		indis = Wind::util::qList2WStringJoin(indicators, L',');
-		try {
-			begin = Wind::util::q2DateStr(beginDate);
-		}
-		catch (std::string const& dateError) {
-			try {
-				begin = q::q2WString(beginDate);
-			}
-			catch (std::string const& strError) {
-				throw dateError + " & " + strError;
-			}
-		}
-		end = Wind::util::q2DateStr(endDate);
+		begin = Wind::util::q2StrOrX(beginDate, &Wind::util::q2DateStr);
+		end = Wind::util::q2StrOrX(endDate, &Wind::util::q2DateStr);
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
 	catch (std::string const& error) {
@@ -121,8 +110,8 @@ WIND_API K K_DECL Wind_wsi(K windCode, K indicators, K beginTime, K endTime, K p
 	try {
 		code = Wind::util::qList2WStringJoin(windCode, L',');
 		indis = Wind::util::qList2WStringJoin(indicators, L',');
-		begin = Wind::util::q2DateTimeStr(beginTime);
-		end = Wind::util::q2DateTimeStr(endTime);
+		begin = Wind::util::q2StrOrX(beginTime, &Wind::util::q2DateTimeStr);
+		end = Wind::util::q2StrOrX(endTime, &Wind::util::q2DateTimeStr);
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
 	catch (std::string const& error) {
@@ -140,8 +129,8 @@ WIND_API K K_DECL Wind_wst(K windCode, K indicators, K beginTime, K endTime, K p
 	try {
 		code = q::q2WString(windCode);
 		indis = Wind::util::qList2WStringJoin(indicators, L',');
-		begin = Wind::util::q2DateTimeStr(beginTime);
-		end = Wind::util::q2DateTimeStr(endTime);
+		begin = Wind::util::q2StrOrX(beginTime, &Wind::util::q2DateTimeStr);
+		end = Wind::util::q2StrOrX(endTime, &Wind::util::q2DateTimeStr);
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
 	catch (std::string const& error) {

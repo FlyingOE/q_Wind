@@ -2,6 +2,40 @@
 / This is the q loader for WindQuantAPI.dll
 / NOTE: Make sure Wind's DLLs are reachable within your %PATH%.
 /==============================================================================
+/Date Macros 日期宏（WSD/WSS/WSI/WST）
+/  * Abstract dates
+/		""		系统当前日期
+/		SD		开始日期（b）
+/		ED		截止日期（e）
+/		LQ1		去年第一季度
+/		LQ2		去年第二季度
+/		LQ3		去年第三季度
+/		LYR		去年年报
+/		RQ1		今年第一季度
+/		RQ2		今年第二季度
+/		RQ3		今年第三季度
+/		MRQ		最新一季度
+/		RYF		本年初
+/		RHYF	下半年初
+/		RMF		本月初
+/		RWF		本周一
+/		LWE		上周末
+/		LME		上月末
+/		LHYE	上半年末
+/		LYE		上年末
+/		IPO		上市首日
+/  * Date offset units
+/		TD	交易日
+/		D	日历日
+/		W	日历周
+/		M	日历月
+/		Q	日历季度
+/		S	日历半年
+/		Y	日历年
+/  * Sample usage
+/		-1W		当前日的一周前
+/		SD+5TD	开始日后第5个交易日
+/==============================================================================
 
 /q) \l Wind.q
 \d .wind

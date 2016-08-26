@@ -8,16 +8,16 @@ namespace Wind {
 	namespace encoder {
 
 		struct Passthrough {
-			static std::string encode(char const* str);
+			static std::string encode(char const* str) throw();
 		};
 
 		struct GB18030_UTF8 {
-			static std::string encode(char const* str);
+			static std::string encode(char const* str) throw();
 		};
 
 		struct Stringize {
 			template <typename T>
-			static std::string encode(T const& data);
+			static std::string encode(T const& data) throw();
 		};
 
 	}//namespace Wind::encoder

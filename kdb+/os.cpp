@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "kdb+.h"
 
+#include "kdb+.util/util.h"
 #include "kdb+.util/types.h"
 #include "kdb+.util/multilang.h"
 #include <cassert>
@@ -19,6 +20,11 @@ KDB_API K K_DECL cwd(K _) {
 		}
 	}
 	assert(*buffer.rbegin() == L'\0');	// buffer must be properly terminated
-	std::string const path = ml::convert(q::DEFAULT_CP, &buffer[0]);
-	return kp(const_cast<S>(path.c_str()));
+	try {
+		std::string const path = ml::convert(q::DEFAULT_CP, &buffer[0]);
+		return kp(const_cast<S>(path.c_str()));
+	}
+	catch(std::runtime_error const& error) {
+		return q::error2q(error.what());
+	}
 }

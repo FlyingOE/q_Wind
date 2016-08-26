@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "kdb+.h"
 
+#include "kdb+.util/util.h"
 #include "kdb+.util/multilang.h"
 
 KDB_API K K_DECL gb18030_utf8(K strGBK) {

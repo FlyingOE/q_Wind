@@ -27,26 +27,27 @@ std::wstring Wind::util::join(Delim const& delim, It begin, It end) {
 }
 
 template <typename Delim>
-std::wstring Wind::util::qList2DecStrJoin(K data, Delim const& delim) throw(std::string) {
+std::wstring Wind::util::qList2DecStrJoin(K data, Delim const& delim) throw(std::runtime_error) {
 	std::vector<long long> const decs = q::qList2Dec(data);
 	return join(delim, decs.begin(), decs.end());
 }
 
 template <typename Delim>
-std::wstring Wind::util::qList2FpStrJoin(K data, Delim const& delim) throw(std::string) {
+std::wstring Wind::util::qList2FpStrJoin(K data, Delim const& delim) throw(std::runtime_error) {
 	std::vector<double> const fps = q::qList2Fp(data);
 	return join(delim, fps.begin(), fps.end());
 }
 
 template <typename Delim>
-std::wstring Wind::util::qList2WStringJoin(K data, Delim const& delim) throw(std::string) {
+std::wstring Wind::util::qList2WStringJoin(K data, Delim const& delim) throw(std::runtime_error) {
 	std::vector<std::wstring> const strings = q::qList2WString(data);
 	return join(delim, strings.begin(), strings.end());
 }
 
 template <typename ItemDelim, typename PairDelim>
 std::wstring Wind::util::qDict2WStringMapJoin(K data, ItemDelim const& itemDelim, PairDelim const& pairDelim)
-throw(std::string) {
+	throw(std::runtime_error)
+{
 	std::map<std::wstring, std::wstring> const map = q::qDict2WStringMap(data);
 	std::vector<std::wstring> list;
 	list.reserve(map.size());
@@ -59,13 +60,13 @@ throw(std::string) {
 }
 
 template <typename Delim>
-std::wstring Wind::util::qList2DateStrJoin(K data, Delim const& delim) throw(std::string) {
+std::wstring Wind::util::qList2DateStrJoin(K data, Delim const& delim) throw(std::runtime_error) {
 	std::vector<std::wstring> const strs = qList2DateStr(data);
 	return join(delim, strs.begin(), strs.end());
 }
 
 template <typename Delim>
-std::wstring Wind::util::qList2DateTimeStrJoin(K data, Delim const& delim) throw(std::string) {
+std::wstring Wind::util::qList2DateTimeStrJoin(K data, Delim const& delim) throw(std::runtime_error) {
 	std::vector<std::wstring> const strs = qList2DateTimeStr(data);
 	return join(delim, strs.begin(), strs.end());
 }
@@ -104,20 +105,23 @@ K Wind::util::qConvertArray3D(K array) throw() {
 	}
 
 	assert((array->t == 0) && (array->n >= 0));
-	q::K_ptr result(ktn(0, array->n));
-	for (size_t z = 0; z < array->n; ++z) {
+	size_t const len = static_cast<size_t>(array->n);
+	q::K_ptr result(ktn(0, len));
+	for (size_t z = 0; z < len; ++z) {
 		K const arrayZ = kK(array)[z];
 		assert(arrayZ != K_NIL);
 		K& resultZ = kK(result.get())[z];
 		assert((arrayZ->t == 0) && (arrayZ->n >= 0));
-		resultZ = ktn(0, arrayZ->n);
-		for (size_t y = 0; y < arrayZ->n; ++y) {
+		size_t const lenZ = static_cast<size_t>(arrayZ->n);
+		resultZ = ktn(0, lenZ);
+		for (size_t y = 0; y < lenZ; ++y) {
 			K const arrayY = kK(arrayZ)[y];
 			assert(arrayY != K_NIL);
 			K& resultY = kK(resultZ)[y];
 			assert((arrayY->t == qSrcTraits::TYPE_NUM) && (arrayY->n >= 0));
-			resultY = ktn(qDstTraits::TYPE_NUM, arrayY->n);
-			for (size_t x = 0; x < arrayY->n; ++x) {
+			size_t const lenY = static_cast<size_t>(arrayY->n);
+			resultY = ktn(qDstTraits::TYPE_NUM, lenY);
+			for (size_t x = 0; x < lenY; ++x) {
 				qDstTraits::index(resultY)[x] = qDstTraits::convert(qSrcTraits::index(arrayY)[x]);
 			}
 		}

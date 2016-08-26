@@ -21,35 +21,35 @@ namespace q {
 	};
 
 	// Convert a decimal number in q to a C++ integer
-	long long q2Dec(K data) throw(std::string);
-	std::vector<long long> qList2Dec(K data) throw(std::string);
+	long long q2Dec(K data) throw(std::runtime_error);
+	std::vector<long long> qList2Dec(K data) throw(std::runtime_error);
 
 	// Convert a floating-point number in q to a C++ floating-point
-	double q2Fp(K data) throw(std::string);
-	std::vector<double> qList2Fp(K data) throw(std::string);
+	double q2Fp(K data) throw(std::runtime_error);
+	std::vector<double> qList2Fp(K data) throw(std::runtime_error);
 
 	// Convert a symbol or char list in q into a C++ string
-	std::string q2String(K data) throw(std::string);
-	std::vector<std::string> qList2String(K data) throw(std::string);
+	std::string q2String(K data) throw(std::runtime_error);
+	std::vector<std::string> qList2String(K data) throw(std::runtime_error);
 
-	std::wstring q2WString(K data, UINT frCP = DEFAULT_CP) throw(std::string);
-	std::vector<std::wstring> qList2WString(K data, UINT frCP = DEFAULT_CP) throw(std::string);
+	std::wstring q2WString(K data, UINT frCP = DEFAULT_CP) throw(std::runtime_error);
+	std::vector<std::wstring> qList2WString(K data, UINT frCP = DEFAULT_CP) throw(std::runtime_error);
 
 	// Convert a dict or symbols or char lists in q into a C++ map
-	std::map<std::string, std::string> qDict2StringMap(K data) throw(std::string);
-	std::map<std::wstring, std::wstring> qDict2WStringMap(K data, UINT frCP = DEFAULT_CP) throw(std::string);
+	std::map<std::string, std::string> qDict2StringMap(K data) throw(std::runtime_error);
+	std::map<std::wstring, std::wstring> qDict2WStringMap(K data, UINT frCP = DEFAULT_CP) throw(std::runtime_error);
 
 	// Convert a date or time or datetime in q into a C++ std::tm
-	tm_ext q2tm(K data) throw(std::string);
-	std::vector<tm_ext> qList2tm(K data) throw(std::string);
+	tm_ext q2tm(K data) throw(std::runtime_error);
+	std::vector<tm_ext> qList2tm(K data) throw(std::runtime_error);
 
 	// Convert a C++ date string to a q date
 	I date2q(int yyyymmdd);
-	I date2q(char const* dateStr) throw(std::string);
-	I date2q(std::string const& dateStr) throw(std::string);
+	I date2q(char const* dateStr) throw(std::runtime_error);
+	I date2q(std::string const& dateStr) throw(std::runtime_error);
 
 	// Convert an ATL DATE value to a q datetime
-	F DATE2q(::DATE date) throw(std::string);
+	F DATE2q(::DATE date) throw(std::runtime_error);
 
 	// Convert a C++ time string to a q time
 	I time2q(int hhmmssfff);

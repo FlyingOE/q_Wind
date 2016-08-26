@@ -47,7 +47,7 @@ namespace Wind {
 
 		template <typename T, typename... NestedTs> struct NestedAccessor;
 		template <typename T> struct NestedAccessor<T>;		//terminal condition
-		template <typename T, typename NestedT0, typename... NestedTn> struct NestedAccessor<T, NestedT0, NestedTn...>;
+		template <typename T, typename NestedT0, typename... NestedTn> struct NestedAccessor<T, NestedT0 , NestedTn...>;
 		template <typename T, typename NestedT0, typename... NestedTn> struct NestedAccessor<T, NestedT0*, NestedTn...>;
 
 	}//namespace Wind::accessor

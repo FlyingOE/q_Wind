@@ -15,8 +15,8 @@ WIND_API K K_DECL Wind_login(K username, K password) {
 		uid = q::q2WString(username);
 		pwd = q::q2WString(password);
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	::WQAUTH_INFO login = { true };

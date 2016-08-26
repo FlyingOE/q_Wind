@@ -15,8 +15,8 @@ WIND_API K K_DECL Wind_wpf(K portfolioName, K viewName, K params) {
 		view = q::q2WString(viewName);
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	Wind::callback::Result result;
@@ -37,8 +37,8 @@ WIND_API K K_DECL Wind_wupf(K portfolioName, K tradeDates, K windCodes, K quanti
 		costs = Wind::util::qList2FpStrJoin(costPrices, L',');
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	Wind::callback::Result result;

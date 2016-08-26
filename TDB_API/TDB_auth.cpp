@@ -19,8 +19,8 @@ TDB_API K K_DECL TDB_login(K level, K host, K port, K username, K password) {
 		uid = q::q2String(username);
 		pwd = q::q2String(password);
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	if ((L < 1) || (2 < L)) {
@@ -74,8 +74,8 @@ TDB_API K K_DECL TDB_logout(K h) {
 		long long const hh = q::q2Dec(h);
 		tdb = reinterpret_cast<::THANDLE>(hh);
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	if (tdb) {

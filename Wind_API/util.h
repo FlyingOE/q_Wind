@@ -18,33 +18,33 @@ namespace Wind {
 		char const* eventType2Text(::WQEventType eventType);
 
 		// Convert a q date or datetime into a C++ string
-		std::wstring q2tmStr(K data, size_t maxLen, wchar_t const* fmt) throw(std::string);
-		std::wstring q2DateStr(K data) throw(std::string);
-		std::wstring q2DateTimeStr(K data) throw(std::string);
+		std::wstring q2tmStr(K data, size_t maxLen, wchar_t const* fmt) throw(std::runtime_error);
+		std::wstring q2DateStr(K data) throw(std::runtime_error);
+		std::wstring q2DateTimeStr(K data) throw(std::runtime_error);
 
-		std::wstring q2StrOrX(K data, std::wstring(*alt)(K)) throw(std::string);
+		std::wstring q2StrOrX(K data, std::wstring(*alt)(K)) throw(std::runtime_error);
 
-		std::vector<std::wstring> qList2tmStr(K data, size_t maxLen, wchar_t const* fmt) throw(std::string);
-		std::vector<std::wstring> qList2DateStr(K data) throw(std::string);
-		std::vector<std::wstring> qList2DateTimeStr(K data) throw(std::string);
+		std::vector<std::wstring> qList2tmStr(K data, size_t maxLen, wchar_t const* fmt) throw(std::runtime_error);
+		std::vector<std::wstring> qList2DateStr(K data) throw(std::runtime_error);
+		std::vector<std::wstring> qList2DateTimeStr(K data) throw(std::runtime_error);
 
 		template <typename It, typename Delim>
 		std::wstring join(Delim const& delim, It begin, It end);
 
 		template <typename Delim>
-		std::wstring qList2DecStrJoin(K data, Delim const& delim) throw(std::string);
+		std::wstring qList2DecStrJoin(K data, Delim const& delim) throw(std::runtime_error);
 		template <typename Delim>
-		std::wstring qList2FpStrJoin(K data, Delim const& delim) throw(std::string);
+		std::wstring qList2FpStrJoin(K data, Delim const& delim) throw(std::runtime_error);
 
 		template <typename Delim>
-		std::wstring qList2WStringJoin(K data, Delim const& delim) throw(std::string);
+		std::wstring qList2WStringJoin(K data, Delim const& delim) throw(std::runtime_error);
 		template <typename ItemDelim, typename PairDelim>
-		std::wstring qDict2WStringMapJoin(K data, ItemDelim const& itemDelim, PairDelim const& pairDelim) throw(std::string);
+		std::wstring qDict2WStringMapJoin(K data, ItemDelim const& itemDelim, PairDelim const& pairDelim) throw(std::runtime_error);
 
 		template <typename Delim>
-		std::wstring qList2DateStrJoin(K data, Delim const& delim) throw(std::string);
+		std::wstring qList2DateStrJoin(K data, Delim const& delim) throw(std::runtime_error);
 		template <typename Delim>
-		std::wstring qList2DateTimeStrJoin(K data, Delim const& delim) throw(std::string);
+		std::wstring qList2DateTimeStrJoin(K data, Delim const& delim) throw(std::runtime_error);
 
 		// Common logic for simple arrays in Wind API
 		template <typename WQArray, typename ElemT>

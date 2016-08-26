@@ -26,19 +26,19 @@ namespace Wind {
 			void getFields(char const* category, std::vector<std::string>& list) const;
 			void getFields(std::string const& category, std::vector<std::string>& list) const;
 
-			void addField(char const* fieldName, field_accessor* accessor) throw(std::string);
-			void addField(std::string const& fieldName, field_accessor* accessor) throw(std::string);
+			void addField(char const* fieldName, field_accessor* accessor) throw(std::runtime_error);
+			void addField(std::string const& fieldName, field_accessor* accessor) throw(std::runtime_error);
 
-			void addField(char const* category, char const* fieldName, field_accessor* accessor) throw(std::string);
-			void addField(std::string const& category, std::string const& fieldName, field_accessor* accessor) throw(std::string);
+			void addField(char const* category, char const* fieldName, field_accessor* accessor) throw(std::runtime_error);
+			void addField(std::string const& category, std::string const& fieldName, field_accessor* accessor) throw(std::runtime_error);
 
 			void getCategories(std::vector<std::string>& list) const;
 
 			bool hasCategory(char const* category) const;
 			bool hasCategory(std::string const& category) const;
 
-			field_accessor const* operator[](char const* fieldName) throw(std::string);
-			field_accessor const* operator[](std::string const& fieldName) throw(std::string);
+			field_accessor const* operator[](char const* fieldName) throw(std::runtime_error);
+			field_accessor const* operator[](std::string const& fieldName) throw(std::runtime_error);
 
 		private:
 			map_type fields_;

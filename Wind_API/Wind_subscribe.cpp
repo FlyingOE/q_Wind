@@ -115,8 +115,8 @@ namespace Wind {
 			try {
 				data.reset(event.parse());
 			}
-			catch (std::string const& ex) {
-				std::cerr << "<WQ> response format error: " << ex << std::endl;
+			catch (std::runtime_error const& ex) {
+				std::cerr << "<WQ> response format error: " << ex.what() << std::endl;
 				return false;
 			}
 
@@ -194,8 +194,8 @@ K Wind_subscribe(::WQID(WINAPI *func)(LPCWSTR, LPCWSTR, LPCWSTR, ::IEventHandler
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 		cb = q::q2String(callback);
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	// Create async socket pair
@@ -255,8 +255,8 @@ WIND_API K K_DECL Wind_cr(K qid) {
 	try {
 		id = q::q2Dec(qid);
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	::WQErr const error = ::CancelRequest(id);

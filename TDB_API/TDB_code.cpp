@@ -13,8 +13,8 @@ TDB_API K K_DECL TDB_codeTable(K h, K market) {
 		TDB::parseTdbHandle(h, tdb);
 		mkt = q::q2String(market);
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	typedef ::TDBDefine_Code tdb_result_type;
@@ -62,8 +62,8 @@ TDB_API K K_DECL TDB_codeInfo(K h, K windCode, K market) {
 		code = q::q2String(windCode);
 		mkt = TDB::getMarketId(tdb, q::q2String(market));
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	typedef ::TDBDefine_Code tdb_result_type;

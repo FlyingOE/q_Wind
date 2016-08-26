@@ -68,8 +68,8 @@ TDB_API K K_DECL TDB_order(K h, K windCode, K indicators, K date, K begin, K end
 		TDB::parseTdbReqCode(tdb, windCode, req);
 		TDB::parseTdbReqTime(date, begin, end, req);
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	return TDB::runQuery<TDB::traits::Order, ::TDBDefine_ReqOrder>(tdb, req, indis, &::TDB_GetOrder);

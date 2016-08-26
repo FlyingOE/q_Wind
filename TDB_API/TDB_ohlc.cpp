@@ -116,9 +116,9 @@ namespace TDB {
 		};
 	}//namespace TDB::traits
 
-	void parseTdbOHLCReqCycle(K cycle, ::TDBDefine_ReqKLine& req) throw(std::string) {
+	void parseTdbOHLCReqCycle(K cycle, ::TDBDefine_ReqKLine& req) throw(std::runtime_error) {
 		if (cycle == K_NIL) {
-			throw std::string("nil cycle spec");
+			throw std::runtime_error("nil cycle spec");
 		}
 
 		switch (cycle->t) {
@@ -137,7 +137,7 @@ namespace TDB {
 
 		char const cycleType[2] = { std::toupper(*cycleDef.crbegin(), std::locale()), '\0' };
 		if (!::util::Enum<::CYCTYPE>::isValidString(cycleType)) {
-			throw std::string("invalid cycle type");
+			throw std::runtime_error("invalid cycle type");
 		}
 		req.nCycType = ::util::Enum<::CYCTYPE>::fromString(cycleType);
 
@@ -145,16 +145,16 @@ namespace TDB {
 		buffer >> req.nCycDef;
 	}
 
-	void parseTdbOHLCReqParams(K params, ::TDBDefine_ReqKLine& req) throw(std::string) {
+	void parseTdbOHLCReqParams(K params, ::TDBDefine_ReqKLine& req) throw(std::runtime_error) {
 		if (params == K_NIL) {
-			throw std::string("nil dict");
+			throw std::runtime_error("nil dict");
 		}
 
 		std::vector<std::string> keys;
 		switch (params->t) {
 		case 0:
 			if (params->n != 0) {
-				throw std::string("not a dict or empty list");
+				throw std::runtime_error("not a dict or empty list");
 			}
 			return;	//nothing to process
 		case XT:
@@ -163,7 +163,7 @@ namespace TDB {
 			//expected data type, to be processed below...
 			break;
 		default:
-			throw std::string("not a dict");
+			throw std::runtime_error("not a dict");
 		}
 
 		assert(params->n == 2);
@@ -191,12 +191,12 @@ namespace TDB {
 					priceAdj[0] = kC(values)[i];
 					break;
 				default:
-					throw std::string("invalid parameter PRICEADJ");
+					throw std::runtime_error("invalid parameter PRICEADJ");
 				}
 				std::transform(priceAdj.begin(), priceAdj.end(), priceAdj.begin(),
 					[](char c) { return std::toupper(c, std::locale()); });
 				if (!::util::Enum<::REFILLFLAG>::isValidString(priceAdj)) {
-					throw std::string("incorrect parameter PRICEADJ");
+					throw std::runtime_error("incorrect parameter PRICEADJ");
 				}
 				else {
 					req.nCQFlag = ::util::Enum<::REFILLFLAG>::fromString(priceAdj);
@@ -214,7 +214,7 @@ namespace TDB {
 					util::tm2DateTime(q::q2tm(d.get()), req.nCQDate, time);
 					break;
 				default:
-					throw std::string("invalid parameter PRICEADJDATE");
+					throw std::runtime_error("invalid parameter PRICEADJDATE");
 				}
 			}
 			else if (keys[i] == "PRICETYPE") {
@@ -231,12 +231,12 @@ namespace TDB {
 					priceType[0] = kC(values)[i];
 					break;
 				default:
-					throw std::string("invalid parameter PRICETYPE");
+					throw std::runtime_error("invalid parameter PRICETYPE");
 				}
 				std::transform(priceType.begin(), priceType.end(), priceType.begin(),
 					[](char c) { return std::toupper(c, std::locale()); });
 				if (!::util::Enum<TDB::Enum::PriceType>::isValidString(priceType)) {
-					throw std::string("incorrect parameter PRICETYPE");
+					throw std::runtime_error("incorrect parameter PRICETYPE");
 				}
 				else {
 					req.nQJFlag = ::util::Enum<TDB::Enum::PriceType>::fromString(priceType);
@@ -259,12 +259,12 @@ namespace TDB {
 					fill = !!kG(values)[i] ? "1" : "0";
 					break;
 				default:
-					throw std::string("invalid parameter FILL");
+					throw std::runtime_error("invalid parameter FILL");
 				}
 				std::transform(fill.begin(), fill.end(), fill.begin(),
 					[](char c) { return std::toupper(c, std::locale()); });
 				if (!::util::Enum<TDB::Enum::AutoFill>::isValidString(fill)) {
-					throw std::string("incorrect parameter FILL");
+					throw std::runtime_error("incorrect parameter FILL");
 				}
 				else {
 					req.nAutoComplete = ::util::Enum<TDB::Enum::AutoFill>::fromString(fill);
@@ -291,8 +291,8 @@ TDB_API K K_DECL TDB_ohlc(K h, K windCode, K indicators, K beginDT, K endDT, K c
 		TDB::parseTdbOHLCReqCycle(cycle, req);
 		TDB::parseTdbOHLCReqParams(params, req);
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	return TDB::runQuery<TDB::traits::OHLC, ::TDBDefine_ReqKLine>(tdb, req, indis, &::TDB_GetKLine);

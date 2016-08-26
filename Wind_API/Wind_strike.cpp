@@ -32,11 +32,8 @@ K Wind::callback::Result::waitFor(::WQID qid, std::chrono::milliseconds const& t
 			assert(event);
 			return event->parse();
 		}
-		catch (std::runtime_error& error) {	// Error from Wind::Callback::strike(...)
+		catch (std::runtime_error const& error) {
 			return q::error2q(error.what());
-		}
-		catch (std::string const& error) {	// Error from Wind::Event::parse()
-			return q::error2q(error);
 		}
 	case std::future_status::timeout:
 		return q::error2q((::CancelRequest(qid) == WQERR_OK)
@@ -78,8 +75,8 @@ WIND_API K K_DECL Wind_wsd(K windCodes, K indicators, K beginDate, K endDate, K 
 		end = Wind::util::q2StrOrX(endDate, &Wind::util::q2DateStr);
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	Wind::callback::Result result;
@@ -95,8 +92,8 @@ WIND_API K K_DECL Wind_wss(K windCodes, K indicators, K params) {
 		indis = Wind::util::qList2WStringJoin(indicators, L',');
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	Wind::callback::Result result;
@@ -114,8 +111,8 @@ WIND_API K K_DECL Wind_wsi(K windCode, K indicators, K beginTime, K endTime, K p
 		end = Wind::util::q2StrOrX(endTime, &Wind::util::q2DateTimeStr);
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	Wind::callback::Result result;
@@ -133,8 +130,8 @@ WIND_API K K_DECL Wind_wst(K windCode, K indicators, K beginTime, K endTime, K p
 		end = Wind::util::q2StrOrX(endTime, &Wind::util::q2DateTimeStr);
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	Wind::callback::Result result;
@@ -150,8 +147,8 @@ WIND_API K K_DECL Wind_wsq_strike(K windCodes, K indicators, K params) {
 		indis = Wind::util::qList2WStringJoin(indicators, L',');
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	Wind::callback::Result result;
@@ -166,8 +163,8 @@ WIND_API K K_DECL Wind_wset(K reportName, K params) {
 		report = q::q2WString(reportName);
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	Wind::callback::Result result;
@@ -183,8 +180,8 @@ WIND_API K K_DECL Wind_tdays(K beginDate, K endDate, K params) {
 		end   = Wind::util::q2DateStr(endDate);
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	Wind::callback::Result result;
@@ -202,8 +199,8 @@ WIND_API K K_DECL Wind_tdaysoff(K beginDate, K offset, K params) {
 		offs = buffer.str();
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	Wind::callback::Result result;
@@ -219,8 +216,8 @@ WIND_API K K_DECL Wind_tdayscnt(K beginDate, K endDate, K params) {
 		end   = Wind::util::q2DateStr(endDate);
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	Wind::callback::Result result;
@@ -237,8 +234,8 @@ WIND_API K K_DECL Wind_edb(K windCode, K beginTime, K endTime, K params) {
 		end = Wind::util::q2DateTimeStr(endTime);
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	Wind::callback::Result result;

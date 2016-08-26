@@ -13,21 +13,21 @@
 
 namespace TDB {
 
-	void parseTdbHandle(K h, ::THANDLE& tdb) throw(std::string);
+	void parseTdbHandle(K h, ::THANDLE& tdb) throw(std::runtime_error);
 
-	std::string getMarketId(::THANDLE tdb, char const* market) throw(std::string);
-	std::string getMarketId(::THANDLE tdb, std::string const& market) throw(std::string);
+	std::string getMarketId(::THANDLE tdb, char const* market) throw(std::runtime_error);
+	std::string getMarketId(::THANDLE tdb, std::string const& market) throw(std::runtime_error);
 
 	template <typename FieldTraits>
 	void parseIndicators(K indicators,
-		std::vector<typename FieldTraits::field_accessor const*>& indis) throw(std::string);
+		std::vector<typename FieldTraits::field_accessor const*>& indis) throw(std::runtime_error);
 
 	template <typename TdbReq>
-	void parseTdbReqCode(::THANDLE const tdb, K windCode, TdbReq& req) throw(std::string);
+	void parseTdbReqCode(::THANDLE const tdb, K windCode, TdbReq& req) throw(std::runtime_error);
 	template <typename TdbReq>
-	void parseTdbReqTime(K beginDT, K endDT, TdbReq& req) throw(std::string);
+	void parseTdbReqTime(K beginDT, K endDT, TdbReq& req) throw(std::runtime_error);
 	template <typename TdbReq>
-	void parseTdbReqTime(K date, K begin, K end, TdbReq& req) throw(std::string);
+	void parseTdbReqTime(K date, K begin, K end, TdbReq& req) throw(std::runtime_error);
 
 	template <typename FieldTraits, typename TdbReq>
 	K runQuery(::THANDLE tdb, TdbReq const& req,

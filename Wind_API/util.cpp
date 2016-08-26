@@ -14,14 +14,15 @@
 std::string Wind::util::error2Text(::WQErr error) {
 	TCHAR const* msg = ::WErr(error, eENG);
 	static_assert(std::is_same<TCHAR, wchar_t>::value, "UNICODE/_UNICODE not defined");
+	std::ostringstream buffer;
+	buffer << '(' << error << ") ";
 	try {
-		std::ostringstream buffer;
-		buffer << '(' << error << ") " << ml::convert(q::DEFAULT_CP, msg);
-		return buffer.str();
+		buffer << ml::convert(q::DEFAULT_CP, msg);
 	}
-	catch (std::string const& ex) {
-		return ex;
+	catch (std::runtime_error const& ex) {
+		buffer << "'" << ex.what();
 	}
+	return buffer.str();
 }
 
 char const* Wind::util::eventType2Text(::WQEventType type) {
@@ -41,7 +42,7 @@ char const* Wind::util::eventType2Text(::WQEventType type) {
 	}
 }
 
-std::wstring Wind::util::q2tmStr(K data, size_t maxLen, wchar_t const* fmt) throw(std::string) {
+std::wstring Wind::util::q2tmStr(K data, size_t maxLen, wchar_t const* fmt) throw(std::runtime_error) {
 	// Special treatment of millisecond format
 	std::vector<wchar_t> f(fmt, fmt + std::wcslen(fmt) + 1);
 	while (wchar_t* p = std::wcsstr(&f[0], L"%##")) {
@@ -66,7 +67,7 @@ std::wstring Wind::util::q2tmStr(K data, size_t maxLen, wchar_t const* fmt) thro
 	return &buffer[0];
 }
 
-std::vector<std::wstring> Wind::util::qList2tmStr(K data, size_t maxLen, wchar_t const* fmt) throw(std::string) {
+std::vector<std::wstring> Wind::util::qList2tmStr(K data, size_t maxLen, wchar_t const* fmt) throw(std::runtime_error) {
 	// Special treatment of millisecond format
 	std::vector<wchar_t> f(fmt, fmt + std::wcslen(fmt) + 1);
 	while (wchar_t* p = std::wcsstr(&f[0], L"%##")) {
@@ -96,25 +97,25 @@ std::vector<std::wstring> Wind::util::qList2tmStr(K data, size_t maxLen, wchar_t
 	return result;
 }
 
-std::wstring Wind::util::q2DateStr(K data) throw(std::string) {
+std::wstring Wind::util::q2DateStr(K data) throw(std::runtime_error) {
 	return q2tmStr(data, 10, L"%Y-%m-%d");
 }
 
-std::vector<std::wstring> Wind::util::qList2DateStr(K data) throw(std::string) {
+std::vector<std::wstring> Wind::util::qList2DateStr(K data) throw(std::runtime_error) {
 	return qList2tmStr(data, 10, L"%Y-%m-%d");
 }
 
-std::wstring Wind::util::q2DateTimeStr(K data) throw(std::string) {
+std::wstring Wind::util::q2DateTimeStr(K data) throw(std::runtime_error) {
 	return q2tmStr(data, 10 + 1 + 8 + 1 + 3, L"%Y-%m-%d %H:%M:%S.%##");
 }
 
-std::vector<std::wstring> Wind::util::qList2DateTimeStr(K data) throw(std::string) {
+std::vector<std::wstring> Wind::util::qList2DateTimeStr(K data) throw(std::runtime_error) {
 	return qList2tmStr(data, 10 + 1 + 8 + 1 + 3, L"%Y-%m-%d %H:%M:%S.%##");
 }
 
-std::wstring Wind::util::q2StrOrX(K data, std::wstring(*alt)(K)) throw(std::string) {
+std::wstring Wind::util::q2StrOrX(K data, std::wstring(*alt)(K)) throw(std::runtime_error) {
 	if (data == K_NIL) {
-		throw std::string("nil symbol or date or time or datetime");
+		throw std::runtime_error("nil symbol or date or time or datetime");
 	}
 	switch (data->t) {
 	case -KS:

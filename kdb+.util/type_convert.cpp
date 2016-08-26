@@ -11,9 +11,9 @@
 #define ENUMmin	(20)
 #define ENUMmax	(76)
 
-long long q::q2Dec(K data) throw(std::string) {
+long long q::q2Dec(K data) throw(std::runtime_error) {
 	if (data == K_NIL) {
-		throw std::string("nil decimal");
+		throw std::runtime_error("nil decimal");
 	}
 	switch (data->t) {
 	case -KB:
@@ -27,48 +27,53 @@ long long q::q2Dec(K data) throw(std::string) {
 	case -KJ:
 		return data->j;
 	default:
-		throw std::string("not a decimal");
+		throw std::runtime_error("not a decimal");
 	}
 }
 
-std::vector<long long> q::qList2Dec(K data) throw(std::string) {
+std::vector<long long> q::qList2Dec(K data) throw(std::runtime_error) {
 	if (data == K_NIL) {
-		throw std::string("nil decimal list");
+		throw std::runtime_error("nil decimal list");
 	}
 	else if (data->t <= 0) {
-		throw std::string("not a decimal list");
+		throw std::runtime_error("not a decimal list");
 	}
 	assert(data->n >= 0);
-	std::vector<long long> result(static_cast<size_t>(data->n), 0L);
+	size_t const len = static_cast<size_t>(data->n);
+	std::vector<long long> result;
+	result.reserve(len);
 	switch (data->t) {
 	case KB: {
-		struct Converter {
-			long long operator()(G x) const { return x ? 1 : 0; }
-		};
-		std::transform(kG(data), kG(data) + data->n, result.begin(), Converter());
+		for (auto i = kG(data); i < kG(data) + len; ++i) {
+			result.push_back(*i ? 1 : 0);
+		}
 		break;
 	}
 	case KG:
+		result.resize(len, 0L);
 		std::copy(kG(data), kG(data) + data->n, result.begin());
 		break;
 	case KH:
+		result.resize(len, 0L);
 		std::copy(kH(data), kH(data) + data->n, result.begin());
 		break;
 	case KI:
+		result.resize(len, 0L);
 		std::copy(kI(data), kI(data) + data->n, result.begin());
 		break;
 	case KJ:
+		result.resize(len, 0L);
 		std::copy(kJ(data), kJ(data) + data->n, result.begin());
 		break;
 	default:
-		throw std::string("not a decimal list");
+		throw std::runtime_error("not a decimal list");
 	}
 	return result;
 }
 
-double q::q2Fp(K data) throw(std::string) {
+double q::q2Fp(K data) throw(std::runtime_error) {
 	if (data == K_NIL) {
-		throw std::string("nil floating-point");
+		throw std::runtime_error("nil floating-point");
 	}
 	switch (data->t) {
 	case -KB:
@@ -82,19 +87,21 @@ double q::q2Fp(K data) throw(std::string) {
 	case -KF:
 		return data->f;
 	default:
-		throw std::string("not a floating-point");
+		throw std::runtime_error("not a floating-point");
 	}
 }
 
-std::vector<double> q::qList2Fp(K data) throw(std::string) {
+std::vector<double> q::qList2Fp(K data) throw(std::runtime_error) {
 	if (data == K_NIL) {
-		throw std::string("nil floating-point list");
+		throw std::runtime_error("nil floating-point list");
 	}
 	else if (data->t <= 0) {
-		throw std::string("not a floating-point list");
+		throw std::runtime_error("not a floating-point list");
 	}
 	assert(data->n >= 0);
-	std::vector<double> result(static_cast<size_t>(data->n), 0.);
+	size_t const len = static_cast<size_t>(data->n);
+	std::vector<double> result;
+	result.reserve(len);
 	switch (data->t) {
 	case KB:
 	case KG:
@@ -102,27 +109,28 @@ std::vector<double> q::qList2Fp(K data) throw(std::string) {
 	case KI:
 	case KJ: {
 		std::vector<long long> decs = qList2Dec(data);
-		struct Converter {
-			double operator()(long long x) const { return static_cast<double>(x); }
-		};
-		std::transform(decs.begin(), decs.end(), result.begin(), Converter());
+		for (auto i = decs.cbegin(); i != decs.cend(); ++i) {
+			result.push_back(static_cast<double>(*i));
+		}
 		break;
 	}
 	case KE:
+		result.resize(len, 0.);
 		std::copy(kE(data), kE(data) + data->n, result.begin());
 		break;
 	case KF:
+		result.resize(len, 0.);
 		std::copy(kF(data), kF(data) + data->n, result.begin());
 		break;
 	default:
-		throw std::string("not a floating-point list");
+		throw std::runtime_error("not a floating-point list");
 	}
 	return result;
 }
 
-std::string q::q2String(K data) throw(std::string) {
+std::string q::q2String(K data) throw(std::runtime_error) {
 	if (data == K_NIL) {
-		throw std::string("nil string or symbol");
+		throw std::runtime_error("nil string or symbol");
 	}
 	switch (data->t) {
 	case KC:												// char list (a.k.a. string)
@@ -137,28 +145,31 @@ std::string q::q2String(K data) throw(std::string) {
 			return std::string(sym->s);
 		}
 		else {
-			throw std::string("not a char list or symbol");
+			throw std::runtime_error("not a char list or symbol");
 		}
 	}
 }
 
-std::vector<std::string> q::qList2String(K data) throw(std::string) {
+std::vector<std::string> q::qList2String(K data) throw(std::runtime_error) {
 	if (data == K_NIL) {
-		throw std::string("nil string or symbol list");
+		throw std::runtime_error("nil string or symbol list");
 	}
 	std::vector<std::string> result;
+	size_t len = 0;
 	switch (data->t) {
 	case 0:													// char list list (a.k.a. string list)
 		assert(data->n >= 0);
-		result.reserve(static_cast<size_t>(data->n));
-		for (J i = 0; i < data->n; ++i) {
+		len = static_cast<size_t>(data->n);
+		result.reserve(len);
+		for (size_t i = 0; i < len; ++i) {
 			result.push_back(q2String(kK(data)[i]));
 		}
 		break;
 	case KS:												// symbol list
 		assert(data->n >= 0);
-		result.reserve(static_cast<size_t>(data->n));
-		for (J i = 0; i < data->n; ++i) {
+		len = static_cast<size_t>(data->n);
+		result.reserve(len);
+		for (size_t i = 0; i < len; ++i) {
 			result.push_back(kS(data)[i]);
 		}
 		break;
@@ -167,25 +178,26 @@ std::vector<std::string> q::qList2String(K data) throw(std::string) {
 			K_ptr syms(k(0, "value", r1(data), K_NIL));
 			assert(syms && (syms->n == data->n));
 			assert(syms->n >= 0);
-			result.reserve(static_cast<size_t>(syms->n));
-			for (J i = 0; i < data->n; ++i) {
+			len = static_cast<size_t>(data->n);
+			result.reserve(len);
+			for (size_t i = 0; i < len; ++i) {
 				result.push_back(kS(syms)[i]);
 			}
 		}
 		else {
-			throw std::string("not a string or symbol list");
+			throw std::runtime_error("not a string or symbol list");
 		}
 	}
-	assert(result.size() == data->n);
+	assert(result.size() == len);
 	return result;
 }
 
-std::wstring q::q2WString(K data, UINT frCP) throw(std::string) {
+std::wstring q::q2WString(K data, UINT frCP) throw(std::runtime_error) {
 	std::string const input = q2String(data);
 	return ml::convert(frCP, input.c_str());
 }
 
-std::vector<std::wstring> q::qList2WString(K data, UINT frCP) throw(std::string) {
+std::vector<std::wstring> q::qList2WString(K data, UINT frCP) throw(std::runtime_error) {
 	std::vector<std::string> const input = qList2String(data);
 	std::vector<std::wstring> result;
 	result.reserve(input.size());
@@ -195,15 +207,15 @@ std::vector<std::wstring> q::qList2WString(K data, UINT frCP) throw(std::string)
 	return result;
 }
 
-std::map<std::string, std::string> q::qDict2StringMap(K data) throw(std::string) {
+std::map<std::string, std::string> q::qDict2StringMap(K data) throw(std::runtime_error) {
 	if (data == K_NIL) {
-		throw std::string("nil dict");
+		throw std::runtime_error("nil dict");
 	}
 	std::vector<std::string> keys, vals;
 	switch (data->t) {
 	case 0:
 		if (data->n != 0) {
-			throw std::string("not a dict or empty list");
+			throw std::runtime_error("not a dict or empty list");
 		}
 		break;
 	case XT:
@@ -214,20 +226,20 @@ std::map<std::string, std::string> q::qDict2StringMap(K data) throw(std::string)
 		vals = qList2String(kK(data)[1]);
 		break;
 	default:
-		throw std::string("not a dict");
+		throw std::runtime_error("not a dict");
 	}
-	assert(keys.size() == vals.size());
 	std::map<std::string, std::string> result;
-	for (auto k = keys.begin(), v = vals.begin(); k != keys.end(); ++k, ++v) {
+	assert(keys.size() == vals.size());
+	for (auto k = keys.cbegin(), v = vals.cbegin(); k != keys.cend(); ++k, ++v) {
 		result[*k] = *v;
 	}
 	return result;
 }
 
-std::map<std::wstring, std::wstring> q::qDict2WStringMap(K data, UINT frCP) throw(std::string) {
+std::map<std::wstring, std::wstring> q::qDict2WStringMap(K data, UINT frCP) throw(std::runtime_error) {
 	std::map<std::string, std::string> const input = qDict2StringMap(data);
 	std::map<std::wstring, std::wstring> result;
-	for (auto i = input.begin(); i != input.end(); ++i) {
+	for (auto i = input.cbegin(); i != input.cend(); ++i) {
 		std::string const& k = i->first;
 		std::string const& v = i->second;
 		result[ml::convert(frCP, k.c_str())] = ml::convert(frCP, v.c_str());
@@ -235,16 +247,16 @@ std::map<std::wstring, std::wstring> q::qDict2WStringMap(K data, UINT frCP) thro
 	return result;
 }
 
-q::tm_ext q::q2tm(K data) throw(std::string) {
+q::tm_ext q::q2tm(K data) throw(std::runtime_error) {
 	if (data == K_NIL) {
-		throw std::string("nil date or time or datetime");
+		throw std::runtime_error("nil date or time or datetime");
 	}
 	tm_ext result;
 	std::memset(&result, 0, sizeof(tm_ext));
 	switch (data->t) {
 	case -KD:
 		if ((data->i == wi) || (data->i == -wi)) {
-			throw std::string("+/-inf date");
+			throw std::runtime_error("+/-inf date");
 		}
 		else {
 			Cookbook::gt_r((data->i == ni) ? 0 : data->i, &result);
@@ -252,7 +264,7 @@ q::tm_ext q::q2tm(K data) throw(std::string) {
 		break;
 	case -KT:
 		if ((data->i == wi) || (data->i == -wi)) {
-			throw std::string("+/-inf time");
+			throw std::runtime_error("+/-inf time");
 		}
 		else {
 			Cookbook::gt_r((data->i == ni) ? 0. : data->i / (24 * 60 * 60 * 1000.), &result);
@@ -260,33 +272,34 @@ q::tm_ext q::q2tm(K data) throw(std::string) {
 		break;
 	case -KZ:
 		if ((data->f == wf) || (data->f == -wf)) {
-			throw std::string("+/-inf datetime");
+			throw std::runtime_error("+/-inf datetime");
 		}
 		else {
 			Cookbook::gt_r((data->f == nf) ? 0. : data->f, &result);
 		}
 		break;
 	default:
-		throw std::string("not a date or datetime");
+		throw std::runtime_error("not a date or datetime");
 	}
 	return result;
 }
 
-std::vector<q::tm_ext> q::qList2tm(K data) throw(std::string) {
+std::vector<q::tm_ext> q::qList2tm(K data) throw(std::runtime_error) {
 	if (data == K_NIL) {
-		throw std::string("nil date or datetime list");
+		throw std::runtime_error("nil date or datetime list");
 	}
 	else if (data->t <= 0) {
-		throw std::string("not a date or datetime list");
+		throw std::runtime_error("not a date or datetime list");
 	}
 	assert(data->n >= 0);
-	std::vector<tm_ext> result(static_cast<size_t>(data->n));
+	size_t const len = static_cast<size_t>(data->n);
+	std::vector<tm_ext> result(len);
 	switch (data->t) {
 	case KD:
-		for (size_t i = 0; i < data->n; ++i) {
+		for (size_t i = 0; i < len; ++i) {
 			I const& d = kI(data)[i];
 			if ((d == wi) || (d == -wi)) {
-				throw std::string("+/-inf date in list");
+				throw std::runtime_error("+/-inf date in list");
 			}
 			else {
 				Cookbook::gt_r((d == ni) ? 0 : d, &result[i]);
@@ -294,10 +307,10 @@ std::vector<q::tm_ext> q::qList2tm(K data) throw(std::string) {
 		}
 		break;
 	case KT:
-		for (size_t i = 0; i < data->n; ++i) {
+		for (size_t i = 0; i < len; ++i) {
 			I const& d = kI(data)[i];
 			if ((d == wi) || (d == -wi)) {
-				throw std::string("+/-inf time in list");
+				throw std::runtime_error("+/-inf time in list");
 			}
 			else {
 				Cookbook::gt_r((d == ni) ? 0. : d / (24 * 60 * 60 * 1000.), &result[i]);
@@ -305,10 +318,10 @@ std::vector<q::tm_ext> q::qList2tm(K data) throw(std::string) {
 		}
 		break;
 	case KZ:
-		for (size_t i = 0; i < data->n; ++i) {
+		for (size_t i = 0; i < len; ++i) {
 			F const& f = kF(data)[i];
 			if ((f == wf) || (f == -wf)) {
-				throw std::string("+/-inf datetime in list");
+				throw std::runtime_error("+/-inf datetime in list");
 			}
 			else {
 				Cookbook::gt_r((f == nf) ? 0. : f, &result[i]);
@@ -316,7 +329,7 @@ std::vector<q::tm_ext> q::qList2tm(K data) throw(std::string) {
 		}
 		break;
 	default:
-		throw std::string("not a date or datetime list");
+		throw std::runtime_error("not a date or datetime list");
 	}
 	return result;
 }
@@ -335,7 +348,7 @@ I q::time2q(int hhmmssfff) {
 	return (hh * 60 + mm) * 60000 + ssfff;
 }
 
-I q::date2q(char const* dateStr) throw(std::string) {
+I q::date2q(char const* dateStr) throw(std::runtime_error) {
 	assert(dateStr != NULL);
 	int year = 0, month = 0, mday = 0;
 	static char const* FMTs[] = { "%4d.%2d.%2d", "%4d-%2d-%2d", "%4d/%2d/%2d" };
@@ -349,10 +362,10 @@ I q::date2q(char const* dateStr) throw(std::string) {
 			return ymd(year, month, mday);
 		}
 	}
-	throw std::string("invalid date string");
+	throw std::runtime_error("invalid date string");
 }
 
-I q::date2q(std::string const& dateStr) throw(std::string) {
+I q::date2q(std::string const& dateStr) throw(std::runtime_error) {
 	return date2q(dateStr.c_str());
 }
 
@@ -396,7 +409,7 @@ std::time_t tm2time_t(std::tm const& tm) {
 
 //@ref http://www.codeguru.com/cpp/cpp/cpp_mfc/article.php/c765/An-ATL-replacement-for-COleDateTime.htm
 //@ref http://www.codeproject.com/Articles/144159/Time-Format-Conversion-Made-Easy
-F q::DATE2q(::DATE date) throw(std::string) {
+F q::DATE2q(::DATE date) throw(std::runtime_error) {
 	// Negative DATEs are not continuous!
 	if (date < 0) {
 		F const d = std::ceil(date);
@@ -406,7 +419,7 @@ F q::DATE2q(::DATE date) throw(std::string) {
 	static J const MIN_DATE = -657434L;	//~ year 0100
 	static J const MAX_DATE = 2958465L;	//~ year 9999
 	if ((date < MIN_DATE) || (MAX_DATE < date)) {
-		throw std::string("DATE out of range");
+		throw std::runtime_error("DATE out of range");
 	}
 
 	// Normal year: ydays for each month
@@ -498,7 +511,7 @@ F q::DATE2q(::DATE date) throw(std::string) {
 	// Convert back to a q datetime
 	std::time_t const time = tm2time_t(tm);
 	if (time == static_cast<std::time_t>(-1)) {
-		throw std::string("DATE out of range for system std::time_t");
+		throw std::runtime_error("DATE out of range for system std::time_t");
 	}
 	return Cookbook::zu(time + (nSecs - nSecsOnly));
 }

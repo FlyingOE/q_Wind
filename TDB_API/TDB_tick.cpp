@@ -135,8 +135,8 @@ TDB_API K K_DECL TDB_tick_fields(K category) {
 			[](char x) { return std::toupper(x, std::locale()); }
 		);
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	auto const mapper = TDB::traits::Tick::accessor_map::getInstance();
@@ -165,8 +165,8 @@ TDB_API K K_DECL TDB_tick(K h, K windCode, K indicators, K date, K begin, K end,
 		TDB::parseTdbReqTime(date, begin, end, req);
 		req.nAutoComplete = !!q::q2Dec(autoFill) ? 1 : 0;
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 
 	return TDB::runQuery<TDB::traits::Tick, ::TDBDefine_ReqTick>(tdb, req, indis, &::TDB_GetTick);

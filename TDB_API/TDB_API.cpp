@@ -30,7 +30,7 @@ namespace TDB {
 
 		// Helper for ::setTimeout(...)
 		template <typename T>
-		T& setSetting(K data, T& setting) throw(std::string) {
+		T& setSetting(K data, T& setting) throw(std::runtime_error) {
 			if (data == K_NIL) return setting;
 
 			long long nullValue;
@@ -45,7 +45,7 @@ namespace TDB {
 				nullValue = q::type_traits<J>::NULL_VAL;
 				break;
 			default:
-				throw std::string("not an integral value");
+				throw std::runtime_error("not an integral value");
 			}
 
 			long long value = q::q2Dec(data);
@@ -53,7 +53,7 @@ namespace TDB {
 				return setting;
 			}
 			else if ((value < std::numeric_limits<T>::min()) || (std::numeric_limits<T>::max() < value)) {
-				throw std::string("out of bounds");
+				throw std::runtime_error("out of bounds");
 			}
 			else {
 				return setting = static_cast<T>(value);
@@ -74,8 +74,8 @@ TDB_API K K_DECL setTimeout(K timeout, K retries, K delay) {
 		TDB::util::setSetting(retries, TDB::SETTINGS.nRetryCount);
 		TDB::util::setSetting(delay, TDB::SETTINGS.nRetryGap);
 	}
-	catch (std::string const &error) {
-		return q::error2q(error);
+	catch (std::runtime_error const &error) {
+		return q::error2q(error.what());
 	}
 	return getTimeout(K_NIL);
 }
@@ -90,12 +90,12 @@ TDB_API K K_DECL setDataSource(K dataSrc) {
 	try {
 		src = q::q2Dec(dataSrc);
 	}
-	catch (std::string const &error) {
-		return q::error2q(error);
+	catch (std::runtime_error const &error) {
+		return q::error2q(error.what());
 	}
 
 	if ((src < 0) || (std::numeric_limits<short>::max() < src)) {
-		return q::error2q(std::string("invalid data source ID"));
+		return q::error2q("invalid data source ID");
 	}
 	else {
 		TDB::DATA_SRC = static_cast<short>(src);

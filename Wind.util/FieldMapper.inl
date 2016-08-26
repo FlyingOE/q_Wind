@@ -56,7 +56,7 @@ void Wind::mapper::Fields<T>::getFields(std::string const& category, std::vector
 template <typename T>
 void Wind::mapper::Fields<T>::addField(
 	char const* fieldName, typename Wind::mapper::Fields<T>::field_accessor* accessor)
-	throw(std::string)
+	throw(std::runtime_error)
 {
 	addField("", fieldName, accessor);
 }
@@ -64,7 +64,7 @@ void Wind::mapper::Fields<T>::addField(
 template <typename T>
 void Wind::mapper::Fields<T>::addField(
 	std::string const& fieldName, typename Wind::mapper::Fields<T>::field_accessor* accessor)
-	throw(std::string)
+	throw(std::runtime_error)
 {
 	addField("", fieldName.c_str(), accessor);
 }
@@ -72,13 +72,13 @@ void Wind::mapper::Fields<T>::addField(
 template <typename T>
 void Wind::mapper::Fields<T>::addField(char const* category,
 	char const* fieldName, typename Wind::mapper::Fields<T>::field_accessor* accessor)
-	throw(std::string)
+	throw(std::runtime_error)
 {
 	auto const result = fields_.emplace(fieldName, typename map_type::mapped_type(accessor));
 	if (!result.second) {
 		std::ostringstream buffer;
 		buffer << fieldName << " -> 0x" << util::hexBytes(accessor);
-		throw std::string(buffer.str());
+		throw std::runtime_error(buffer.str());
 	}
 	catalog_.emplace(category, fieldName);
 }
@@ -86,7 +86,7 @@ void Wind::mapper::Fields<T>::addField(char const* category,
 template <typename T>
 void Wind::mapper::Fields<T>::addField(std::string const& category,
 	std::string const& fieldName, typename Wind::mapper::Fields<T>::field_accessor* accessor)
-	throw(std::string)
+	throw(std::runtime_error)
 {
 	addField(category.c_str(), fieldName.c_str(), accessor);
 }
@@ -113,11 +113,11 @@ bool Wind::mapper::Fields<T>::hasCategory(std::string const& category) const {
 
 template <typename T>
 typename Wind::mapper::Fields<T>::field_accessor const* Wind::mapper::Fields<T>::operator[](char const* fieldName)
-	throw(std::string)
+throw(std::runtime_error)
 {
 	auto const f = fields_.find(fieldName);
 	if (f == fields_.cend()) {
-		throw std::string(fieldName);
+		throw std::runtime_error(fieldName);
 	}
 	else {
 		return f->second.get();
@@ -126,7 +126,7 @@ typename Wind::mapper::Fields<T>::field_accessor const* Wind::mapper::Fields<T>:
 
 template <typename T>
 typename Wind::mapper::Fields<T>::field_accessor const* Wind::mapper::Fields<T>::operator[](std::string const& fieldName)
-	throw(std::string)
+throw(std::runtime_error)
 {
 	return operator[](fieldName.c_str());
 }

@@ -11,7 +11,7 @@ static_assert(0, "Include TDB_API/TDB_API_helper.h instead!");
 
 template <typename FieldTraits>
 void TDB::parseIndicators(K indicators, std::vector<typename FieldTraits::field_accessor const*>& accessors)
-	throw(std::string)
+throw(std::runtime_error)
 {
 	assert(accessors.empty());
 	std::vector<std::string> const list = q::qList2String(indicators);
@@ -24,12 +24,12 @@ void TDB::parseIndicators(K indicators, std::vector<typename FieldTraits::field_
 }
 
 template <typename TdbReq>
-void TDB::parseTdbReqCode(::THANDLE const tdb, K windCode, TdbReq& req) throw(std::string) {
+void TDB::parseTdbReqCode(::THANDLE const tdb, K windCode, TdbReq& req) throw(std::runtime_error) {
 	std::string const code = q::q2String(windCode);
 
 	size_t const dot = code.rfind('.');
 	if (dot == std::string::npos) {
-		throw std::string("windCode missing suffix");
+		throw std::runtime_error("windCode missing suffix");
 	}
 	std::ostringstream buffer;
 	buffer << std::string(code.cbegin() + dot + 1, code.cend())
@@ -37,26 +37,26 @@ void TDB::parseTdbReqCode(::THANDLE const tdb, K windCode, TdbReq& req) throw(st
 		<< '-' << TDB::DATA_SRC;
 	std::string const market = buffer.str();
 	if (market.size() >= sizeof(req.chMarketKey)) {
-		throw std::string("windCode suffix too long");
+		throw std::runtime_error("windCode suffix too long");
 	}
 	std::copy(market.begin(), market.end(), req.chMarketKey);
 	req.chMarketKey[market.size()] = '\0';
 
 	if (code.size() >= sizeof(req.chCode)) {
-		throw std::string("windCode too long");
+		throw std::runtime_error("windCode too long");
 	}
 	std::copy(code.begin(), code.end(), req.chCode);
 	req.chCode[code.size()] = '\0';
 }
 
 template <typename TdbReq>
-void TDB::parseTdbReqTime(K beginDT, K endDT, TdbReq& req) throw(std::string) {
+void TDB::parseTdbReqTime(K beginDT, K endDT, TdbReq& req) throw(std::runtime_error) {
 	util::fillDateTime(beginDT, req.nBeginDate, req.nBeginTime);
 	util::fillDateTime(endDT,   req.nEndDate,   req.nEndTime  );
 }
 
 template <typename TdbReq>
-void TDB::parseTdbReqTime(K date, K begin, K end, TdbReq& req) throw(std::string) {
+void TDB::parseTdbReqTime(K date, K begin, K end, TdbReq& req) throw(std::runtime_error) {
 	util::fillDateTime(begin, req.nDate, req.nBeginTime);
 	util::fillDateTime(end,   req.nDate, req.nEndTime  );
 	int dummy;

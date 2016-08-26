@@ -30,8 +30,8 @@ WIND_API K K_DECL setTimeout(K timeout) {
 	try {
 		Wind::ASYNC_TIMEOUT = std::chrono::milliseconds(1) * q::q2Dec(timeout);
 	}
-	catch (std::string const& error) {
-		return q::error2q(error);
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
 	}
 	return getTimeout(K_NIL);
 }

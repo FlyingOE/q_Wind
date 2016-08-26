@@ -108,11 +108,11 @@ namespace Test_q
 			auto const tester = [&]{ q::q2Dec(data.get()); };
 
 			data.reset(kf(47.68839));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on float", LINE_INFO());
 
 			data.reset(ktn(KJ, 0));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on list", LINE_INFO());
 		}
 
@@ -121,11 +121,11 @@ namespace Test_q
 			auto const tester = [&]{ q::q2Fp(data.get()); };
 
 			data.reset(ktj(-KP, 4768839));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on timestamp", LINE_INFO());
 
 			data.reset(ktn(KF, 0));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on list", LINE_INFO());
 		}
 
@@ -203,12 +203,12 @@ namespace Test_q
 			auto const tester = [&]{ q::qList2Dec(data.get()); };
 
 			data.reset(ki(4768839));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on atom", LINE_INFO());
 
 			data.reset(ktn(KF, 1));
 			kF(data.get())[0] = 47.68839;
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on float list", LINE_INFO());
 		}
 
@@ -217,11 +217,11 @@ namespace Test_q
 			auto const tester = [&]{ q::qList2Fp(data.get()); };
 
 			data.reset(kf(4768.839));
-			Assert::ExpectException<std::string>(tester, L"fail on atom", LINE_INFO());
+			Assert::ExpectException<std::runtime_error>(tester, L"fail on atom", LINE_INFO());
 
 			data.reset(ktn(KC, 1));
 			kC(data.get())[0] = 'A';
-			Assert::ExpectException<std::string>(tester, L"fail on char list", LINE_INFO());
+			Assert::ExpectException<std::runtime_error>(tester, L"fail on char list", LINE_INFO());
 		}
 
 		TEST_METHOD(canConvertString)
@@ -252,21 +252,21 @@ namespace Test_q
 			auto const tester = [&]{ q::q2String(data.get()); };
 
 			data.reset(kf(4768.839));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on number", LINE_INFO());
 
 			data.reset(kc('A'));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on char", LINE_INFO());
 
 			data.reset(ktn(KS, 1));
 			kS(data.get())[0] = ss("`symbol");
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on symbol list", LINE_INFO());
 
 			data.reset(ktn(0, 1));
 			kK(data.get())[0] = kp("\"char list\"");
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on char-list list", LINE_INFO());
 		}
 
@@ -307,15 +307,15 @@ namespace Test_q
 			auto const tester = [&]{ q::qList2String(data.get()); };
 
 			data.reset(kf(4768.839));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on atom", LINE_INFO());
 
 			data.reset(kp("ABC"));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on char list", LINE_INFO());
 
 			data.reset(ks("ABC"));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on symbol", LINE_INFO());
 		}
 
@@ -411,21 +411,21 @@ namespace Test_q
 			auto const tester = [&]{ q::q2tm(data.get()); };
 
 			data.reset(ki(5703));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on integer", LINE_INFO());
 
 			data.reset(kf(5703.5250254207986));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on floating-point", LINE_INFO());
 
 			data.reset(ktn(KD, 1));
 			kI(data.get())[0] = 5703;
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on date list", LINE_INFO());
 
 			data.reset(ktn(KZ, 1));
 			kF(data.get())[0] = 5703.5250254207986;
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on datetime list", LINE_INFO());
 		}
 
@@ -435,55 +435,55 @@ namespace Test_q
 			auto const tester = [&]{ q::q2tm(data.get()); };
 
 			data.reset(kd(wi));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on +0Wd", LINE_INFO());
 			data.reset(kd(-wi));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on -0Wd", LINE_INFO());
 
 			data.reset(kt(wi));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on +0Wt", LINE_INFO());
 			data.reset(kt(-wi));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on -0Wt", LINE_INFO());
 
 			data.reset(kf(wf));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on +0Wz", LINE_INFO());
 			data.reset(kf(-wf));
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on -0Wz", LINE_INFO());
 
 			data.reset(ktn(KD, 1));
 			kI(data.get())[0] = wi;
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on (+0Wd)", LINE_INFO());
 			data.reset(ktn(KD, 2));
 			kI(data.get())[0] = 5703;
 			kI(data.get())[1] = -wi;
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on (2015.08.13 -0Wd)", LINE_INFO());
 
 			data.reset(ktn(KT, 1));
 			kI(data.get())[0] = wi;
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on (+0Wt)", LINE_INFO());
 			data.reset(ktn(KT, 2));
 			kI(data.get())[0] = 40019070;
 			kI(data.get())[1] = -wi;
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on (11:06:59.070 -0Wt)", LINE_INFO());
 
 			data.reset(ktn(KZ, 1));
 			kF(data.get())[0] = wf;
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on (+0Wz)", LINE_INFO());
 
 			data.reset(ktn(KZ, 2));
 			kF(data.get())[0] = 5703.5250254207986;
 			kF(data.get())[1] = -wf;
-			Assert::ExpectException<std::string>(tester,
+			Assert::ExpectException<std::runtime_error>(tester,
 				L"fail on (2015.08.13T12:36:02.196 -0Wz)", LINE_INFO());
 		}
 

@@ -32,9 +32,9 @@ std::string TDB::getError(::TDB_ERROR errorCode) {
 	return buffer.str();
 }
 
-void TDB::util::fillDateTime(K data, int &date, int &time) throw(std::string) {
+void TDB::util::fillDateTime(K data, int &date, int &time) throw(std::runtime_error) {
 	if (data == K_NIL) {
-		throw std::string("nil date or time or datetime");
+		throw std::runtime_error("nil date or time or datetime");
 	}
 	switch (data->t) {
 	case -KH:

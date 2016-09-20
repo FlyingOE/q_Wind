@@ -21,6 +21,9 @@ stringize:{x _.Q.s y}$[.z.o like"w*";2;1]
 // Current Working Directory
 cwd:.CPPlib.DLL 2:(`cwd;1);
 
+// "Sleep"
+sleep:{system"ping -t ",string[`long$`second$x]," localhost > NUL"};
+
 /==============================================================================
 \d .opt
 
@@ -55,8 +58,8 @@ cum2inc:{1_-1+(%':)reverse fills reverse fills(1#0#x),x};
 // Copy an object from another namespace to the current namespace
 copyObject:{eval(:;` sv(system"d"),y;x y)};
 
-// "Sleep"
-sleep:{system"ping -t ",string[`long$`second$x]," localhost > NUL"};
+// Convert a list of pairs into a dict
+pairs2dict:{(!). flip x};
 
 \d .
 /==============================================================================

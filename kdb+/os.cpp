@@ -3,7 +3,7 @@
 
 #include "kdb+.util/util.h"
 #include "kdb+.util/types.h"
-#include "kdb+.util/multilang.h"
+#include "win32.util/CodeConvert.h"
 #include <cassert>
 #include <vector>
 

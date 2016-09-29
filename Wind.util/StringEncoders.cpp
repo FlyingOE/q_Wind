@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "StringEncoders.h"
 
-#include "kdb+.util/multilang.h"
+#include "win32.util/CodeConvert.h"
 
 #include <cassert>
 #include <sstream>

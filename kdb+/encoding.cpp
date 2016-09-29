@@ -2,7 +2,7 @@
 #include "kdb+.h"
 
 #include "kdb+.util/util.h"
-#include "kdb+.util/multilang.h"
+#include "win32.util/CodeConvert.h"
 
 KDB_API K K_DECL gb18030_utf8(K strGBK) {
 	return q::convert(ml::CP_GB18030, CP_UTF8, strGBK);

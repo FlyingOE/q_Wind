@@ -2,8 +2,8 @@
 #include "util.h"
 
 #include "kdb+.util/util.h"
-#include "kdb+.util/multilang.h"
 #include "kdb+.util/type_convert.h"
+#include "win32.util/CodeConvert.h"
 #include <cassert>
 #ifdef _MSC_VER
 //@ref https://msdn.microsoft.com/en-us/library/dn607301.aspx

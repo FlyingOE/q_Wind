@@ -21,19 +21,4 @@ namespace q {
 
 }//namespace q
 
-namespace ml {
-
-	extern UINT const CP_GB18030;
-
-	// Convert inStr from code page frCP to UTF-16
-	std::wstring convert(UINT frCP, char const* inStr) throw(std::runtime_error);
-
-	// Convert inUcs from UTF-16 to code page toCP 
-	std::string  convert(UINT toCP, wchar_t const* inUcs) throw(std::runtime_error);
-
-	// Convert inStr from code page frCP to code page toCP
-	std::string  convert(UINT frCP, UINT toCP, char const* inStr) throw(std::runtime_error);
-
-}//namespace ml
-
 #endif//__MULTILANG_H__

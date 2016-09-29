@@ -4,8 +4,8 @@
 #include "util.h"
 
 #include "kdb+.util/util.h"
-#include "kdb+.util/multilang.h"
 #include "kdb+.util/type_convert.h"
+#include "win32.util/CodeConvert.h"
 #include <iostream>
 
 
@@ -19,7 +19,7 @@ WIND_API K K_DECL Wind_login(K username, K password) {
 		return q::error2q(error.what());
 	}
 
-	::WQAUTH_INFO login = { true };
+	::WQAUTH_INFO login = { true };	//silent logon
 	std::wmemset(login.strUserName, L'\0', _countof(login.strUserName));
 	std::wmemset(login.strPassword, L'\0', _countof(login.strPassword));
 

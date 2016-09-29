@@ -2,6 +2,7 @@
 #include "util.h"
 
 #include "kdb+.hack/hack.h"
+#include "win32.util/CodeConvert.h"
 
 #include <cassert>
 #include <algorithm>

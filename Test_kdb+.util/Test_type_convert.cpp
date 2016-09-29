@@ -5,7 +5,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 #include "kdb+.util/type_convert.h"
 
 #include "kdb+.util/K_ptr.h"
-#include "kdb+.util/multilang.h"
+#include "win32.util/CodeConvert.h"
 #include <vector>
 #include <sstream>
 #include <iomanip>

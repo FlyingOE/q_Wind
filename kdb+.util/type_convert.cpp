@@ -3,6 +3,7 @@
 
 #include "util.h"
 #include "K_ptr.h"
+#include "win32.util/CodeConvert.h"
 #include <cassert>
 #include <cmath>
 #include <ctime>

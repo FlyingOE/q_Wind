@@ -2,7 +2,7 @@
 #include "CppUnitTest.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-#include "kdb+.util/type_convert.h"
+#include "win32.util/CodeConvert.h"
 
 namespace Test_ml
 {

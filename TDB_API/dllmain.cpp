@@ -9,6 +9,9 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
+		//@ref https://msdn.microsoft.com/en-us/library/aa370448(v=vs.85).aspx
+		::DisableThreadLibraryCalls(hModule);
+		break;
 	case DLL_THREAD_ATTACH:
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:

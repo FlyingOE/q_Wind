@@ -15,6 +15,11 @@ utf8_gb18030:lineOrList[;.CPPlib.DLL 2:(`utf8_gb18030;1)];
 
 stringize:{x _.Q.s y}$[.z.o like"w*";2;1]
 
+// Pad a string
+/q).util.pad[ 10;"0";str]    /right-pad str with 0's
+/q).util.pad[-10;" ";str]    /left-pad str with spaces
+pad:{if[count[z]>=n:abs x;:z];x#$[x>=0;{x,y};{y,x}][z;n#y]};
+
 /==============================================================================
 \d .os
 

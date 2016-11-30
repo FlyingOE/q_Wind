@@ -49,12 +49,13 @@ std::wstring ml::convert(UINT frCP, char const* inStr) throw(std::runtime_error)
 std::string ml::convert(UINT toCP, wchar_t const* inUcs) throw(std::runtime_error) {
 	assert(inUcs != NULL);
 	if (std::wcslen(inUcs) == 0) return "";
-	size_t const len = ::WideCharToMultiByte(toCP, WC_ERR_INVALID_CHARS, inUcs, -1, NULL, 0, NULL, NULL);
+	DWORD const flags = (CP_UTF8 == toCP) ? WC_ERR_INVALID_CHARS : 0;
+	size_t const len = ::WideCharToMultiByte(toCP, flags, inUcs, -1, NULL, 0, NULL, NULL);
 	if (len == 0) {
 		throw getEncodeError("WideCharToMultiByte<0>", ::GetLastError());
 	}
 	std::vector<char> outStr(len, '\0');
-	int const result = ::WideCharToMultiByte(toCP, WC_ERR_INVALID_CHARS, inUcs, -1, &outStr[0], len, NULL, NULL);
+	int const result = ::WideCharToMultiByte(toCP, flags, inUcs, -1, &outStr[0], len, NULL, NULL);
 	if (result == 0) {
 		throw getEncodeError("WideCharToMultiByte<1>", ::GetLastError());
 	}

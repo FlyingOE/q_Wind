@@ -1,11 +1,3 @@
-/**
-* @defgroup  MAINFRAME 系统资源区
-* @author 
-* @version 1.0
-* @date 2010-2013
-* @warning 版权所有，翻录必究
-* @{
-*/
 
 #ifndef _TDBAPISTRUCT_H_
 #define _TDBAPISTRUCT_H_
@@ -106,7 +98,6 @@ typedef enum ORDERSIDE
     ORDERSIDE_ASK,          //卖
 } ;
 
-//TODO
 
 ///系统消息结构体////////////////////////////////////////////////////
 
@@ -122,9 +113,9 @@ struct TDBDefine_ResLogin
 ///基本消息结构体////////////////////////////////////////////////////
 struct TDBDefine_Code
 {
-    char chWindCode[32];        //万得代码(AG1312.SHF)
+    char chWindCode[32];        //万得代码(ag1312.SHF)
     char chCode[32];            //交易所代码(ag1312)
-    char chMarket[24];           //市场代码(SHF)
+    char chMarket[24];           //市场代码(SHF-1-0)
     char chCNName[32];          //证券中文名称
     char chENName[32];          //证券英文名称
     int  nType;                 //证券类型
@@ -134,23 +125,23 @@ struct TDBDefine_Code
 //K线数据 KLine
 struct TDBDefine_ReqKLine
 {
-    char chCode[32];            //证券万得代码(AG1312.SHF)
+    char chCode[32];            //证券万得代码(ag1312.SHF)
 	char chMarketKey[24];		//市场设置,如：SH-1-0;SZ-2-0
     REFILLFLAG nCQFlag;         //除权标志：不复权，向前复权，向后复权
-    int nCQDate;                //复权日期(<=0:全程复权) 格式：YYMMDD，例如20130101表示2013年1月1日
+    int nCQDate;                //复权日期(=0:全程复权) 格式：YYMMDD，例如20130101表示2013年1月1日
     int nQJFlag;                //全价标志(债券)(0:净价 1:全价)
     CYCTYPE nCycType;           //数据周期：秒线、分钟、日线、周线、月线、季线、半年线、年线、TickBar
     int nCycDef;                //周期数量：仅当nCycType取值：秒、分钟、日线、周线、月线时，这个字段有效。
-    int nAutoComplete;          //自动补齐：仅1秒钟线、1分钟线支持这个标志，（不为0：补齐；0：不补齐）
-    int nBeginDate;             //开始日期(交易日，<0:从上市日期开始； 0:从今天开始)
-    int nEndDate;               //结束日期(交易日，<=0:跟nBeginDate一样) 
-    int nBeginTime;             //开始时间，<=0表示从开始，格式：（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
-    int nEndTime;               //结束时间，<=0表示到结束，格式：（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
+    int nAutoComplete;          //自动补齐：仅1秒钟线、1分钟线支持这个标志，（1：补齐；0：不补齐）
+    int nBeginDate;             //开始日期(交易日,0:从今天开始)
+    int nEndDate;               //结束日期(交易日,=0:跟nBeginDate一样) 
+    int nBeginTime;             //开始时间，=0表示从开始，格式：（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
+    int nEndTime;               //结束时间，=0表示到结束，格式：（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
 };
 
 struct TDBDefine_KLine
 {
-    char chWindCode[32];            //万得代码(AG1312.SHF)
+    char chWindCode[32];            //万得代码(ag1312.SHF)
     char chCode[32];                //交易所代码(ag1312)
     int nDate;                      //日期（自然日）格式：YYMMDD，例如20130101表示2013年1月1日，0表示今天
     int nTime;                      //时间（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
@@ -166,7 +157,7 @@ struct TDBDefine_KLine
 
 struct TDBDefine_Tick
 {
-    char chWindCode[32];                //万得代码(AG1312.SHF)
+    char chWindCode[32];                //万得代码(ag1312.SHF)
     char chCode[32];                    //交易所代码(ag1312)
     int nDate;                          //日期（自然日）
     int nTime;                          //时间（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
@@ -216,34 +207,33 @@ struct TDBDefine_Tick
 
 struct TDBDefine_ReqTick
 {
-    char chCode[32];    //证券万得代码(AG1312.SHF)
+    char chCode[32];			//证券万得代码(ag1312.SHF)
 	char chMarketKey[24];		//市场设置,如：SH-1-0;SZ-2-0
-    int  nDate;    //开始日期（交易日）,为0则从今天，格式：YYMMDD，例如20130101表示2013年1月1日
-    int  nBeginTime;    //开始时间：若<=0则从头，格式：（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
-    int  nEndTime;      //结束时间：若<=0则至最后
+    int  nDate;					//请求日期（交易日）,为0则从今天，格式：YYMMDD，例如20130101表示2013年1月1日
+    int  nBeginTime;			//开始时间：若0则从头，格式：（HHMMSSmmm）例如94500000 表示 9点45分00秒000毫秒
+    int  nEndTime;				//结束时间：若0则至最后
 
-	int nAutoComplete;  //自动补齐标志:( 0：不自动补齐，1:自动补齐）
+	int nAutoComplete;			//自动补齐标志:( 0：不自动补齐，1:自动补齐）,暂不支持
 };
 
 
 //逐笔成交数据 Transaction
 struct TDBDefine_ReqTransaction
 {
-    char chCode[32];            //证券万得代码(AG1312.SHF)
+    char chCode[32];            //证券万得代码(ag1312.SHF)
 	char chMarketKey[24];		//市场设置,如：SH-1-0;SZ-2-0
-    int  nDate;            //开始日期（交易日），格式YYMMDD
-    //int  nEndDate;              //数据日期（交易日）小于等于0和nBeginDate相同
-    int  nBeginTime;            //开始时间:<=0表示从0开始，格式：HHMMSSmmm
-    int  nEndTime;              //结束时间：<=0表示到最后
+    int  nDate;					//开始日期（交易日），格式YYMMDD
+    int  nBeginTime;            //开始时间:0表示从0开始，格式：HHMMSSmmm
+    int  nEndTime;              //结束时间：0表示到最后
 };
 
 struct TDBDefine_Transaction
 {
-    char    chWindCode[32];     //万得代码(AG1312.SHF)
+    char    chWindCode[32];     //万得代码(ag1312.SHF)
     char    chCode[32];         //交易所代码(ag1312)
     int     nDate;              //日期（自然日）格式:YYMMDD
     int     nTime;              //成交时间(精确到毫秒HHMMSSmmm)
-    int     nIndex;             //成交编号(从1开始，递增1)
+    int     nIndex;             //成交编号
     char    chFunctionCode;     //成交代码: 'C', 0
     char    chOrderKind;        //委托类别
     char    chBSFlag;           //BS标志
@@ -258,11 +248,11 @@ typedef struct TDBDefine_ReqTransaction TDBDefine_ReqOrder ;
 
 struct TDBDefine_Order
 {
-    char chWindCode[32];        //万得代码(AG1312.SHF)
+    char chWindCode[32];        //万得代码(ag1312.SHF)
     char chCode[32];            //交易所代码(ag1312)
     int  nDate;                 //日期（自然日）格式YYMMDD
     int  nTime;                 //委托时间（精确到毫秒HHMMSSmmm）
-    int  nIndex;                //委托编号，从1开始，递增1
+    int  nIndex;                //委托编号
     int  nOrder;                //交易所委托号
     char chOrderKind;           //委托类别
     char chFunctionCode;        //委托代码, B, S, C
@@ -275,7 +265,7 @@ typedef struct TDBDefine_ReqTransaction TDBDefine_ReqOrderQueue;
 
 struct TDBDefine_OrderQueue
 {
-    char    chWindCode[32];         //万得代码(AG1312.SHF)
+    char    chWindCode[32];         //万得代码(ag1312.SHF)
     char    chCode[32];             //交易所代码(ag1312)
     int     nDate;                  //日期（自然日）格式YYMMDD
     int     nTime;                  //订单时间(精确到毫秒HHMMSSmmm)
@@ -307,7 +297,7 @@ struct TDBDefine_DelFormulaRes
 
 struct TDBDefine_CalcFormulaRes
 {
-    char chWindCode[32];        //万得代码(AG1312.SHF)
+    char chWindCode[32];        //万得代码(ag1312.SHF)
     char chCode[32];            //交易所代码(ag1312)
 
     int nRecordCount;           //记录数量

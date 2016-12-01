@@ -207,8 +207,8 @@ WUPF:{[F;n;d;c;q;x;p]
 /==============================================================================
 impl.quantData2Table:{
     x:`ts`code`field`data!x;
-    flip(`ts`code!flip raze x[`ts],\:/:enlist'[x`code]),
-        (x[`field]!raze each flip flip each flip x`data)
+    :impl.fixNA flip(`ts`code!flip raze x[`ts],\:/:enlist'[x`code]),
+                (x[`field]!raze each flip flip each flip x`data)
     };
     
 impl.dict2Strings:{
@@ -236,6 +236,13 @@ impl.dict2Strings:{
           /default;
             '"nyi - unsupported type"]
         }each value x;
+    };
+
+// Hacks to try our best to fill in missing values from Wind's data set.
+impl.fixNA:{[T]
+    Tmeta:(min,max,{any 0=x})each\:flip?[T;();0b;a!{type each x},/:a:cols T];
+    Ttype:{?[0=x[;0];x[;1];x[;0]]}a!Tmeta a:where flip[Tmeta][;2];
+    :![T;();0b;({$[x~();y;x]}\:),/:{(x;y)}'[key[Ttype];Ttype$\:""]]
     };
 
 // Hacks to deal with quirks in the data set returned from WindQuantAPI.

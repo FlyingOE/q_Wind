@@ -42,7 +42,7 @@ sleep:{system"ping -t ",string[`long$`second$x]," localhost > NUL"};
 /==============================================================================
 \d .math
 
-round:{(1%k)*floor .5+(k:10 xexp x)*y};
+round:{x*"j"$y%x};
 scale:{round[y;]z%x};
 
 // Exponential average

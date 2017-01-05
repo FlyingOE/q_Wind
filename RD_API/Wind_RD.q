@@ -56,6 +56,18 @@ use:{[h;db]
         impl.stringize query
 	]};
 
+/q) .rd.bulkload[h][`Table;dataset]    /NOTE: dataset must have same column names as in Table!
+.rd.bulkload:{[h;tbl;data]
+    templ:"INSERT INTO %1 (",(","sv"%",/:string 2+til c),") ",
+            "VALUES (",(","sv"%",/:string 2+c+til c:count cols data),");";
+    qry:enlist["BEGIN TRANSACTION"],
+        ((templ;tbl),/:cols[data],/:value each data),
+        enlist["COMMIT;"];
+    @[each[.rd.eval h];qry;{
+        .rd.eval[y]"ROLLBACK;";
+        'x}[;h]];
+    :count dataset    };
+
 ///////////////////////////////////////////////////////////////////////////////
 
 impl.stringize:{

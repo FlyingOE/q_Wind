@@ -70,7 +70,7 @@
 IF EXIST $(SolutionDir)..\..\lib\ (
     CALL $(SolutionDir)ROBOCOPY ^
         $(TargetDir)     $(SolutionDir)..\..\lib\w32\ ^
-        /LEV:1 /IF TDB_API.dll
+        /LEV:1 /IF TDB_API.dll TDB_API.pdb
     CALL $(SolutionDir)ROBOCOPY ^
         $(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).$(ConfigurationName)\     $(SolutionDir)..\..\lib\w32\ ^
         /LEV:1 /IF *.dll *.pdb
@@ -118,7 +118,7 @@ IF NOT EXIST $(TargetDir).tdb3.connect (
 IF EXIST $(SolutionDir)..\..\lib\ (
     CALL $(SolutionDir)ROBOCOPY ^
         $(TargetDir)     $(SolutionDir)..\..\lib\w32\ ^
-        /LEV:1 /IF TDB_API.dll
+        /LEV:1 /IF TDB_API.dll TDB_API.pdb
     CALL $(SolutionDir)ROBOCOPY ^
         $(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).$(ConfigurationName)\     $(SolutionDir)..\..\lib\w32\ ^
         /LEV:1 /IF *.dll *.pdb

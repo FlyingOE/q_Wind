@@ -111,7 +111,7 @@ IF NOT EXIST $(TargetDir).wind.pass (
       <Command>IF EXIST $(SolutionDir)..\..\code\ (
     CALL $(SolutionDir)ROBOCOPY ^
         $(TargetDir)     $(SolutionDir)..\..\code\CapitalEdge\ ^
-        /LEV:1 /IF WInd.q
+        /LEV:1 /IF Wind.q
 )
 IF EXIST $(SolutionDir)..\..\lib\ (
     CALL $(SolutionDir)ROBOCOPY ^

@@ -13,6 +13,8 @@ if[0>=count key`.odbc;system"l odbc.k"];
 / OR
 /q) h:.rd.login"DRIVER=SQL Server;SERVER=...;DATABASE=filesync;UID=...;PWD=...;"
 / OR
+/q) h:.rd.login"DSN=DSN name;...;"
+/ OR
 /q) h:.rd.start`:.rd.connect
 login:{
     dsn:$[
@@ -26,8 +28,11 @@ login:{
         dsn,:"APP=Wind_RD.q;"];
     if[not upper[dsn]like"*WSID=*";
         dsn,:"WSID=",("."sv string`int$0x0 vs .z.a),";"];
-    :.odbc.open dsn
-    };
+    o:.odbc.open dsn;
+    tester:{[o;dbType;test] .odbc.eval[o;test];-2"ODBC: ",dbType};
+    @[tester[o;"SQL Server"];"SET QUOTED_IDENTIFIER ON;";{"not SQL Server"}];
+    @[tester[o;"MySQL"     ];"SET SQL_MODE=ANSI_QUOTES;";{"not MySQL"}];
+    :o    };
 logout:.odbc.close;
 start:{login first read0 hsym x};
 
@@ -56,28 +61,30 @@ use:{[h;db]
         impl.stringize query
 	]};
 
-/q) .rd.bulkload[h][`Table;dataset]    /NOTE: dataset must have same column names as in Table!
+/q) .rd.bulkload[h][`Table;dataset]    /NOTE: dataset must have same column names & compatible types as in Table!
 .rd.bulkload:{[h;tbl;data]
     templ:"INSERT INTO %1 (",(","sv"%",/:string 2+til c),") ",
             "VALUES (",(","sv"%",/:string 2+c+til c:count cols data),");";
-    qry:enlist["BEGIN TRANSACTION"],
-        ((templ;tbl),/:cols[data],/:value each data),
-        enlist["COMMIT;"];
-    @[each[.rd.eval h];qry;{
-        .rd.eval[y]"ROLLBACK;";
+    qry:enlist[templ],/:enlist each tbl,/:cols[data],/:value each 
+        ![data;();0b;a!string,/:a:exec c from meta data where t="s"];    /make sure no sym columns
+    @[.rd.eval h;"BEGIN TRANSACTION";{[x;h]    /SQL Server
+        .rd.eval[h]"START TRANSACTION";        /MySQL
+        }[;h]];
+    @[each[.rd.eval h];qry,enlist["COMMIT"];{[x;h]
+        .rd.eval[h]"ROLLBACK;";
         'x}[;h]];
-    :count dataset    };
+    :count data    };
 
 ///////////////////////////////////////////////////////////////////////////////
 
 impl.stringize:{
-    $[-11h=t:type x;            /`column => [column]
-        "[",string[x],"]";
+    $[-11h=t:type x;            /`column => "column"
+        "\"",string[x],"\"";
       -14h=t;                   /YYYY.MM.DD => 'YYYYMMDD'
         "'",string[x][0 1 2 3 5 6 8 9],"'";
       10h=t;                    /"string's" => 'string''s'
         "'",ssr[x;"'";"''"],"'";
-      11h=t;                    /`schema`table`column => [schema].[table].[column]
+      11h=t;                    /`schema`table`column => "schema"."table"."column"
         "."sv .z.s'[x];
       0h<=t;                    /("CFFEX";"SZSE") => ('CFFEX','SZSE')
         "(",(","sv .z.s'[x]),")";

@@ -3,14 +3,14 @@
 
 #include "util.h"
 #include "K_ptr.h"
+#include "types.h"
 #include "win32.util/CodeConvert.h"
+#include "win32.util/hexDump.h"
 #include <cassert>
 #include <cmath>
 #include <ctime>
 #include <algorithm>
-
-#define ENUMmin	(20)
-#define ENUMmax	(76)
+#include <sstream>
 
 long long q::q2Dec(K data) throw(std::runtime_error) {
 	if (data == K_NIL) {
@@ -140,7 +140,7 @@ std::string q::q2String(K data) throw(std::runtime_error) {
 	case -KS:												// symbol
 		return std::string(data->s);
 	default:
-		if ((-ENUMmax <= data->t) && (data->t <= -ENUMmin)) {	// enumerated symbol
+		if ((-K_ENUM_MAX <= data->t) && (data->t <= -K_ENUM_MIN)) {	// enumerated symbol
 			K_ptr sym(k(0, "value", r1(data), K_NIL));
 			assert(sym);
 			return std::string(sym->s);
@@ -175,7 +175,7 @@ std::vector<std::string> q::qList2String(K data) throw(std::runtime_error) {
 		}
 		break;
 	default:
-		if ((ENUMmin <= data->t) && (data->t <= ENUMmax)) {	// enumerated symbol list
+		if ((K_ENUM_MIN <= data->t) && (data->t <= K_ENUM_MAX)) {	// enumerated symbol list
 			K_ptr syms(k(0, "value", r1(data), K_NIL));
 			assert(syms && (syms->n == data->n));
 			assert(syms->n >= 0);
@@ -253,7 +253,7 @@ q::tm_ext q::q2tm(K data) throw(std::runtime_error) {
 		throw std::runtime_error("nil date or time or datetime");
 	}
 	tm_ext result;
-	std::memset(&result, 0, sizeof(tm_ext));
+	std::memset(&result, 0, sizeof(result));
 	switch (data->t) {
 	case -KD:
 		if ((data->i == wi) || (data->i == -wi)) {
@@ -276,7 +276,7 @@ q::tm_ext q::q2tm(K data) throw(std::runtime_error) {
 			throw std::runtime_error("+/-inf datetime");
 		}
 		else {
-			Cookbook::gt_r((data->f == nf) ? 0. : data->f, &result);
+			Cookbook::gt_r(std::isnan(data->f) ? 0. : data->f, &result);
 		}
 		break;
 	default:
@@ -325,7 +325,7 @@ std::vector<q::tm_ext> q::qList2tm(K data) throw(std::runtime_error) {
 				throw std::runtime_error("+/-inf datetime in list");
 			}
 			else {
-				Cookbook::gt_r((f == nf) ? 0. : f, &result[i]);
+				Cookbook::gt_r(std::isnan(f) ? 0. : f, &result[i]);
 			}
 		}
 		break;
@@ -333,6 +333,170 @@ std::vector<q::tm_ext> q::qList2tm(K data) throw(std::runtime_error) {
 		throw std::runtime_error("not a date or datetime list");
 	}
 	return result;
+}
+
+::VARIANT q::q2Variant(K data) throw(std::runtime_error) {
+	if (data == K_NIL) {
+		throw std::runtime_error("nil value");
+	}
+	::VARIANT var;
+	::VariantInit(&var);
+	switch (data->t) {
+	case 101:
+		var.vt = VT_ERROR;
+		var.scode = DISP_E_PARAMNOTFOUND;
+		break;
+	case -KB:
+		var.vt = VT_BOOL;
+		var.boolVal = (!!data->g) ? VARIANT_TRUE : VARIANT_FALSE;
+		break;
+	case -KG:
+		var.vt = VT_UI1;
+		static_assert(sizeof(G) == sizeof(BYTE), "type mismatch: G vs VT_BOOL");
+		var.bVal = data->g;
+		break;
+	case -KH:
+		var.vt = VT_I2;
+		static_assert(sizeof(H) == sizeof(SHORT), "type mismatch: H vs VT_I2");
+		var.iVal = data->h;
+		break;
+	case -KI:
+		var.vt = VT_I4;
+		static_assert(sizeof(I) == sizeof(LONG), "type mismatch: I vs VT_I4");
+		var.lVal = data->i;
+		break;
+	case -KJ:
+		var.vt = VT_I8;
+		static_assert(sizeof(J) == sizeof(LONGLONG), "type mismatch: J vs VT_I8");
+		var.llVal = data->j;
+		break;
+	case -KE:
+		var.vt = VT_R4;
+		static_assert(sizeof(E) == sizeof(FLOAT), "type mismatch: E vs VT_R4");
+		if (std::isnan(data->e)) {
+			var.fltVal = std::numeric_limits<FLOAT>::quiet_NaN();
+		}
+		else if (data->e == wf) {
+			var.fltVal = std::numeric_limits<FLOAT>::infinity();
+		}
+		else if (data->e == -wf) {
+			var.fltVal = - std::numeric_limits<FLOAT>::infinity();
+		}
+		else {
+			var.fltVal = data->e;
+		}
+		break;
+	case -KF:
+		var.vt = VT_R8;
+		static_assert(sizeof(F) == sizeof(DOUBLE), "type mismatch: F vs VT_R8");
+		if (std::isnan(data->f)) {
+			var.dblVal = std::numeric_limits<DOUBLE>::quiet_NaN();
+		}
+		else if (data->f == wf) {
+			var.dblVal = std::numeric_limits<DOUBLE>::infinity();
+		}
+		else if (data->f == -wf) {
+			var.dblVal = - std::numeric_limits<DOUBLE>::infinity();
+		}
+		else {
+			var.dblVal = data->f;
+		}
+		break;
+	case -KC:
+		var.vt = VT_I1;
+		static_assert(sizeof(C) == sizeof(CHAR), "type mismatch: C vs VT_I1");
+		var.cVal = data->u;
+		break;
+	case -KD:
+	case -KZ:
+		var.vt = VT_DATE;
+		var.date = q2DATE(data);
+		break;
+	case -KS:
+	default: {			//BSTR or anything else (unsupported)
+			std::wstring str;
+			try {
+				str = q2WString(data);
+			}
+			catch (std::runtime_error& ) {
+				std::ostringstream buffer;
+				buffer << "unsupported q type: " << data->t;
+				throw std::runtime_error(buffer.str());
+			}
+			var.vt = VT_BSTR;
+			var.bstrVal = ::SysAllocString(str.c_str());
+			if (var.bstrVal == NULL) {
+				throw std::runtime_error("BSTR E_OUTOFMEMORY");
+			}
+		}
+	}
+	return var;
+}
+
+K q::Variant2q(::VARIANT const& data) throw() {
+	switch (data.vt) {
+	case VT_ERROR:
+		if (data.scode == DISP_E_PARAMNOTFOUND) {
+			q::K_ptr id(ka(101));
+			id->g = NULL;
+			return id.release();
+		}
+		else {
+			std::ostringstream buffer;
+			buffer << "VARIANT error 0x" << util::hexBytes(data.scode);
+			return error2q(buffer.str());
+		}
+	case VT_BOOL:
+		return kb(!!data.boolVal);
+	case VT_UI1:
+		static_assert(sizeof(G) == sizeof(BYTE), "type mismatch: G vs VT_BOOL");
+		return kg(data.bVal);
+	case VT_I2:
+		static_assert(sizeof(H) == sizeof(SHORT), "type mismatch: H vs VT_I2");
+		return kh(data.iVal);
+	case VT_I4:
+		static_assert(sizeof(I) == sizeof(LONG), "type mismatch: I vs VT_I4");
+		return ki(data.lVal);
+	case VT_I8:
+		static_assert(sizeof(J) == sizeof(LONGLONG), "type mismatch: J vs VT_I8");
+		return kj(data.llVal);
+	case VT_R4:
+		static_assert(sizeof(E) == sizeof(FLOAT), "type mismatch: E vs VT_R4");
+		if (std::isnan(data.fltVal)) {
+			return ke(nf);
+		}
+		else if (std::isinf(data.fltVal)) {
+			return ke((data.fltVal > 0) ? wf : -wf);
+		}
+		else {
+			return ke(data.fltVal);
+		}
+	case VT_R8:
+		static_assert(sizeof(F) == sizeof(DOUBLE), "type mismatch: F vs VT_R8");
+		if (std::isnan(data.dblVal)) {
+			return kf(nf);
+		}
+		else if (std::isinf(data.dblVal)) {
+			return kf((data.dblVal > 0) ? wf : -wf);
+		}
+		else {
+			return kf(data.dblVal);
+		}
+	case VT_I1:
+		static_assert(sizeof(C) == sizeof(CHAR), "type mismatch: C vs VT_I1");
+		return kc(data.cVal);
+	case VT_DATE:
+		return kz(DATE2q(data.date));
+	case VT_BSTR: {
+			std::string const str = ml::convert(CP_UTF8, data.bstrVal);
+			return kp(const_cast<S>(str.c_str()));
+		}
+	default: {
+			std::ostringstream buffer;
+			buffer << "unsupported VARIANT type: 0x" << util::hexBytes(data.vt);
+			return error2q(buffer.str());
+		}
+	}
 }
 
 I q::date2q(int yyyymmdd) {
@@ -384,7 +548,7 @@ std::time_t tm2time_t(std::tm const& tm) {
 		tm.tm_sec,
 		0
 	};
-	FILETIME filetime = { 0 };
+	::FILETIME filetime = { 0 };
 	if (!::SystemTimeToFileTime(&systime, &filetime))
 		return static_cast<std::time_t>(-1);
 
@@ -396,6 +560,7 @@ std::time_t tm2time_t(std::tm const& tm) {
 
 #	else//_MSC_VER
 
+#	error TO BE IMPLEMENTED
 	// Detect local time zone offset and adjust accordingly
 	std::tm tzOffset = { 0 };
 	std::time_t tzOffsetProbe = 0;
@@ -407,6 +572,44 @@ std::time_t tm2time_t(std::tm const& tm) {
 
 #	endif//_MSC_VER
 }
+
+q::tm_ext time_t2tm(std::time_t const time, int millis = 0) {
+#	ifdef _MSC_VER
+
+	//NOTE: MSVC's <time.h> cannot handle anything before Unix epoch! Use Win32 API instead.
+	//@ref https://support.microsoft.com/en-us/kb/167296
+	LONGLONG ft64 = time * 10000000LL + millis * 10000LL + 116444736000000000LL;
+	::FILETIME filetime = {
+		static_cast<DWORD>(ft64),
+		static_cast<DWORD>(ft64 >> 32)
+	};
+	q::tm_ext tm;
+	std::memset(&tm, 0, sizeof(tm));
+	::SYSTEMTIME systime = { 0 };
+	if (!::FileTimeToSystemTime(&filetime, &systime)) {
+		std::memset(&tm, -1, sizeof(tm));
+		return tm;
+	}
+
+	tm.tm_year = systime.wYear - 1900;
+	tm.tm_mon = systime.wMonth - 1;
+	tm.tm_mday = systime.wDay;
+	tm.tm_wday = systime.wDayOfWeek;
+	tm.tm_hour = systime.wHour;
+	tm.tm_min = systime.wMinute;
+	tm.tm_sec = systime.wSecond;
+	tm.tm_millis = systime.wMilliseconds;
+	return tm;
+
+#	else//_MSC_VER
+
+#	error TO BE IMPLEMENTED
+
+#	endif//_MSC_VER
+}
+
+// Normal year: ydays for each month
+int const MONTH_DAYS[13] = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
 
 //@ref http://www.codeguru.com/cpp/cpp/cpp_mfc/article.php/c765/An-ATL-replacement-for-COleDateTime.htm
 //@ref http://www.codeproject.com/Articles/144159/Time-Format-Conversion-Made-Easy
@@ -422,9 +625,6 @@ F q::DATE2q(::DATE date) throw(std::runtime_error) {
 	if ((date < MIN_DATE) || (MAX_DATE < date)) {
 		throw std::runtime_error("DATE out of range");
 	}
-
-	// Normal year: ydays for each month
-	static J const MONTH_DAYS[13] = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
 
 	std::tm tm = { 0 };
 	// # days since 1899.12.30
@@ -515,4 +715,37 @@ F q::DATE2q(::DATE date) throw(std::runtime_error) {
 		throw std::runtime_error("DATE out of range for system std::time_t");
 	}
 	return Cookbook::zu(time + (nSecs - nSecsOnly));
+}
+
+//@ref http://www.codeguru.com/cpp/cpp/cpp_mfc/article.php/c765/An-ATL-replacement-for-COleDateTime.htm
+//@ref http://www.codeproject.com/Articles/144159/Time-Format-Conversion-Made-Easy
+::DATE q::q2DATE(K d) throw(std::runtime_error) {
+	tm_ext const tm = q2tm(d);
+	int const year = tm.tm_year + 1900;
+	int const month = tm.tm_mon + 1;
+	assert(year < 9999);
+	assert((1 <= month) && (month <= 12));
+
+	bool const leap = (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
+	int const nDaysInMonth =
+		MONTH_DAYS[month] - MONTH_DAYS[month - 1] +
+		((leap & (month == 2) && (tm.tm_mday >= 29)) ? 1 : 0);
+	assert((1 <= tm.tm_mday) && (tm.tm_mday <= nDaysInMonth));
+	assert((0 <= tm.tm_hour) && (tm.tm_hour < 24));
+	assert((0 <= tm.tm_min) && (tm.tm_min < 60));
+	assert((0 <= tm.tm_sec) && (tm.tm_sec <= 60));	//possible leap second
+	assert((0 <= tm.tm_millis) && (tm.tm_millis < 1000));
+
+	long date =
+		year * 365L + year / 4 - year / 100 + year / 400 +
+		MONTH_DAYS[month - 1] + tm.tm_mday;
+	
+	// If leap year and before March, subtract 1 day
+	if ((month <= 2) && leap) --date;
+	// Offset from 1899-12-30
+	date -= 693959L;
+	// Calculate fractional date
+	double time = (tm.tm_hour * 3600. + tm.tm_min * 60. + tm.tm_sec + tm.tm_millis / 1000.) / 86400.;
+
+	return date + ((date >= 0) ? time : -time);
 }

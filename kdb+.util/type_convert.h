@@ -43,6 +43,11 @@ namespace q {
 	tm_ext q2tm(K data) throw(std::runtime_error);
 	std::vector<tm_ext> qList2tm(K data) throw(std::runtime_error);
 
+	// Convert anything to Windows VARIANT type
+	::VARIANT q2Variant(K data) throw(std::runtime_error);
+	// Convert Windows VARIANT type to q type
+	K Variant2q(::VARIANT const& data) throw();
+
 	// Convert a C++ date string to a q date
 	I date2q(int yyyymmdd);
 	I date2q(char const* dateStr) throw(std::runtime_error);
@@ -50,6 +55,8 @@ namespace q {
 
 	// Convert an ATL DATE value to a q datetime
 	F DATE2q(::DATE date) throw(std::runtime_error);
+	// Convert a q datetime to an ATL DATE value
+	::DATE q2DATE(K data) throw(std::runtime_error);
 
 	// Convert a C++ time string to a q time
 	I time2q(int hhmmssfff);

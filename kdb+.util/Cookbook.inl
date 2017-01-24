@@ -56,6 +56,10 @@ namespace q {
 		tm_ext* gt_r(T kd, tm_ext* res) {
 			F tt = uz(kd);
 			std::time_t t = static_cast<std::time_t>(tt);
+			tm_ext tm = time_t2tm(t, static_cast<int>(std::round((tt - t) * 1000)));
+			std::memcpy(res, &tm, sizeof(tm));
+			return res;
+			/*
 			res->tm_millis = static_cast<int>(std::round((tt - t) * 1000));
 #			ifdef _MSC_VER
 			::errno_t err = ::gmtime_s(res, &t);
@@ -64,6 +68,7 @@ namespace q {
 #			else
 			return std::gmtime_r(&t, res);
 #			endif
+			*/
 		}
 		inline char* fdt(std::tm* ptm, char* d) {
 			std::strftime(d, (4 + 1 + 2 + 1 + 2) + 1, "%Y.%m.%d", ptm);

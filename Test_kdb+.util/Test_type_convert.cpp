@@ -543,7 +543,7 @@ namespace Test_q
 				L"240000000 => T", LINE_INFO());
 		}
 
-		TEST_METHOD(canConvertDATE)
+		TEST_METHOD(canConvertFromDATE)
 		{
 			double const EPSILON = .001 / 86400L / 2;
 
@@ -590,6 +590,75 @@ namespace Test_q
 
 			Assert::AreEqual(-10957., q::DATE2q(25569.), EPSILON,
 				L"DATE(1970.01.01T00:00) => D", LINE_INFO());
+		}
+
+		TEST_METHOD(canConvertToDATE)
+		{
+			double const EPSILON = .001 / 86400L / 2;
+			q::K_ptr d;
+
+			d.reset(kz(5703.5250254166667));
+			Assert::AreEqual(42229.5250254166667, q::q2DATE(d.get()), EPSILON,
+				L"D(2015.08.13T12:36:02.196) => DATE", LINE_INFO());
+
+			//@ref https://msdn.microsoft.com/en-us/library/82ab7w69.aspx
+#			pragma region
+			d.reset(kz(q::DATE2q(-3.)));
+			Assert::AreEqual(-3., q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.27T00:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(-2.5)));
+			Assert::AreEqual(-2.5, q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.28T12:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(-2.)));
+			Assert::AreEqual(-2., q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.28T00:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(-1.)));
+			Assert::AreEqual(-1., q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.29T00:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(-.75)));
+			Assert::AreEqual(+.75, std::abs(q::q2DATE(d.get())), EPSILON,	//https://msdn.microsoft.com/en-us/library/82ab7w69.aspx?f=255&MSPPError=-2147217396
+				L"D(1899.12.30T18:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(-.5)));
+			Assert::AreEqual(+.5, std::abs(q::q2DATE(d.get())), EPSILON,	//https://msdn.microsoft.com/en-us/library/82ab7w69.aspx?f=255&MSPPError=-2147217396
+				L"D(1899.12.30T12:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(-.25)));
+			Assert::AreEqual(+.25, std::abs(q::q2DATE(d.get())), EPSILON,	//https://msdn.microsoft.com/en-us/library/82ab7w69.aspx?f=255&MSPPError=-2147217396
+				L"D(1899.12.30T06:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(0.)));
+			Assert::AreEqual(0., q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.30T00:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(.25)));
+			Assert::AreEqual(.25, q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.30T06:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(.5)));
+			Assert::AreEqual(.5, q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.30T12:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(.75)));
+			Assert::AreEqual(.75, q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.30T18:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(1.)));
+			Assert::AreEqual(1., q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.31T00:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(2.1)));
+			Assert::AreEqual(2.1, q::q2DATE(d.get()), EPSILON,
+				L"D(1900.01.01T00:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(5.)));
+			Assert::AreEqual(5., q::q2DATE(d.get()), EPSILON,
+				L"D(1900.01.04T00:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(5.25)));
+			Assert::AreEqual(5.25, q::q2DATE(d.get()), EPSILON,
+				L"D(1900.01.04T06:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(5.5)));
+			Assert::AreEqual(5.5, q::q2DATE(d.get()), EPSILON,
+				L"D(1900.01.04T12:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(5.875)));
+			Assert::AreEqual(5.875, q::q2DATE(d.get()), EPSILON,
+				L"D(1900.01.04T21:00) => DATE", LINE_INFO());
+#			pragma endregion
+
+			d.reset(kz(q::DATE2q(25569.)));
+			Assert::AreEqual(25569., q::q2DATE(d.get()), EPSILON,
+				L"D(1970.01.01T00:00) => DATE", LINE_INFO());
 		}
 
 	};

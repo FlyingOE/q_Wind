@@ -71,6 +71,9 @@
     <ClCompile Include="CodeConvert.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StringUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Singleton.inl">
@@ -80,6 +83,9 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="StringUtil.inl">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="COMWrapper.inl">
       <Filter>Source Files</Filter>
     </None>
   </ItemGroup>

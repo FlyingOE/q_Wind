@@ -2,6 +2,8 @@
 static_assert(0, "Include win32.util/hexDump.h instead!");
 #endif
 
+#include "StringUtil.h"
+
 template <typename T>
 util::hexByteGenerator util::hexBytes(T* const& p) {
 	return hexBytes(reinterpret_cast<hexByteGenerator::iterator>(&p), sizeof(p), true);
@@ -28,7 +30,7 @@ std::basic_ostream<Char, Traits>& util::operator<<(std::basic_ostream<Char, Trai
 		increment = 1;
 	}
 
-	static char const nibble2hex[] = "0123456789ABCDEF";
+	static Char const* nibble2hex = LITERAL(Char, "0123456789ABCDEF");
 	for (auto p = begin; p != end; p += increment) {
 		os << nibble2hex[*p >> 4] << nibble2hex[*p & 0x0F];
 	}

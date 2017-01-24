@@ -71,5 +71,18 @@ namespace Test_util
 				L"Unicode empty string split", LINE_INFO());
 		}
 
+		TEST_METHOD(canChooseLiteral)
+		{
+			Assert::AreEqual('A', LITERAL(char, 'A'),
+				L"literal narrow character", LINE_INFO());
+			Assert::AreEqual("Hello world!", LITERAL(char, "Hello world!"),
+				L"literal narrow string", LINE_INFO());
+
+			Assert::AreEqual(L'A', LITERAL(wchar_t, 'A'),
+				L"literal wide character", LINE_INFO());
+			Assert::AreEqual(L"Hello world!", LITERAL(wchar_t, "Hello world!"),
+				L"literal wide string", LINE_INFO());
+		}
+
 	};
 }

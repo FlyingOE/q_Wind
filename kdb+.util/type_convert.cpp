@@ -420,7 +420,7 @@ std::vector<q::tm_ext> q::qList2tm(K data) throw(std::runtime_error) {
 			}
 			catch (std::runtime_error& ) {
 				std::ostringstream buffer;
-				buffer << "unsupported q type: " << data->t;
+				buffer << "unsupported q type: " << static_cast<int>(data->t);
 				throw std::runtime_error(buffer.str());
 			}
 			var.vt = VT_BSTR;
@@ -435,19 +435,16 @@ std::vector<q::tm_ext> q::qList2tm(K data) throw(std::runtime_error) {
 
 K q::Variant2q(::VARIANT const& data) throw() {
 	switch (data.vt) {
-	case VT_EMPTY:
-	case VT_NULL:
-		return ktn(0, 0);
-	case VT_ERROR:
-		if (data.scode == DISP_E_PARAMNOTFOUND) {
-			q::K_ptr id(ka(101));
-			id->g = NULL;
-			return id.release();
-		}
-		else {
+	case VT_ERROR: {
 			std::ostringstream buffer;
 			buffer << "VARIANT error 0x" << util::hexBytes(data.scode);
 			return error2q(buffer.str());
+		}
+	case VT_EMPTY:
+	case VT_NULL: {
+			q::K_ptr id(ka(101));
+			id->g = NULL;
+			return id.release();
 		}
 	case VT_BOOL:
 		return kb(!!data.boolVal);

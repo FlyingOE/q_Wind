@@ -36,12 +36,21 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Wind.util", "Wind.util\Wind
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_kdb+.util", "Test_kdb+.util\Test_kdb+.util.vcxproj", "{317F7BCC-DFEC-429B-ADF3-F0454041F5F7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7609463A-AF49-4D74-9BBB-51C144514573} = {7609463A-AF49-4D74-9BBB-51C144514573}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_win32.util", "Test_win32.util\Test_win32.util.vcxproj", "{3FDFFF67-CBF2-4173-8FAB-FD9F3E55DD0C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kdb+.hack", "kdb+.hack\kdb+.hack.vcxproj", "{0D958CB7-1F8E-4F2E-81DA-5ECD1CC4FDFE}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RD_API", "RD_API\RD_API.vcxproj", "{55BBFDE1-EA31-4060-B13E-E9E0F75375C8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32_com", "win32_com\win32_com.vcxproj", "{6EB66A4D-3DF0-4FD7-A3BE-5380034A09CA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7609463A-AF49-4D74-9BBB-51C144514573} = {7609463A-AF49-4D74-9BBB-51C144514573}
+		{15DC0B83-55C7-466E-9A76-FD5D54598F4A} = {15DC0B83-55C7-466E-9A76-FD5D54598F4A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +96,10 @@ Global
 		{55BBFDE1-EA31-4060-B13E-E9E0F75375C8}.Debug|Win32.Build.0 = Debug|Win32
 		{55BBFDE1-EA31-4060-B13E-E9E0F75375C8}.Release|Win32.ActiveCfg = Release|Win32
 		{55BBFDE1-EA31-4060-B13E-E9E0F75375C8}.Release|Win32.Build.0 = Release|Win32
+		{6EB66A4D-3DF0-4FD7-A3BE-5380034A09CA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6EB66A4D-3DF0-4FD7-A3BE-5380034A09CA}.Debug|Win32.Build.0 = Debug|Win32
+		{6EB66A4D-3DF0-4FD7-A3BE-5380034A09CA}.Release|Win32.ActiveCfg = Release|Win32
+		{6EB66A4D-3DF0-4FD7-A3BE-5380034A09CA}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

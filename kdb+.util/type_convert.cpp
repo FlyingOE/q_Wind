@@ -435,8 +435,9 @@ std::vector<q::tm_ext> q::qList2tm(K data) throw(std::runtime_error) {
 
 K q::Variant2q(::VARIANT const& data) throw() {
 	switch (data.vt) {
+	case VT_EMPTY:
 	case VT_ERROR:
-		if (data.scode == DISP_E_PARAMNOTFOUND) {
+		if ((data.vt == VT_EMPTY) || (data.scode == DISP_E_PARAMNOTFOUND)) {
 			q::K_ptr id(ka(101));
 			id->g = NULL;
 			return id.release();

@@ -11,38 +11,15 @@
 #include <vector>
 #include <thread>
 #include <chrono>
+#include <comdef.h>
 #include <Ole2.h>
 
 std::string com::getError(::HRESULT const& hr) {
-	switch (hr) {
-	case S_OK:
-		return "OK";
-	case E_ABORT:
-		return "Aborted";
-	case E_ACCESSDENIED:
-		return "General access denied";
-	case E_FAIL:
-		return "Unspecified failure";
-	case E_HANDLE:
-		return "Invalid handle";
-	case E_INVALIDARG:
-		return "One or more invalid arguments";
-	case E_NOINTERFACE:
-		return "No such interface";
-	case E_NOTIMPL:
-		return "Not implemented";
-	case E_OUTOFMEMORY:
-		return "Memory allocation failure";
-	case E_POINTER:
-		return "Invalid pointer";
-	case E_UNEXPECTED:
-		return "Unexpected failure";
-	default:{
-			std::ostringstream buffer;
-			buffer << "0x" << util::hexBytes(hr);
-			return buffer.str();
-		}
-	}
+	::_com_error const error(hr);
+	std::ostringstream buffer;
+	buffer << "[0x" << util::hexBytes(hr) << "] "
+		<< ml::convert(CP_UTF8, error.ErrorMessage());
+	return buffer.str();
 }
 
 //@ref https://support.microsoft.com/en-us/kb/216686
@@ -55,9 +32,6 @@ bool com::Initialize() {
 	case S_FALSE:
 		std::cerr << "COM library has already been initialized." << std::endl;
 		return true;
-	case RPC_E_CHANGED_MODE:
-		std::cerr << "COM library initialization error: RPC_E_CHANGED_MODE" << std::endl;
-		return false;
 	default:
 		std::cerr << "COM library initialization error: " << getError(result) << std::endl;
 		return true;
@@ -93,7 +67,7 @@ std::string com::CLSID2str(CLSID const& clsId) throw(std::runtime_error) {
 	HRESULT hr = ::CLSIDFromProgID(progId, &clsId);
 	if (FAILED(hr)) {
 		std::ostringstream buffer;
-		buffer << "CLSIDFromProgID(\"" << pId << "\")" << " error: " << getError(hr);
+		buffer << "CLSIDFromProgID(\"" << pId << "\")" << ": " << getError(hr);
 		throw std::runtime_error(buffer.str());
 	}
 
@@ -114,7 +88,7 @@ std::string com::CLSID2str(CLSID const& clsId) throw(std::runtime_error) {
 			hr = ::GetActiveObject(clsId, NULL, &unkw);
 			if (FAILED(hr)) {
 				assert(NULL == unkw);
-				buffer << "GetActiveObject(" << CLSID2str(clsId) << ')' << " error: " << getError(hr);
+				buffer << "GetActiveObject(" << CLSID2str(clsId) << ')' << ": " << getError(hr);
 				throw std::runtime_error(buffer.str());
 			}
 
@@ -123,12 +97,12 @@ std::string com::CLSID2str(CLSID const& clsId) throw(std::runtime_error) {
 			hr = unknown->QueryInterface(IID_IDispatch, reinterpret_cast<LPVOID*>(&dispatch));
 			if (FAILED(hr)) {
 				assert(!dispatch.isValid());
-				buffer << "0x" << util::hexBytes(unknown.get()) << "->QueryInterface(IID_IDispatch)" << " error: " << getError(hr);
+				buffer << "0x" << util::hexBytes(unknown.get()) << "->QueryInterface(IID_IDispatch)" << ": " << getError(hr);
 				throw std::runtime_error(buffer.str());
 			}
 		}
 		else {
-			buffer << "CoCreateInstance(" << CLSID2str(clsId) << ", " << util::hexBytes(context) << ", ...)" << " error: " << getError(hr);
+			buffer << "CoCreateInstance(" << CLSID2str(clsId) << ", " << util::hexBytes(context) << ", ...)" << ": " << getError(hr);
 			throw std::runtime_error(buffer.str());
 		}
 	}
@@ -150,7 +124,7 @@ VARIANT com::COMCall(WORD context, ::IDispatch* dispatch, LPCOLESTR propName, st
 	HRESULT hr = dispatch->GetIDsOfNames(IID_NULL, const_cast<LPOLESTR*>(&propName), 1, LOCALE_USER_DEFAULT, &dispId);
 	if (FAILED(hr)) {
 		std::ostringstream buffer;
-		buffer << "IDispatch::GetIDsOfNames(..., \"" << prop << "\", ...)" << " error: " << getError(hr);
+		buffer << "IDispatch::GetIDsOfNames(..., \"" << prop << "\", ...)" << ": " << getError(hr);
 		throw std::runtime_error(buffer.str());
 	}
 
@@ -170,7 +144,7 @@ VARIANT com::COMCall(WORD context, ::IDispatch* dispatch, LPCOLESTR propName, st
 	hr = dispatch->Invoke(dispId, IID_NULL, LOCALE_SYSTEM_DEFAULT, context, &params, &result, NULL, NULL);
 	if (FAILED(hr)) {
 		std::ostringstream buffer;
-		buffer << "IDispatch::Invoke(\"" << prop << "\"=0x" << util::hexBytes(dispId) << ')' << " error: " << getError(hr);
+		buffer << "IDispatch::Invoke(\"" << prop << "\"=0x" << util::hexBytes(dispId) << ')' << ": " << getError(hr);
 		throw std::runtime_error(buffer.str());
 	}
 

@@ -150,7 +150,7 @@ VARIANT com::COMCall(WORD context, ::IDispatch* dispatch, LPCOLESTR propName, st
 	HRESULT hr = dispatch->GetIDsOfNames(IID_NULL, const_cast<LPOLESTR*>(&propName), 1, LOCALE_USER_DEFAULT, &dispId);
 	if (FAILED(hr)) {
 		std::ostringstream buffer;
-		buffer << "IDispatch::GetIDsOfNames(, \"" << prop << "\", ...)" << " error: " << getError(hr);
+		buffer << "IDispatch::GetIDsOfNames(..., \"" << prop << "\", ...)" << " error: " << getError(hr);
 		throw std::runtime_error(buffer.str());
 	}
 

@@ -137,7 +137,7 @@ size_t parseArgs(K values, std::vector<::VARIANT>& args) throw(std::runtime_erro
 		CONVERT_LIST(kz, kF);
 		break;
 	default:
-		buffer << "unsupported argument list type: " << values->t;
+		buffer << "unsupported argument list type: " << static_cast<int>(values->t);
 		throw std::runtime_error(buffer.str());
 	}
 	return args.size();

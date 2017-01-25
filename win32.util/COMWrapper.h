@@ -27,6 +27,8 @@ namespace com {
 		Interf* interf_;
 	};
 
+	std::string getError(::HRESULT const& hr);
+
 	// Initialize COM library (call once per thread)
 	bool Initialize();
 	// Uninitialize COM library (call once per Initialize() call)

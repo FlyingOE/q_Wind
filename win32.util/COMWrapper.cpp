@@ -13,6 +13,38 @@
 #include <chrono>
 #include <Ole2.h>
 
+std::string com::getError(::HRESULT const& hr) {
+	switch (hr) {
+	case S_OK:
+		return "OK";
+	case E_ABORT:
+		return "Aborted";
+	case E_ACCESSDENIED:
+		return "General access denied";
+	case E_FAIL:
+		return "Unspecified failure";
+	case E_HANDLE:
+		return "Invalid handle";
+	case E_INVALIDARG:
+		return "One or more invalid arguments";
+	case E_NOINTERFACE:
+		return "No such interface";
+	case E_NOTIMPL:
+		return "Not implemented";
+	case E_OUTOFMEMORY:
+		return "Memory allocation failure";
+	case E_POINTER:
+		return "Invalid pointer";
+	case E_UNEXPECTED:
+		return "Unexpected failure";
+	default:{
+			std::ostringstream buffer;
+			buffer << "0x" << util::hexBytes(hr);
+			return buffer.str();
+		}
+	}
+}
+
 //@ref https://support.microsoft.com/en-us/kb/216686
 bool com::Initialize() {
 	::HRESULT const result = ::CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
@@ -27,7 +59,7 @@ bool com::Initialize() {
 		std::cerr << "COM library initialization error: RPC_E_CHANGED_MODE" << std::endl;
 		return false;
 	default:
-		std::cerr << "COM library initialization error: 0x" << util::hexBytes(result);
+		std::cerr << "COM library initialization error: " << getError(result) << std::endl;
 		return true;
 	}
 }
@@ -42,8 +74,7 @@ std::string com::CLSID2str(CLSID const& clsId) throw(std::runtime_error) {
 	LPOLESTR pClsId = NULL;
 	HRESULT hr = ::StringFromCLSID(clsId, &pClsId);
 	if (FAILED(hr)) {
-		assert(hr == E_OUTOFMEMORY);
-		throw std::runtime_error("out of memory?");
+		throw std::runtime_error(getError(hr));
 	}
 	assert(pClsId != NULL);
 	std::wstring clsIdStr(pClsId);	//swap out memory management from COM API
@@ -62,7 +93,7 @@ std::string com::CLSID2str(CLSID const& clsId) throw(std::runtime_error) {
 	HRESULT hr = ::CLSIDFromProgID(progId, &clsId);
 	if (FAILED(hr)) {
 		std::ostringstream buffer;
-		buffer << "CLSIDFromProgID(\"" << pId << "\")" << " error: 0x" << util::hexBytes(hr);
+		buffer << "CLSIDFromProgID(\"" << pId << "\")" << " error: " << getError(hr);
 		throw std::runtime_error(buffer.str());
 	}
 
@@ -83,7 +114,7 @@ std::string com::CLSID2str(CLSID const& clsId) throw(std::runtime_error) {
 			hr = ::GetActiveObject(clsId, NULL, &unkw);
 			if (FAILED(hr)) {
 				assert(NULL == unkw);
-				buffer << "GetActiveObject(" << CLSID2str(clsId) << ')' << " error: 0x" << util::hexBytes(hr);
+				buffer << "GetActiveObject(" << CLSID2str(clsId) << ')' << " error: " << getError(hr);
 				throw std::runtime_error(buffer.str());
 			}
 
@@ -92,13 +123,12 @@ std::string com::CLSID2str(CLSID const& clsId) throw(std::runtime_error) {
 			hr = unknown->QueryInterface(IID_IDispatch, reinterpret_cast<LPVOID*>(&dispatch));
 			if (FAILED(hr)) {
 				assert(!dispatch.isValid());
-				buffer << "0x" << util::hexBytes(unknown.get()) << "->QueryInterface(IID_IDispatch)" << " error: 0x" << util::hexBytes(hr);
+				buffer << "0x" << util::hexBytes(unknown.get()) << "->QueryInterface(IID_IDispatch)" << " error: " << getError(hr);
 				throw std::runtime_error(buffer.str());
 			}
 		}
 		else {
-			buffer << "CoCreateInstance(" << CLSID2str(clsId) << ", " << util::hexBytes(context) << ", ...)"
-					<< " error: 0x" << util::hexBytes(hr);
+			buffer << "CoCreateInstance(" << CLSID2str(clsId) << ", " << util::hexBytes(context) << ", ...)" << " error: " << getError(hr);
 			throw std::runtime_error(buffer.str());
 		}
 	}
@@ -120,7 +150,7 @@ VARIANT com::COMCall(WORD context, ::IDispatch* dispatch, LPCOLESTR propName, st
 	HRESULT hr = dispatch->GetIDsOfNames(IID_NULL, const_cast<LPOLESTR*>(&propName), 1, LOCALE_USER_DEFAULT, &dispId);
 	if (FAILED(hr)) {
 		std::ostringstream buffer;
-		buffer << "IDispatch::GetIDsOfNames(, \"" << prop << "\", ...)" << " error: 0x" << util::hexBytes(hr);
+		buffer << "IDispatch::GetIDsOfNames(, \"" << prop << "\", ...)" << " error: " << getError(hr);
 		throw std::runtime_error(buffer.str());
 	}
 
@@ -140,8 +170,7 @@ VARIANT com::COMCall(WORD context, ::IDispatch* dispatch, LPCOLESTR propName, st
 	hr = dispatch->Invoke(dispId, IID_NULL, LOCALE_SYSTEM_DEFAULT, context, &params, &result, NULL, NULL);
 	if (FAILED(hr)) {
 		std::ostringstream buffer;
-		buffer << "IDispatch::Invoke(\"" << prop << "\"=0x" << util::hexBytes(dispId) << ')'
-			<< " error: 0x" << util::hexBytes(hr);
+		buffer << "IDispatch::Invoke(\"" << prop << "\"=0x" << util::hexBytes(dispId) << ')' << " error: " << getError(hr);
 		throw std::runtime_error(buffer.str());
 	}
 

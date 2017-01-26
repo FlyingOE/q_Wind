@@ -16,6 +16,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="win32_com.q">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -24,28 +27,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SocketPair.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Singleton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="hexDump.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="hexDump.inl">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="msvc.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EnumUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StringUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CodeConvert.h">
+    <ClInclude Include="win32_com.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,34 +35,14 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SocketPair.cpp">
+    <ClCompile Include="win32_com.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="hexDump.cpp">
+    <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="msvc.cpp">
+    <ClCompile Include="version.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CodeConvert.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StringUtil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Singleton.inl">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="EnumUtil.inl">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="StringUtil.inl">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="COMWrapper.inl">
-      <Filter>Source Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

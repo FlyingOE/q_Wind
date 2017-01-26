@@ -6,9 +6,17 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 #include "kdb+.util/K_ptr.h"
 #include "win32.util/CodeConvert.h"
+#include "win32.util/hexDump.h"
 #include <vector>
+#include <iostream>
 #include <sstream>
 #include <iomanip>
+
+namespace q {
+	namespace test {
+		bool VariantEqual(::VARIANT const& a, ::VARIANT const& b);
+	}
+}
 
 namespace Test_q
 {		
@@ -543,7 +551,7 @@ namespace Test_q
 				L"240000000 => T", LINE_INFO());
 		}
 
-		TEST_METHOD(canConvertDATE)
+		TEST_METHOD(canConvertFromDATE)
 		{
 			double const EPSILON = .001 / 86400L / 2;
 
@@ -592,6 +600,267 @@ namespace Test_q
 				L"DATE(1970.01.01T00:00) => D", LINE_INFO());
 		}
 
+		TEST_METHOD(canConvertToDATE)
+		{
+			double const EPSILON = .001 / 86400L / 2;
+			q::K_ptr d;
+
+			d.reset(kz(5703.5250254166667));
+			Assert::AreEqual(42229.5250254166667, q::q2DATE(d.get()), EPSILON,
+				L"D(2015.08.13T12:36:02.196) => DATE", LINE_INFO());
+
+			//@ref https://msdn.microsoft.com/en-us/library/82ab7w69.aspx
+#			pragma region
+			d.reset(kz(q::DATE2q(-3.)));
+			Assert::AreEqual(-3., q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.27T00:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(-2.5)));
+			Assert::AreEqual(-2.5, q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.28T12:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(-2.)));
+			Assert::AreEqual(-2., q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.28T00:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(-1.)));
+			Assert::AreEqual(-1., q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.29T00:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(-.75)));
+			Assert::AreEqual(+.75, std::abs(q::q2DATE(d.get())), EPSILON,	//https://msdn.microsoft.com/en-us/library/82ab7w69.aspx?f=255&MSPPError=-2147217396
+				L"D(1899.12.30T18:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(-.5)));
+			Assert::AreEqual(+.5, std::abs(q::q2DATE(d.get())), EPSILON,	//https://msdn.microsoft.com/en-us/library/82ab7w69.aspx?f=255&MSPPError=-2147217396
+				L"D(1899.12.30T12:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(-.25)));
+			Assert::AreEqual(+.25, std::abs(q::q2DATE(d.get())), EPSILON,	//https://msdn.microsoft.com/en-us/library/82ab7w69.aspx?f=255&MSPPError=-2147217396
+				L"D(1899.12.30T06:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(0.)));
+			Assert::AreEqual(0., q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.30T00:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(.25)));
+			Assert::AreEqual(.25, q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.30T06:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(.5)));
+			Assert::AreEqual(.5, q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.30T12:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(.75)));
+			Assert::AreEqual(.75, q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.30T18:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(1.)));
+			Assert::AreEqual(1., q::q2DATE(d.get()), EPSILON,
+				L"D(1899.12.31T00:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(2.1)));
+			Assert::AreEqual(2.1, q::q2DATE(d.get()), EPSILON,
+				L"D(1900.01.01T00:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(5.)));
+			Assert::AreEqual(5., q::q2DATE(d.get()), EPSILON,
+				L"D(1900.01.04T00:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(5.25)));
+			Assert::AreEqual(5.25, q::q2DATE(d.get()), EPSILON,
+				L"D(1900.01.04T06:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(5.5)));
+			Assert::AreEqual(5.5, q::q2DATE(d.get()), EPSILON,
+				L"D(1900.01.04T12:00) => DATE", LINE_INFO());
+			d.reset(kz(q::DATE2q(5.875)));
+			Assert::AreEqual(5.875, q::q2DATE(d.get()), EPSILON,
+				L"D(1900.01.04T21:00) => DATE", LINE_INFO());
+#			pragma endregion
+
+			d.reset(kz(q::DATE2q(25569.)));
+			Assert::AreEqual(25569., q::q2DATE(d.get()), EPSILON,
+				L"D(1970.01.01T00:00) => DATE", LINE_INFO());
+		}
+		
+		TEST_METHOD(canConvertToVariant)
+		{
+#			define VARIANT_TESTER(qVal, VTid, assignVal, message, lineInfo)	{\
+				expect.vt = (VTid);	\
+				expect.assignVal;	\
+				q::K_ptr d((qVal));	\
+				actual = q::q2Variant(d.get());	\
+				Assert::IsTrue(q::test::VariantEqual(expect, actual), (message), (lineInfo));	\
+				::VariantClear(&actual);	\
+				::VariantClear(&expect);	\
+			}
+
+			::VARIANT expect, actual;
+			::VariantInit(&expect);
+			::VariantInit(&actual);
+			std::wostringstream buffer;
+			try {
+				VARIANT_TESTER(ka(101), VT_ERROR, scode = DISP_E_PARAMNOTFOUND,
+					L"(::) => VARIANT(DISP_E_PARAMNOTFOUND)", LINE_INFO());
+
+				VARIANT_TESTER(kb(true), VT_BOOL, boolVal = VARIANT_TRUE,
+					L"1b => VARIANT_TRUE", LINE_INFO());
+				VARIANT_TESTER(kb(false), VT_BOOL, boolVal = VARIANT_FALSE,
+					L"0b => VARIANT_FALSE", LINE_INFO());
+
+				VARIANT_TESTER(kg(0xF3), VT_UI1, bVal = 0xF3,
+					L"0xF3 => VARIANT(VT_UI1, 243)", LINE_INFO());
+
+				VARIANT_TESTER(kh(27856), VT_I2, iVal = 27856,
+					L"27856h => VARIANT(VT_I2, 27856)", LINE_INFO());
+				buffer.str(L"");		buffer.clear();
+				buffer << L"0Nh => VARIANT(VT_I2, " << nh << L')';
+				VARIANT_TESTER(kh(nh), VT_I2, iVal = nh, buffer.str().c_str(), LINE_INFO());
+				buffer.str(L"");		buffer.clear();
+				buffer << L"0Wh => VARIANT(VT_I2, " << wh << L')';
+				VARIANT_TESTER(kh(wh), VT_I2, iVal = wh, buffer.str().c_str(), LINE_INFO());
+
+				VARIANT_TESTER(ki(476883888), VT_I4, lVal = 476883888,
+					L"476883888i => VARIANT(VT_I4, 476883888)", LINE_INFO());
+				buffer.str(L"");		buffer.clear();
+				buffer << L"0Ni => VARIANT(VT_I4, " << ni << L')';
+				VARIANT_TESTER(ki(ni), VT_I4, lVal = ni, buffer.str().c_str(), LINE_INFO());
+				buffer.str(L"");		buffer.clear();
+				buffer << L"0Wi => VARIANT(VT_I4, " << wi << L')';
+				VARIANT_TESTER(ki(wi), VT_I4, lVal = wi, buffer.str().c_str(), LINE_INFO());
+
+				VARIANT_TESTER(kj(7413760571230203088L), VT_I8, llVal = 7413760571230203088L,
+					L"7413760571230203088j => VARIANT(VT_I8, 7413760571230203088)", LINE_INFO());
+				buffer.str(L"");		buffer.clear();
+				buffer << L"0Nj => VARIANT(VT_I8, " << nj << L')';
+				VARIANT_TESTER(kj(nj), VT_I8, llVal = nj, buffer.str().c_str(), LINE_INFO());
+				buffer.str(L"");		buffer.clear();
+				buffer << L"0Wj => VARIANT(VT_I8, " << wj << L')';
+				VARIANT_TESTER(kj(wj), VT_I8, llVal = wj, buffer.str().c_str(), LINE_INFO());
+
+				VARIANT_TESTER(ke(967.23981f), VT_R4, fltVal = 967.23981f,
+					L"967.23981e => VARIANT(VT_R4, 967.23981)", LINE_INFO());
+				buffer.str(L"");		buffer.clear();
+				buffer << L"0Ne => VARIANT(VT_R4, " << std::numeric_limits<FLOAT>::quiet_NaN() << L')';
+				VARIANT_TESTER(ke(nf), VT_R4, fltVal = std::numeric_limits<FLOAT>::quiet_NaN(),
+					buffer.str().c_str(), LINE_INFO());
+				buffer.str(L"");		buffer.clear();
+				buffer << L"0We => VARIANT(VT_R4, " << std::numeric_limits<FLOAT>::infinity() << L')';
+				VARIANT_TESTER(ke(wf), VT_R4, fltVal = std::numeric_limits<FLOAT>::infinity(),
+					buffer.str().c_str(), LINE_INFO());
+				buffer.str(L"");		buffer.clear();
+				buffer << L"-0We => VARIANT(VT_R4, " << - std::numeric_limits<FLOAT>::infinity() << L')';
+				VARIANT_TESTER(ke(-wf), VT_R4, fltVal = - std::numeric_limits<FLOAT>::infinity(),
+					buffer.str().c_str(), LINE_INFO());
+
+				VARIANT_TESTER(kf(7413760.571230203088), VT_R8, dblVal = 7413760.571230203088,
+					L"7413760.571230203088f => VARIANT(VT_R8, 7413760.571230203088)", LINE_INFO());
+				buffer.str(L"");		buffer.clear();
+				buffer << L"0Nf => VARIANT(VT_R8, " << std::numeric_limits<DOUBLE>::quiet_NaN() << L')';
+				VARIANT_TESTER(kf(nf), VT_R8, dblVal = std::numeric_limits<DOUBLE>::quiet_NaN(),
+					buffer.str().c_str(), LINE_INFO());
+				buffer.str(L"");		buffer.clear();
+				buffer << L"0Wf => VARIANT(VT_R8, " << std::numeric_limits<DOUBLE>::infinity() << L')';
+				VARIANT_TESTER(kf(wf), VT_R8, dblVal = std::numeric_limits<DOUBLE>::infinity(),
+					buffer.str().c_str(), LINE_INFO());
+				buffer.str(L"");		buffer.clear();
+				buffer << L"-0Wf => VARIANT(VT_R8, " << - std::numeric_limits<DOUBLE>::infinity() << L')';
+				VARIANT_TESTER(kf(-wf), VT_R8, dblVal = - std::numeric_limits<DOUBLE>::infinity(),
+					buffer.str().c_str(), LINE_INFO());
+			}
+			catch (std::runtime_error& ex) {
+				::VariantClear(&actual);
+				::VariantClear(&expect);
+				Assert::Fail(ml::convert(CP_UTF8, ex.what()).c_str(), LINE_INFO());
+			}
+
+#			undef VARIANT_TESTER
+		}
+
+		TEST_METHOD(canConvertFromVariant)
+		{
+#			define k_TESTER(VTid, assignVal, qid, qtype, qVal, qField, message, lineInfo)	{\
+				::VARIANT var;	\
+				::VariantInit(&var);	\
+				var.vt = (VTid);	\
+				var.assignVal;	\
+				q::K_ptr k;	\
+				k.reset(q::Variant2q(var));	\
+				Assert::AreEqual<signed char>((qid), k->t, (message), (lineInfo));	\
+				Assert::AreEqual<qtype>((qVal), k->qField, (message), (lineInfo));	\
+				::VariantClear(&var);	\
+			}
+
+			std::wostringstream buffer;
+
+			k_TESTER(VT_ERROR, scode = DISP_E_PARAMNOTFOUND, 101, char, 0, g,
+				L"VARIANT(DISP_E_PARAMNOTFOUND) => (::)", LINE_INFO());
+			
+			k_TESTER(VT_BOOL, boolVal = VARIANT_TRUE, -KB, G, 1, g,
+				L"VARIANT_TRUE => 1b", LINE_INFO());
+			k_TESTER(VT_BOOL, boolVal = VARIANT_FALSE, -KB, G, 0, g,
+				L"VARIANT_FALSE => 0b", LINE_INFO());
+
+			k_TESTER(VT_UI1, bVal = 0xF3, -KG, G, 0xF3, g,
+				L"VARIANT(VT_UI1, 243) => 0xF3", LINE_INFO());
+
+			k_TESTER(VT_I2, iVal = 27856, -KH, H, 27856, h,
+				L"VARIANT(VT_I2, 27856) => 27856h", LINE_INFO());
+			buffer.clear();		buffer.str(L"");
+			buffer << L"VARIANT(VT_I2, " << nh << L") => 0Nh";
+			k_TESTER(VT_I2, iVal = nh, -KH, H, nh, h, buffer.str().c_str(), LINE_INFO());
+			buffer.clear();		buffer.str(L"");
+			buffer << L"VARIANT(VT_I2, " << wh << L") => 0Wh";
+			k_TESTER(VT_I2, iVal = wh, -KH, H, wh, h, buffer.str().c_str(), LINE_INFO());
+
+			k_TESTER(VT_I4, lVal = 476883888, -KI, I, 476883888, i,
+				L"VARIANT(VT_I4, 476883888) => 476883888i", LINE_INFO());
+			buffer.clear();		buffer.str(L"");
+			buffer << L"VARIANT(VT_I4, " << ni << L") => 0Ni";
+			k_TESTER(VT_I4, lVal = ni, -KI, I, ni, i, buffer.str().c_str(), LINE_INFO());
+			buffer.clear();		buffer.str(L"");
+			buffer << L"VARIANT(VT_I4, " << wi << L") => 0Wi";
+			k_TESTER(VT_I4, lVal = wi, -KI, I, wi, i, buffer.str().c_str(), LINE_INFO());
+
+			k_TESTER(VT_I8, llVal = 7413760571230203088L, -KJ, J, 7413760571230203088L, j,
+				L"VARIANT(VT_I8, 7413760571230203088) => 7413760571230203088j", LINE_INFO());
+			buffer.clear();		buffer.str(L"");
+			buffer << L"VARIANT(VT_I8, " << nj << L") => 0Nj";
+			k_TESTER(VT_I8, llVal = nj, -KJ, J, nj, j, buffer.str().c_str(), LINE_INFO());
+			buffer.clear();		buffer.str(L"");
+			buffer << L"VARIANT(VT_I8, " << wj << L") => 0Wj";
+			k_TESTER(VT_I8, llVal = wj, -KJ, J, wj, j, buffer.str().c_str(), LINE_INFO());
+
+			k_TESTER(VT_R4, fltVal = 967.23981f, -KE, E, 967.23981f, e,
+				L"VARIANT(VT_R4, 967.23981) => 967.23981e", LINE_INFO());
+			{
+				buffer.clear();		buffer.str(L"");
+				buffer << L"VARIANT(VT_R4, " << std::numeric_limits<FLOAT>::quiet_NaN() << L") => 0Ne";
+				::VARIANT var;		::VariantInit(&var);
+				var.vt = VT_R4;		var.fltVal = std::numeric_limits<FLOAT>::quiet_NaN();
+				q::K_ptr k;			k.reset(q::Variant2q(var));
+				Assert::AreEqual<signed char>(-KE, k->t, buffer.str().c_str(), LINE_INFO());
+				Assert::IsTrue(std::isnan(k->e), buffer.str().c_str(), LINE_INFO());
+				::VariantClear(&var);
+			}
+			buffer.clear();		buffer.str(L"");
+			buffer << L"VARIANT(VT_R4, " << std::numeric_limits<FLOAT>::infinity() << L") => 0We";
+			k_TESTER(VT_R4, fltVal = std::numeric_limits<FLOAT>::infinity(), -KE, F, wf, e,
+				buffer.str().c_str(), LINE_INFO());
+			buffer.clear();		buffer.str(L"");
+			buffer << L"VARIANT(VT_R4, " << - std::numeric_limits<FLOAT>::infinity() << L") => -0We";
+			k_TESTER(VT_R4, fltVal = - std::numeric_limits<FLOAT>::infinity(), -KE, F, -wf, e,
+				buffer.str().c_str(), LINE_INFO());
+
+			k_TESTER(VT_R8, dblVal = 7413760.571230203088, -KF, F, 7413760.571230203088, f,
+				L"VARIANT(VT_R8, 7413760.571230203088) => 7413760.571230203088f", LINE_INFO());
+			{
+				buffer.clear();		buffer.str(L"");
+				buffer << L"VARIANT(VT_R8, " << std::numeric_limits<DOUBLE>::quiet_NaN() << L") => 0Nf";
+				::VARIANT var;		::VariantInit(&var);
+				var.vt = VT_R8;		var.dblVal = std::numeric_limits<DOUBLE>::quiet_NaN();
+				q::K_ptr k;			k.reset(q::Variant2q(var));
+				Assert::AreEqual<signed char>(-KF, k->t, buffer.str().c_str(), LINE_INFO());
+				Assert::IsTrue(std::isnan(k->f), buffer.str().c_str(), LINE_INFO());
+				::VariantClear(&var);
+			}
+			buffer.clear();		buffer.str(L"");
+			buffer << L"VARIANT(VT_R8, " << std::numeric_limits<DOUBLE>::infinity() << L") => 0Wf";
+			k_TESTER(VT_R8, dblVal = std::numeric_limits<DOUBLE>::infinity(), -KF, F, wf, f,
+				buffer.str().c_str(), LINE_INFO());
+			buffer.clear();		buffer.str(L"");
+			buffer << L"VARIANT(VT_R8, " << - std::numeric_limits<DOUBLE>::infinity() << L") => -0Wf";
+			k_TESTER(VT_R8, dblVal = - std::numeric_limits<DOUBLE>::infinity(), -KF, F, -wf, f,
+				buffer.str().c_str(), LINE_INFO());
+
+#			undef k_TESTER
+		}
 	};
 }
 
@@ -622,6 +891,62 @@ namespace q {
 			return buffer.str();
 		}
 
+		bool VariantEqual(::VARIANT const& a, ::VARIANT const& b) {
+#			define COMPARE_VARIANT_FIELD(VTid, field)	\
+			case (VTid):	\
+				return a.field == b.field;	\
+			case (VTid) | VT_BYREF:	\
+				return (a.p##field == b.p##field) || ((a.p##field != NULL) && (b.p##field != NULL) && (*a.p##field == *b.p##field))
+
+			if (a.vt != b.vt) {
+				return false;
+			}
+			else switch (a.vt) {
+			COMPARE_VARIANT_FIELD(VT_ERROR, scode);
+			COMPARE_VARIANT_FIELD(VT_BOOL, boolVal);
+			COMPARE_VARIANT_FIELD(VT_UI1, bVal);
+			COMPARE_VARIANT_FIELD(VT_I1, cVal);
+			COMPARE_VARIANT_FIELD(VT_UI2, uiVal);
+			COMPARE_VARIANT_FIELD(VT_I2, iVal);
+			COMPARE_VARIANT_FIELD(VT_UI4, ulVal);
+			COMPARE_VARIANT_FIELD(VT_I4, lVal);
+			COMPARE_VARIANT_FIELD(VT_UI8, ullVal);
+			COMPARE_VARIANT_FIELD(VT_I8, llVal);
+			COMPARE_VARIANT_FIELD(VT_UINT, uintVal);
+			COMPARE_VARIANT_FIELD(VT_INT, intVal);
+			case VT_R4:
+				return (a.fltVal == b.fltVal) || (std::isnan(a.fltVal) && std::isnan(b.fltVal));
+			case VT_R4 | VT_BYREF:
+				return (a.pfltVal == b.pfltVal) ||
+					((a.pfltVal != NULL) && (b.pfltVal != NULL) &&
+					((*a.pfltVal == *b.pfltVal) || (std::isnan(*a.pfltVal) && std::isnan(*b.pfltVal))));
+			case VT_R8:
+				return (a.dblVal == b.dblVal) || (std::isnan(a.dblVal) && std::isnan(b.dblVal));
+			case VT_R8 | VT_BYREF:
+				return (a.pdblVal == b.pdblVal) ||
+					((a.pdblVal != NULL) && (b.pdblVal != NULL) &&
+					((*a.pdblVal == *b.pdblVal) || (std::isnan(*a.pdblVal) && std::isnan(*b.pdblVal))));
+			COMPARE_VARIANT_FIELD(VT_DATE, date);
+			case VT_BSTR:
+				return 0 == std::wcscmp(a.bstrVal, b.bstrVal);
+			case VT_BSTR | VT_BYREF:
+				return (a.pbstrVal == b.pbstrVal) ||
+					((a.pbstrVal != NULL) && (b.pbstrVal != NULL) && (0 == std::wcscmp(*a.pbstrVal, *b.pbstrVal)));
+			case VT_VARIANT | VT_BYREF:
+				return (a.pvarVal == b.pvarVal) ||
+					((a.pvarVal != NULL) && (b.pvarVal != NULL) && VariantEqual(*a.pvarVal, *b.pvarVal));
+			case VT_EMPTY:
+			case VT_NULL:
+				return true;
+			default: {
+					std::ostringstream buffer;
+					buffer << "nyi: VARIANT comparison for 0x" << util::hexBytes(a.vt);
+					throw std::runtime_error(buffer.str());
+				}
+			}
+
+#		undef COMPARE_VARIANT_FIELD
+		}
 	}
 }//namespace q
 
@@ -649,6 +974,13 @@ namespace Microsoft{
 				return q::test::ToString(value, [](std::string const& x) -> std::wstring {
 					return L'"' + ml::convert(q::DEFAULT_CP, x.c_str()) + L'"';
 				});
+			}
+
+			template<>
+			static std::wstring ToString<::VARIANT>(::VARIANT const& value) {
+				std::wostringstream buffer;
+				buffer << L"VARIANT(0x" << util::hexBytes(value.vt) << L")[" << util::hexBytes(value) << L']';
+				return buffer.str();
 			}
 
 		}

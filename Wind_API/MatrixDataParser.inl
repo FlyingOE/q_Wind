@@ -76,48 +76,7 @@ struct Wind::MatrixDataParser::qTypeTraits<::BSTR> : q::type_traits<void> {
 template <>
 struct Wind::MatrixDataParser::qTypeTraits<::VARIANT> : q::type_traits<void> {
 	static K convert(::VARIANT const& x) {
-		switch (x.vt) {
-		case ::VT_EMPTY:
-		case ::VT_NULL:
-			return ktn(0, 0);	// Not ideal, but since we don't know the expected data type here...
-		case ::VT_I2:
-			static_assert(std::is_same<H, SHORT>::value, "Mismatched data types: H vs SHORT");
-			return kh(x.iVal);
-		case ::VT_I4:
-			//static_assert(std::is_same<I, LONG>::value, "Mismatched data types: I vs LONG");
-			//TODO: cannot use std::is_same<>... when will this break?!
-			static_assert(sizeof(I) == sizeof(LONG), "Mismatched data types: I vs LONG");
-			return ki(x.lVal);
-		case ::VT_I8:
-			static_assert(std::is_same<J, LONGLONG>::value, "Mismatched data types: J vs LONGLONG");
-			return kj(x.llVal);
-		case ::VT_UI2:
-			static_assert(sizeof(I) > sizeof(USHORT), "No suitable data types: I vs USHORT");
-			return ki(x.uiVal);
-		case ::VT_UI4:
-			static_assert(sizeof(J) > sizeof(ULONG), "No suitable data types: J vs ULONG");
-			return kj(x.ulVal);
-		case ::VT_UI8:
-			static_assert(sizeof(J) >= sizeof(ULONGLONG), "No suitable data types: J vs ULONGLONG");
-			return (x.ullVal <= static_cast<ULONGLONG>(std::numeric_limits<J>::max()))
-				? kj(x.ullVal)
-				: q::error2q("ULONGLONG out of bounds of J");
-		case ::VT_R4:
-			static_assert(std::is_same<E, FLOAT>::value, "Mismatched data types: E vs FLOAT");
-			return ke(x.fltVal);
-		case ::VT_R8:
-			static_assert(std::is_same<F, DOUBLE>::value, "Mismatched data types: F vs DOUBLE");
-			return kf(x.dblVal);
-		case ::VT_DATE:
-			return kd(static_cast<I>(q::DATE2q(x.date)));
-		case ::VT_BSTR:
-			return kp(const_cast<S>(ml::convert(q::DEFAULT_CP, x.bstrVal).c_str()));
-		default: {
-				std::ostringstream buffer;
-				buffer << "unsupported VARIANT type: 0x" << ::util::hexBytes(x.vt);
-				return q::error2q(buffer.str());
-			}
-		}
+		return q::Variant2q(x);
 	}
 
 	static K checkError(K& k) {

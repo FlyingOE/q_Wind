@@ -65,6 +65,11 @@ This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wi
   * Upgrade TDB to v3 API (on-the-wire data compression, faster access)
   * Merged multiple tick data extraction functions (TDB v3 change)
   * Added support for OHLC (a.k.a. K-line) data extraction
+* 2017.01
+  * Upgrade TDB to v3.20161219 API (server-side upgrade)
+  * WindQuantAPI queries: missing (N/A) data items return as identities (::) instead of empty lists ()
+  * Add preliminary support for COM automation
+  * Various bugfixes
 
 ### References
 

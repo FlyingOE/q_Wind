@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CodeConvert.h" />
+    <ClInclude Include="COMWrapper.h" />
     <ClInclude Include="EnumUtil.h" />
     <ClInclude Include="msvc.h" />
     <ClInclude Include="Singleton.h" />
@@ -86,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CodeConvert.cpp" />
+    <ClCompile Include="COMWrapper.cpp" />
     <ClCompile Include="msvc.cpp" />
     <ClCompile Include="SocketPair.cpp" />
     <ClCompile Include="stdafx.cpp">

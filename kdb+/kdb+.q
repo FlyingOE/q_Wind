@@ -13,13 +13,6 @@ lineOrList:{$[(t<>11h)and t:type x;y@x;.z.s\:[x;y]]};
 gb18030_utf8:lineOrList[;.CPPlib.DLL 2:(`gb18030_utf8;1)];
 utf8_gb18030:lineOrList[;.CPPlib.DLL 2:(`utf8_gb18030;1)];
 
-stringize:{x _.Q.s y}$[.z.o like"w*";2;1]
-
-// Pad a string
-/q).util.pad[ 10;"0";str]    /right-pad str with 0's
-/q).util.pad[-10;" ";str]    /left-pad str with spaces
-pad:{if[count[z]>=n:abs x;:z];x#$[x>=0;{x,y};{y,x}][z;n#y]};
-
 /==============================================================================
 \d .os
 
@@ -27,47 +20,9 @@ pad:{if[count[z]>=n:abs x;:z];x#$[x>=0;{x,y};{y,x}][z;n#y]};
 cwd:.CPPlib.DLL 2:(`cwd;1);
 
 // "Sleep"
-sleep:{system"ping -t ",string[`long$`second$x]," localhost > NUL"};
-
-/==============================================================================
-\d .opt
-
-.opt.parse:{[cfg;z_x]
-    args:(key[cfg]!count[cfg]#enlist""),.Q.opt z_x;
-    if[0<count unknown:key[args]except key cfg;
-        '","sv"-",/:string unknown];
-    :(first')type'[cfg key args]$'args
-    };
-
-/==============================================================================
-\d .math
-
-round:{x*"j"$y%x};
-scale:{round[y;]z%x};
-
-// Exponential average
-/@ref http://www.timestored.com/b/exponential-moving-average-ema-kdb/
-$[(.z.K>=3.4)and(.z.k>=2016.06.05);
-	.math.ema:ema;
-	.math.ema:.q.ema:$[(.z.K>=3.1)and(.z.k>=2013.07.07);
-        {first[y]("f"$1-x)\x*y};	/ Weird specialization of `\', but much more efficient!
-        {{z+x*y}\[first y;1-x;x*y]}]
-	];
-
-// Convert cumulative rate to incremetal rate
-cum2inc:{1_-1+(%':)reverse fills reverse fills(1#0#x),x};
-
-/==============================================================================
-\d .util
-
-// Copy an object from another namespace to the current namespace
-copyObject:{eval(:;` sv(system"d"),y;x y)};
-
-// Convert a list of pairs into a dict
-pairs2dict:{(!). flip x};
+sleep:{system"ping -t ",string[`long$`second$x]," localhost > ",$[.z.o like"w*";"NUL";"/dev/null"]};
 
 \d .
-/==============================================================================
 \
 __EOD__
 ===============================================================================

@@ -158,6 +158,9 @@ CALL $(SolutionDir)ROBOCOPY ^
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="kdb+.more.q" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

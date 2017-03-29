@@ -1,51 +1,19 @@
-/==============================================================================
-/ This is the q loader for WindQuantAPI.dll
-/ NOTE: Make sure Wind's DLLs are reachable within your %PATH%.
-/==============================================================================
-/Date Macros 日期宏（WSD/WSS/WSI/WST）
-/  * Abstract dates
-/		""		系统当前日期
-/		SD		开始日期（b）
-/		ED		截止日期（e）
-/		LQ1		去年第一季度
-/		LQ2		去年第二季度
-/		LQ3		去年第三季度
-/		LYR		去年年报
-/		RQ1		今年第一季度
-/		RQ2		今年第二季度
-/		RQ3		今年第三季度
-/		MRQ		最新一季度
-/		RYF		本年初
-/		RHYF	下半年初
-/		RMF		本月初
-/		RWF		本周一
-/		LWE		上周末
-/		LME		上月末
-/		LHYE	上半年末
-/		LYE		上年末
-/		IPO		上市首日
-/  * Date offset units
-/		TD	交易日
-/		D	日历日
-/		W	日历周
-/		M	日历月
-/		Q	日历季度
-/		S	日历半年
-/		Y	日历年
-/  * Sample usage
-/		-1W		当前日的一周前
-/		SD+5TD	开始日后第5个交易日
-/==============================================================================
+//=============================================================================
+// This is the q loader for WindQuantAPI.dll
+// NOTE: Make sure Wind's DLLs are reachable within your %PATH%.
+//=============================================================================
 
 /q) \l Wind.q
 \d .wind
 
-DLL:hsym`$("Wind_API");
+/ Path to {@literal Wind_API.dll}<p>
+/ NOTE: When loaded from within TorQ, a {@literal $KDBLIB}-based path is constructed.
+DLL:hsym`${$[x~"";"";x,y]}[getenv[`KDBLIB];"/",string[.z.o],"/"],"Wind_API"
 
-// DLL version
+/ Version of {@literal Wind_API.dll}
 version:DLL 2:(`version;1);
 
-// Wind 查询速度限制：查询间隔（milliseconds）
+/ Wind 查询速度限制：查询间隔（milliseconds）
 QueryGap:3000;
 
 /q) .wind.getTimeout[]
@@ -54,31 +22,70 @@ getTimeout:DLL 2:(`getTimeout;1);
 setTimeout:DLL 2:(`setTimeout;1);
 
 /q) .wind.login[`w*******;"********"]
-/q) .wind.logout`
-/ OR
-/q) .wind.start`:.wind.pass
 login: DLL 2:(`Wind_login ;2);
-logout:DLL 2:(`Wind_logout;1);
+/q) .wind.start`:.wind.pass
 start:{
     login .@[;0 2](0,k,1+k:p?":")_p:first read0 x
     };
+/q) .wind.logout`
+logout:DLL 2:(`Wind_logout;1);
 
 /q) .wind.WSD[`000001.SZ;`open`high`low`close`volume;2014.01.01;.z.D;()]
 /q) .wind.WSD[`000001.SZ`600000.SH;`volume;2014.01.01;.z.D;()]
 /q) .wind.WSD[`000001.SZ;`open`high`low`close`volume;"ED-1M";.z.D;()]     /Latest 1-month data
+/<p>
+/<strong>Date Macros 日期宏（WSD/WSS/WSI/WST）</strong>
+/<ul>
+/  <li>Abstract dates<p>
+/	{@code ""}		系统当前日期<br>
+/	{@code SD}		开始日期（{@literal b}）<br>
+/	{@code ED}		截止日期（{@literal e}）<br>
+/	{@code LQ1}		去年第一季度<br>
+/	{@code LQ2}		去年第二季度<br>
+/	{@code LQ3}		去年第三季度<br>
+/	{@code LYR}		去年年报<br>
+/	{@code RQ1}		今年第一季度<br>
+/	{@code RQ2}		今年第二季度<br>
+/	{@code RQ3}		今年第三季度<br>
+/	{@code MRQ}		最新一季度<br>
+/	{@code RYF}		本年初<br>
+/	{@code RHYF}	下半年初<br>
+/	{@code RMF}		本月初<br>
+/	{@code RWF}		本周一<br>
+/	{@code LWE}		上周末<br>
+/	{@code LME}		上月末<br>
+/	{@code LHYE}	上半年末<br>
+/	{@code LYE}		上年末<br>
+/	{@code IPO}		上市首日<br>
+/  </li>
+/  <li>Date offset units<br>
+/	{@code TD}	交易日<br>
+/	{@code D}	日历日<br>
+/	{@code W}	日历周<br>
+/	{@code M}	日历月<br>
+/	{@code Q}	日历季度<br>
+/	{@code S}	日历半年<br>
+/	{@code Y}	日历年<br>
+/  </li>
+/  <li>Sample usage<br>
+/	{@code -1W}		当前日的一周前<br>
+/	{@code SD+5TD}	开始日后第5个交易日<br>
+/  </li>
+/</ul>
 WSD:{[F;c;i;b;e;p]
     impl.windHack delete code from update`date$ts,sym:`$code from
         impl.quantData2Table F[(),c;(),i;b;e;impl.dict2Strings p]
     }DLL 2:(`Wind_wsd;5);
 
 /q) .wind.WSS[`000001.SZ`000002.SZ`600000.SH;`open`high`low`close`volume;`tradeDate`cycle!(2015.02.12;`W)]
+/ @see .wind.WSD
 WSS:{[F;c;i;p]
     delete code from update sym:`$code from
         impl.quantData2Table F[(),c;(),i;impl.dict2Strings p]
     }DLL 2:(`Wind_wss;3);
 
 /q) .wind.WSI[`000001.SZ`000002.SZ`600000.SH;`open`high`low`close`volume;2014.01.01T00:00:00;.z.Z;(1#`BarSize)!1#1]
-/@ref 分钟线规则：http://www.dajiangzhang.com/q?d98e4a8e-7e94-4205-8149-b5ab413024b0
+/@see <a href="http://www.dajiangzhang.com/q?d98e4a8e-7e94-4205-8149-b5ab413024b0">分钟线规则</a>
 WSI:{[F;c;i;b;e;p]
     r:impl.quantData2Table F[(),c;(),i;b;e;impl.dict2Strings p];
     $[`windcode in cols r;
@@ -127,14 +134,21 @@ WSET:{[F;r;p]
 /q) qid:.wind.WSQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();`cb]    //subscribe
 /q)     .wind.WSQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();::]     //strike
 /q) qid:.wind.TDQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();`cb]
+/ @see .wind.rtCallback
 WSQ:{[F;c;i;p;f]
     $[not(::)~f;(::);
         {delete code from update sym:`$code from impl.quantData2Table x}]
         F[(),c;(),i;impl.dict2Strings$[p~();()!();p],(1#`REALTIME)!1#not(::)~f;f]
 	}DLL 2:(`Wind_wsq;4);
+
+/ @see .wind.rtCallback
+/ @deprecated {@literal WindDataQuant.dll} does not yet support this interface.
 TDQ:{[F;c;i;p;f]
 	F[(),c;(),i;impl.dict2Strings$[p~();()!();p],(1#`REALTIME)!1#1b;f]
 	}DLL 2:(`Wind_tdq;4);
+
+/ @see .wind.WSQ
+/ @see .wind.TDQ
 rtCallback:{[f;q;d]
     if[2<>count value[f]1;'"callback should take 2 arguments"];
     {[f;q;d]
@@ -144,8 +158,9 @@ rtCallback:{[f;q;d]
     };
 
 /q) .wind.unsub 3
-/q) .wind.unsubAll[]
 unsub:DLL 2:(`Wind_cr;1);
+
+/q) .wind.unsubAll[]
 unsubAll:DLL 2:(`Wind_car;1);
 
 /q) .wind.tDays[2014.01.01;.z.D;()]
@@ -204,13 +219,16 @@ WUPF:{[F;n;d;c;q;x;p]
     impl.quantData2Table F[n;(),d;(),c;(),q;(),x;impl.dict2Strings p]
     }DLL 2:(`Wind_wupf;6);
 
-/==============================================================================
+//=============================================================================
+
+/ Convert a query resultset into tabular format.
 impl.quantData2Table:{
     x:`ts`code`field`data!x;
     :impl.fixNA flip(`ts`code!flip raze x[`ts],\:/:enlist'[x`code]),
                 (x[`field]!raze each flip flip each flip x`data)
     };
     
+/ Convert a query parameter dict to a dict of strings.
 impl.dict2Strings:{
     if[(0=count x)and(0h=type x);:x];
     if[not 99h=type x;'"not a dict or empty list"];
@@ -238,14 +256,14 @@ impl.dict2Strings:{
         }each value x;
     };
 
-// Hacks to try our best to fill in missing values from Wind's data set.
+/ <strong>Hack</strong> to try our best to fill in missing values from Wind's data set.
 impl.fixNA:{[T]
     Tmeta:(min,max,{any 101h=x})each\:flip?[T;();0b;a!{type each x},/:a:cols T];
     Ttype:{?[101h=x[;0];x[;1];x[;0]]}a!Tmeta a:where flip[Tmeta][;2];
     :![T;();0b;({$[x~(::);y;x]}\:),/:{(x;y)}'[key Ttype;{$[x=101h;::;x$""]}each Ttype]];
     };
 
-// Hacks to deal with quirks in the data set returned from WindQuantAPI.
+/ <strong>Hack</strong> to deal with quirks in the data set returned from WindQuantAPI.
 impl.windHack:{[T]
     if[`MAXUPORDOWN in cols T;
         T:update{$[()~x;0Ni;-6h=type x;x;`int$x]}each MAXUPORDOWN
@@ -253,8 +271,6 @@ impl.windHack:{[T]
     :T
     };
 
-\d .
-
+//==============================================================================
 \
 __EOD__
-===============================================================================

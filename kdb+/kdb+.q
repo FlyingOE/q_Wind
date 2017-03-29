@@ -1,28 +1,29 @@
-\d .CPPlib
+\d .CE
 
-DLL:hsym`$"kdb+";
+/ Path to {@literal kdb+.dll}<p>
+/ NOTE: When loaded from within TorQ, a {@literal $KDBLIB}-based path is constructed. 
+DLL:hsym`${$[x~"";"";x,y]}[getenv[`KDBLIB];"/",string[.z.o],"/"],"kdb+"
 
-// DLL version
+/ Version of {@literal kdb+.dll}
 version:DLL 2:(`version;1);
 
-/==============================================================================
 \d .text
 
-lineOrList:{$[(t<>11h)and t:type x;y@x;.z.s\:[x;y]]};
+/ Apply a function to either a single line or a few lines of text.
+lineOrLines:{$[(t<>11h)and t:type y;x@y;.z.s/:[x;y]]};
 
-gb18030_utf8:lineOrList[;.CPPlib.DLL 2:(`gb18030_utf8;1)];
-utf8_gb18030:lineOrList[;.CPPlib.DLL 2:(`utf8_gb18030;1)];
+/ Encoding conversion: GB18030/GBK/GB2312 to UTF-8
+gb18030_utf8:lineOrLines .CE.DLL 2:(`gb18030_utf8;1);
 
-/==============================================================================
+/ Encoding conversion: UTF-8 to GB18030
+utf8_gb18030:lineOrLines .CE.DLL 2:(`utf8_gb18030;1);
+
 \d .os
 
-// Current Working Directory
-cwd:.CPPlib.DLL 2:(`cwd;1);
+/ Current Working Directory
+cwd:$[value;`.os.cwd;
+	$[.z.o like"w*";.CE.DLL 2:(`cwd;1);{first system"pwd"}]	];
 
-// "Sleep"
-sleep:{system"ping -t ",string[`long$`second$x]," localhost > ",$[.z.o like"w*";"NUL";"/dev/null"]};
-
-\d .
+//==============================================================================
 \
 __EOD__
-===============================================================================

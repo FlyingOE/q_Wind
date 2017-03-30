@@ -13,20 +13,21 @@ DLL:hsym`${$[x~"";"";x,y]}[getenv[`KDBLIB];"/",string[.z.o],"/"],"Wind_API"
 / Version of {@literal Wind_API.dll}
 version:DLL 2:(`version;1);
 
-/ Wind 查询速度限制：查询间隔（milliseconds）
+/ Wind查询速度限制：查询间隔（milliseconds）
 QueryGap:3000;
 
 /q) .wind.getTimeout[]
-/q) .wind.setTimeout 30*1000
 getTimeout:DLL 2:(`getTimeout;1);
+
+/q) .wind.setTimeout 30*1000
 setTimeout:DLL 2:(`setTimeout;1);
 
 /q) .wind.login[`w*******;"********"]
 login: DLL 2:(`Wind_login ;2);
+
 /q) .wind.start`:.wind.pass
-start:{
-    login .@[;0 2](0,k,1+k:p?":")_p:first read0 x
-    };
+start:{login .@[;0 2](0,k,1+k:p?":")_p:first read0 x};
+
 /q) .wind.logout`
 logout:DLL 2:(`Wind_logout;1);
 
@@ -34,6 +35,8 @@ logout:DLL 2:(`Wind_logout;1);
 /q) .wind.WSD[`000001.SZ`600000.SH;`volume;2014.01.01;.z.D;()]
 /q) .wind.WSD[`000001.SZ;`open`high`low`close`volume;"ED-1M";.z.D;()]     /Latest 1-month data
 /<p>
+/ 参数{@literal b}和{@literal e}可以使用日期宏来计算相关日期。
+/<hr>
 /<strong>Date Macros 日期宏（WSD/WSS/WSI/WST）</strong>
 /<ul>
 /  <li>Abstract dates<p>

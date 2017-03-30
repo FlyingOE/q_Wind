@@ -173,15 +173,18 @@ IF NOT EXIST $(TargetDir).tdb3.connect (
     <ClCompile Include="version.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include=".tdb.connect">
+    <Text Include=".tdb3.connect">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <FileType>Document</FileType>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
     </Text>
-    <None Include=".tdb3.connect" />
     <None Include="TDB_API_helper.inl" />
     <None Include="util.inl" />
-    <None Include="Wind_TDB.q" />
+    <Text Include="Wind_TDB.q">
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <FileType>Document</FileType>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+    </Text>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

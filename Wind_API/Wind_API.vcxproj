@@ -180,10 +180,11 @@ IF NOT EXIST $(TargetDir).wind.pass (
     <ClCompile Include="Wind_subscribe.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".wind.pass">
+    <Text Include=".wind.pass">
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
       <FileType>Document</FileType>
-    </None>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DeploymentContent>
+    </Text>
     <None Include="MatrixDataParser.inl" />
     <ClInclude Include="util.inl">
       <FileType>Document</FileType>

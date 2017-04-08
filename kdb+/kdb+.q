@@ -21,8 +21,9 @@ utf8_gb18030:lineOrLines .CE.DLL 2:(`utf8_gb18030;1);
 \d .os
 
 / Current Working Directory
-cwd:$[value;`.os.cwd;
-	$[.z.o like"w*";.CE.DLL 2:(`cwd;1);{first system"pwd"}]	];
+cwd:@[value;`.os.cwd;{
+	$[.z.o like"w*";.CE.DLL 2:(`cwd;1);{first system"pwd"}]
+	}];
 
 //==============================================================================
 \

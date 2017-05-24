@@ -70,6 +70,10 @@ This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wi
   * WindQuantAPI queries: missing (N/A) data items return as identities (::) instead of empty lists ()
   * Add preliminary support for COM automation
   * Various bugfixes
+* 2017.03
+  * Move code documentation to [q-doc](https://github.com/FlyingOE/q-doc) format
+* 2017.05
+  * Add support for the new `h2code` function
 
 ### References
 

@@ -19,6 +19,9 @@
     <Text Include="Wind.q">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include=".wind.pass">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -114,9 +117,6 @@
   <ItemGroup>
     <None Include="MatrixDataParser.inl">
       <Filter>Source Files</Filter>
-    </None>
-    <None Include=".wind.pass">
-      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
 </Project>

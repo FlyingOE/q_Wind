@@ -92,6 +92,12 @@ extern "C" {
 	WIND_API K K_DECL Wind_cr(K qid);
 	WIND_API K K_DECL Wind_car(K/*NOTE: at least one argument required by `2:'*/);
 
+	WIND_API K K_DECL Wind_htocode(
+		K codes,		//-11h or 11h or 10h or 0h=(10h;...)
+		K type,			//-11h or 10h
+		K params		//0h=() or 11h!0h
+		);
+
 	WIND_API K K_DECL Wind_tdays(
 		K beginDate,	//-14h
 		K endDate,		//-14h

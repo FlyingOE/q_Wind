@@ -173,6 +173,23 @@ WIND_API K K_DECL Wind_wset(K reportName, K params) {
 	return result.waitFor(qid);
 }
 
+WIND_API K K_DECL Wind_htocode(K codes, K type, K params) {
+	std::wstring codeList, codeType, paras;
+	try {
+		codeList = Wind::util::qList2WStringJoin(codes, L',');
+		codeType = q::q2WString(type);
+		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
+	}
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
+	}
+
+	Wind::callback::Result result;
+	::WQID const qid = ::htocode(codeList.c_str(), codeType.c_str(), paras.c_str(),
+		&Wind::callback::strike, result.dup());
+	return result.waitFor(qid);
+}
+
 WIND_API K K_DECL Wind_tdays(K beginDate, K endDate, K params) {
 	std::wstring begin, end, paras;
 	try {

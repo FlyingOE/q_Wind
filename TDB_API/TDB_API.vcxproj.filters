@@ -16,6 +16,12 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include=".tdb3.connect">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="Wind_TDB.q">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -76,17 +82,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Wind_TDB.q">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="util.inl">
       <Filter>Source Files</Filter>
     </None>
     <None Include="TDB_API_helper.inl">
       <Filter>Source Files</Filter>
-    </None>
-    <None Include=".tdb3.connect">
-      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
 </Project>

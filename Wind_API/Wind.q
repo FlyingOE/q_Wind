@@ -166,6 +166,20 @@ unsub:DLL 2:(`Wind_cr;1);
 /q) .wind.unsubAll[]
 unsubAll:DLL 2:(`Wind_car;1);
 
+/q) .wind.h2code[`000001                ;`stocka;()]
+/q) .wind.h2code[`000001`600000         ;`stocka;()]
+/q) .wind.h2code[`IC00`A1705            ;`future;()]
+/q) .wind.h2code[("10000875";"10000877");`option;()]
+/q) .wind.h2code[`000001`000016         ;`index ;()]
+/q) .wind.h2code[`000001                ;`fund  ;()]
+/q) .wind.h2code[`000001`000002         ;`bond  ;()]
+/q) .wind.h2code[`000001`000002         ;`      ;()]	/ enumerate all possible WindCodes
+h2code:{[F;c;t;p]
+	![res;();0b;]a!(`$),/:a:exec c from meta
+		res:delete ts,code from
+			impl.quantData2Table F[(),c;$[`~t;`all;""~t;`all;t];impl.dict2Strings p]
+	}DLL 2:(`Wind_htocode;3)
+
 /q) .wind.tDays[2014.01.01;.z.D;()]
 /q) .wind.tDays[2000.01.01;.z.D;`Days`Period!`Weekdays`Q]
 tDays:{[F;b;e;p]

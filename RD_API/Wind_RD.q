@@ -14,9 +14,13 @@ if[()~key`.odbc;
 /q) h:.rd.login"DRIVER=SQL Server;SERVER=...;DATABASE=filesync;UID=...;PWD=...;"
 /q) h:.rd.login"DSN=DSN name;...;"
 login:{
-    dsn:$[
-        -11h=t:type x;
-            :.odbc.open x;
+    postLogin:{[o]
+	    tester:{[o;dbType;test] .odbc.eval[o;test];-2"ODBC: ",dbType};
+		@[tester[o;"SQL Server"];"SET QUOTED_IDENTIFIER ON;";{"not SQL Server"}];
+		@[tester[o;"MySQL"     ];"SET SQL_MODE=ANSI_QUOTES;";{"not MySQL"}];
+		:o};
+    dsn:$[-11h=t:type x;
+            :postLogin .odbc.open x;
         10h=t;
             x;
         /default;
@@ -25,11 +29,8 @@ login:{
         dsn,:"APP=Wind_RD.q;"];
     if[not upper[dsn]like"*WSID=*";
         dsn,:"WSID=",("."sv string`int$0x0 vs .z.a),";"];
-    o:.odbc.open dsn;
-    tester:{[o;dbType;test] .odbc.eval[o;test];-2"ODBC: ",dbType};
-    @[tester[o;"SQL Server"];"SET QUOTED_IDENTIFIER ON;";{"not SQL Server"}];
-    @[tester[o;"MySQL"     ];"SET SQL_MODE=ANSI_QUOTES;";{"not MySQL"}];
-    :o    };
+    :postLogin .odbc.open dsn;
+    };
 
 /q) h:.rd.start`:.rd.connect
 start:{login first read0 hsym x};

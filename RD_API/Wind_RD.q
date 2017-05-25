@@ -60,7 +60,9 @@ use:{[h;db]
     $[10h=type query:(),query;
     	query;
       (2=count query)and(10h=type query 0);
-      	ssr/[query 0;"%",/:string 1+til count(),query 1;impl.stringize'[(),query 1]];
+      	ssr/[query 0;
+			reverse"%",/:string 1+til count(),query 1;
+			reverse impl.stringize'[(),query 1]];
       /default;
         impl.stringize query
 	]};
@@ -83,23 +85,27 @@ use:{[h;db]
 
 / Convert q value into ANSI SQL-compatible strings
 impl.stringize:{
-    $[-11h=t:type x;            /`column => "column"
+    $[-11h=t:type x;                /`column => "column"
         "\"",string[x],"\"";
-      -14h=t;                   /YYYY.MM.DD => 'YYYYMMDD'
-        "'",string[x][0 1 2 3 5 6 8 9],"'";
-      10h=t;                    /"string's" => 'string''s'
+	  t<0h;
+		$[null t;					/0N? => NULL
+			"NULL";
+		  t=-10h;					/"C" => 'C'
+		    .z.s enlist x;
+          t=-14h;                   /YYYY.MM.DD => 'YYYYMMDD'
+            "'",string[x][0 1 2 3 5 6 8 9],"'";
+          t in -5 -6 -7h;           /remove suffix from integral values
+            ssr[.Q.s1 x;"[hij]";""];
+          t in -8 -9h;              /remove suffix from and add decimal point to floating-point values 
+            {x,$[0>=count where"."=x;".";""]}ssr[.Q.s1 x;"[ef]";""];
+		  /default;
+			.Q.s1 x];
+      10h=t;                        /"string's" => 'string''s'
         "'",ssr[x;"'";"''"],"'";
-      11h=t;                    /`schema`table`column => "schema"."table"."column"
+      11h=t;                        /`schema`table`column => "schema"."table"."column"
         "."sv .z.s'[x];
-      0h<=t;                    /("CFFEX";"SZSE") => ('CFFEX','SZSE')
-        "(",(","sv .z.s'[x]),")";
-      t in -5 -6 -7h;           /remove suffix from integral values
-        ssr[.Q.s1 x;"[hij]";""];
-      t in -8 -9h;              /remove suffix from and add decimal point to floating-point values 
-        {x,$[0>=count where"."=x;".";""]}ssr[.Q.s1 x;"[ef]";""];
-      /default;
-        .Q.s1 x
-        ]
+      /default                      /("CFFEX";"SZSE") => ('CFFEX','SZSE')
+        "(",(","sv .z.s'[x]),")"]
     };
 
 / Deal with Chinesse character encoding in RD database

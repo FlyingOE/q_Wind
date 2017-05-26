@@ -88,7 +88,7 @@ impl.stringize:{
     $[-11h=t:type x;                /`column => "column"
         "\"",string[x],"\"";
 	  t<0h;
-		$[null t;					/0N? => NULL
+		$[null x;					/0N? => NULL
 			"NULL";
 		  t=-10h;					/"C" => 'C'
 		    .z.s enlist x;

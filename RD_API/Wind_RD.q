@@ -15,10 +15,11 @@ if[()~key`.odbc;
 /q) h:.rd.login"DSN=DSN name;...;"
 login:{
     postLogin:{[o]
-	    tester:{[o;dbType;test] .odbc.eval[o;test];-2"ODBC: ",dbType};
-		@[tester[o;"SQL Server"];"SET QUOTED_IDENTIFIER ON;";{"not SQL Server"}];
-		@[tester[o;"MySQL"     ];"SET SQL_MODE=ANSI_QUOTES;";{"not MySQL"}];
-		:o};
+        tester:{[o;dbType;test] .odbc.eval[o;test];-2"ODBC: ",dbType;1b};
+        okay:       @[tester[o;"SQL Server"];"SET QUOTED_IDENTIFIER ON;";{0b}];
+        okay:okay or@[tester[o;"MySQL"     ];"SET SQL_MODE=ANSI_QUOTES;";{0b}];
+        if[not okay;-2"ODBC: Oracle??"];
+        :o};
     dsn:$[-11h=t:type x;
             :postLogin .odbc.open x;
         10h=t;
@@ -58,14 +59,14 @@ use:{[h;db]
 /q) .rd.prepare("SELECT * FROM %1 WHERE TRADE_DT=%2";(`AShareEODPrices;2015.12.10))
 .rd.prepare:{[query]
     $[10h=type query:(),query;
-    	query;
+        query;
       (2=count query)and(10h=type query 0);
-      	ssr/[query 0;
-			reverse"%",/:string 1+til count(),query 1;
-			reverse impl.stringize'[(),query 1]];
+          ssr/[query 0;
+            reverse"%",/:string 1+til count(),query 1;
+            reverse impl.stringize'[(),query 1]];
       /default;
         impl.stringize query
-	]};
+    ]};
 
 /q) .rd.bulkload[h][`Table;dataset]    /NOTE: dataset must have same column names & compatible types as in Table!
 .rd.bulkload:{[h;tbl;data]
@@ -74,7 +75,7 @@ use:{[h;db]
     qry:enlist[templ],/:enlist each tbl,/:cols[data],/:value each 
         ![data;();0b;a!string,/:a:exec c from meta data where t="s"];    /make sure no sym columns
     @[.rd.eval h;"BEGIN TRANSACTION";{[x;h]    /SQL Server
-        .rd.eval[h]"START TRANSACTION";        /MySQL
+        .rd.eval[h]"START TRANSACTION";        /MySQL | Oracle
         }[;h]];
     @[each[.rd.eval h];qry,enlist["COMMIT"];{[x;h]
         .rd.eval[h]"ROLLBACK;";
@@ -87,19 +88,19 @@ use:{[h;db]
 impl.stringize:{
     $[-11h=t:type x;                /`column => "column"
         "\"",string[x],"\"";
-	  t<0h;
-		$[null x;					/0N? => NULL
-			"NULL";
-		  t=-10h;					/"C" => 'C'
-		    .z.s enlist x;
+      t<0h;
+        $[null x;                   /0N? => NULL
+            "NULL";
+          t=-10h;l                  /"C" => 'C'
+            .z.s enlist x;
           t=-14h;                   /YYYY.MM.DD => 'YYYYMMDD'
             "'",string[x][0 1 2 3 5 6 8 9],"'";
           t in -5 -6 -7h;           /remove suffix from integral values
             ssr[.Q.s1 x;"[hij]";""];
           t in -8 -9h;              /remove suffix from and add decimal point to floating-point values 
             {x,$[0>=count where"."=x;".";""]}ssr[.Q.s1 x;"[ef]";""];
-		  /default;
-			.Q.s1 x];
+          /default;
+            .Q.s1 x];
       10h=t;                        /"string's" => 'string''s'
         "'",ssr[x;"'";"''"],"'";
       11h=t;                        /`schema`table`column => "schema"."table"."column"

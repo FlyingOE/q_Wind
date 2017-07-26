@@ -167,15 +167,19 @@ namespace TDB {
 		}
 
 		assert(params->n == 2);
+#		pragma warning(disable: 6201)	//QUIRK: k.h k0::G0 type
 		keys = q::qList2String(kK(params)[0]);
+#		pragma warning(default: 6201)
 		std::transform(keys.begin(), keys.end(), keys.begin(), [](std::string& key) {
 			std::transform(key.begin(), key.end(), key.begin(),
 				[](char c) { return std::toupper(c, std::locale()); });
 			return key;
 		});
 
+#		pragma warning(disable: 6201)	//QUIRK: k.h k0::G0 type
 		assert(keys.size() == kK(params)[1]->n);
 		K const values = kK(params)[1];
+#		pragma warning(default: 6201)
 		for (size_t i = 0; i < keys.size(); ++i) {
 			if (keys[i] == "PRICEADJ") {
 				std::string priceAdj;

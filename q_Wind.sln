@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
+# Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kdb+", "kdb+\kdb+.vcxproj", "{8B865083-762C-42AA-82AD-00C577B9E1EF}"
@@ -38,6 +38,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_kdb+.util", "Test_kdb+.util\Test_kdb+.util.vcxproj", "{317F7BCC-DFEC-429B-ADF3-F0454041F5F7}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7609463A-AF49-4D74-9BBB-51C144514573} = {7609463A-AF49-4D74-9BBB-51C144514573}
+		{0D958CB7-1F8E-4F2E-81DA-5ECD1CC4FDFE} = {0D958CB7-1F8E-4F2E-81DA-5ECD1CC4FDFE}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_win32.util", "Test_win32.util\Test_win32.util.vcxproj", "{3FDFFF67-CBF2-4173-8FAB-FD9F3E55DD0C}"

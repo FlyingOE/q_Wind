@@ -223,8 +223,10 @@ std::map<std::string, std::string> q::qDict2StringMap(K data) throw(std::runtime
 		return qDict2StringMap(data->k);
 	case XD:
 		assert(data->n == 2);
+#		pragma warning(disable: 6201)	//QUIRK: k.h k0::G0 type
 		keys = qList2String(kK(data)[0]);
 		vals = qList2String(kK(data)[1]);
+#		pragma warning(default: 6201)
 		break;
 	default:
 		throw std::runtime_error("not a dict");
@@ -438,8 +440,8 @@ K q::Variant2q(::VARIANT const& data) throw() {
 	case VT_ERROR: {
 			std::ostringstream buffer;
 			buffer << "VARIANT error 0x" << util::hexBytes(data.scode);
-			return error2q(buffer.str());
-		}
+			q::K_ptr e(error2q(buffer.str()));
+		}//fall through
 	case VT_EMPTY:
 	case VT_NULL: {
 			q::K_ptr id(ka(101));
@@ -609,7 +611,9 @@ q::tm_ext time_t2tm(std::time_t const time, int millis = 0) {
 }
 
 // Normal year: ydays for each month
-int const MONTH_DAYS[13] = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
+int const MONTH_DAYS[] = {
+	0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365,
+	std::numeric_limits<int>::max() };
 
 //@ref http://www.codeguru.com/cpp/cpp/cpp_mfc/article.php/c765/An-ATL-replacement-for-COleDateTime.htm
 //@ref http://www.codeproject.com/Articles/144159/Time-Format-Conversion-Made-Easy
@@ -688,10 +692,12 @@ F q::DATE2q(::DATE date) throw(std::runtime_error) {
 	}
 	if (!feb29) {
 		// Month number always >= n/32, so reduce loop time
+#		pragma warning(disable: 6385)	//MONTH_DAYS traversal is guaranteed not to overrun
 		for (tm.tm_mon = static_cast<int>(nDaysInYear / 32 + 1);
 			nDaysInYear > MONTH_DAYS[tm.tm_mon];
 			++tm.tm_mon);
-		assert(tm.tm_mon >= 1);
+#		pragma warning(default: 6385)
+		assert((1 <= tm.tm_mon) && (tm.tm_mon < _countof(MONTH_DAYS) - 1));
 		tm.tm_mday = static_cast<int>(nDaysInYear - MONTH_DAYS[--tm.tm_mon]);
 	}
 

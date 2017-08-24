@@ -32,7 +32,7 @@ setDataSource:DLL 2:(`setDataSource;1);
 
 /q) h:.tdb.login[2;`host:port;`w*******;"********"]
 login:{[F;l;s;u;p]
-    F . l,@[;1;"I"$](":"vs string s),(u;p)
+    .[F;l,@[;1;"I"$](":"vs string s),(u;p);{'.text.gb18030_utf8 x}]
     }DLL 2:(`TDB_login;5);
 
 /q) h:.tdb.start hsym`:.tdb3.connect

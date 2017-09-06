@@ -96,9 +96,9 @@ impl.stringize:{
           t=-14h;                   /YYYY.MM.DD => 'YYYYMMDD'
             "'",string[x][0 1 2 3 5 6 8 9],"'";
           t in -5 -6 -7h;           /remove suffix from integral values
-            ssr[.Q.s1 x;"[hij]";""];
+            {$[last[x]in"hij";-1_x;x]}.Q.s1 x;
           t in -8 -9h;              /remove suffix from and add decimal point to floating-point values 
-            {x,$[0>=count where"."=x;".";""]}ssr[.Q.s1 x;"[ef]";""];
+            {x,$[0>=count where"."=x;".";""]}{$[last[x]in"ef";-1_x;x]}.Q.s1 x;
           /default;
             .Q.s1 x];
       10h=t;                        /"string's" => 'string''s'

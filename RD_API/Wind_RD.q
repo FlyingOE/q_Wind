@@ -98,7 +98,7 @@ impl.stringize:{
           t in -5 -6 -7h;           /remove suffix from integral values
             {$[last[x]in"hij";-1_x;x]}.Q.s1 x;
           t in -8 -9h;              /remove suffix from and add decimal point to floating-point values 
-            {x,$[0>=count where"."=x;".";""]}{$[last[x]in"ef";-1_x;x]}.Q.s1 x;
+            {x,$[any".e"in x;"";"."]}{$[last[x]in"ef";-1_x;x]}.Q.s1 x;
           /default;
             .Q.s1 x];
       10h=t;                        /"string's" => 'string''s'

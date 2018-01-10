@@ -17,4 +17,8 @@
 #pragma comment(lib, "q.lib")
 
 // TODO: reference additional headers your program requires here
+
+//TODO: to work-around tdbapistruct.h's improper use of "typedef enum/struct XXX { ... };" style.
+#pragma warning(disable: 4091)
 #include <TDBAPI.h>
+#pragma warning(default: 4091)

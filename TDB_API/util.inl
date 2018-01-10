@@ -4,8 +4,13 @@ static_assert(0, "Include TDB_API/util.h instead!");
 
 template <typename T>
 struct TDB::Deleter {
+
 	void operator()(T*& p) const {
-		::TDB_Free(p);
+		operator()(const_cast<T* const&>(p));
 		p = NULL;
+	}
+
+	void operator()(T* const& p) const {
+		::TDB_Free(p);
 	}
 };

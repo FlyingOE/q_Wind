@@ -541,13 +541,13 @@ std::time_t tm2time_t(std::tm const& tm) {
 
 	//NOTE: MSVC's <time.h> cannot handle anything before Unix epoch! Use Win32 API instead.
 	::SYSTEMTIME systime = {
-		tm.tm_year + 1900,
-		tm.tm_mon + 1,
-		tm.tm_wday,
-		tm.tm_mday,
-		tm.tm_hour,
-		tm.tm_min,
-		tm.tm_sec,
+		static_cast<WORD>(tm.tm_year + 1900),
+		static_cast<WORD>(tm.tm_mon + 1),
+		static_cast<WORD>(tm.tm_wday),
+		static_cast<WORD>(tm.tm_mday),
+		static_cast<WORD>(tm.tm_hour),
+		static_cast<WORD>(tm.tm_min),
+		static_cast<WORD>(tm.tm_sec),
 		0
 	};
 	::FILETIME filetime = { 0 };

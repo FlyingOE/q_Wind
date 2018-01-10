@@ -87,7 +87,8 @@ namespace q {
 			char h, m, s;
 			short mmm;
 			tsms(ts, &h, &m, &s, &mmm);
-			std::snprintf(d, (2 + 1 + 2 + 1 + 2 + 1 + 3) + 1, "%02d:%02d:%02d.%03d", h, m, s, mmm);
+			int const count = std::snprintf(d, (2 + 1 + 2 + 1 + 2 + 1 + 3) + 1, "%02d:%02d:%02d.%03d", h, m, s, mmm);
+			assert(count == 2 + 1 + 2 + 1 + 2 + 1 + 3);
 			return d;
 		}
 

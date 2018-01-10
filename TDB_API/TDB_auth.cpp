@@ -8,6 +8,7 @@
 #include <cmath>
 #include <string>
 #include <iostream>
+#include <cinttypes>
 
 TDB_API K K_DECL TDB_login(K level, K host, K port, K username, K password) {
 	std::string h, uid, pwd;
@@ -46,7 +47,8 @@ TDB_API K K_DECL TDB_login(K level, K host, K port, K username, K password) {
 	std::strncpy(settings.szUser,     uid.c_str(), _countof(settings.szUser));
 	std::strncpy(settings.szPassword, pwd.c_str(), _countof(settings.szPassword));
 #	endif
-	std::snprintf(settings.szPort, _countof(settings.szPort), "%ld", p);
+	int const count = std::snprintf(settings.szPort, _countof(settings.szPort), "%" PRId64, p);
+	assert(count > 0);
 
 #	ifndef NDEBUG
 	std::cerr << ">>> TDB_Open({\""

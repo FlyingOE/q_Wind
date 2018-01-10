@@ -10,11 +10,15 @@
 namespace q {
 
 	struct K_delete {
+
 		void operator()(K& k) const {
-			if (k != K_NIL) {
+			operator()(const_cast<K const&>(k));
+			k = K_NIL;
+		}
+
+		void operator()(K const& k) const {
+			if (k != K_NIL)
 				r0(k);
-				k = K_NIL;
-			}
 		}
 	};
 

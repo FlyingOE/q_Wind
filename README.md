@@ -18,7 +18,7 @@ This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wi
 * [Wind TDB API][]——对应TDF API的历史市场数据接口；
 * [Wind RD Database][]——量化研究数据库。
 
-本项目是使用Visual Studio 2013编译的工程。与[zwz][]的《[WindKdb+数据及交易接口V1.1][WindKdb+]》不同，本工程对Wind Quant API的支持直接使用`WindQuantData.dll`的API而不须使用基于COM的`WAPIWrapperCpp.dll`。虽然没有使用`WAPIWrapperCpp.dll`，不过本接口已经把所有接数的函数封装为同步函数（`WSQ`/`TDQ`数据订阅函数除外），以方便在q程序内使用。
+本项目是使用Visual Studio <del>2013</del>2015编译的工程。与[zwz][]的《[WindKdb+数据及交易接口V1.1][WindKdb+]》不同，本工程对Wind Quant API的支持直接使用`WindQuantData.dll`的API而不须使用基于COM的`WAPIWrapperCpp.dll`。虽然没有使用`WAPIWrapperCpp.dll`，不过本接口已经把所有接数的函数封装为同步函数（`WSQ`/`TDQ`数据订阅函数除外），以方便在q程序内使用。
 
 ### License
 
@@ -26,9 +26,9 @@ This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wi
 
 ### Build
 
-如果您使用正版的Visual Studio 2013，则本工程只需要[Kx][]的[`k.h`][k.h]（须作[少许改动](#modification)）和[`q.lib`][q.lib]即可编译通过。（如需运行单元测试项目`Test_kdb+.util`，则还额外需要[`c.lib`][c.lib]和[`c.dll`][c.dll]。）
+如果您使用<del>正版的Visual Studio 2013</del>Visual Studio 2015（包括社区版），则本工程只需要[Kx][]的[`k.h`][k.h]（须作[少许改动](#modification)）和[`q.lib`][q.lib]即可编译通过。（如需运行单元测试项目`Test_kdb+.util`，则还额外需要[`c.lib`][c.lib]和[`c.dll`][c.dll]。）
 
-如果您使用的是免费版的Visual Studio Express 2013，则本工程还额外需要[Windows Driver Kit (WDK) v7.1.0][WDK]中的头文件和库方可编译。为方便直接使用，[压缩包](./packaged/)里还包括了工程编译后生成的DLL（在Release目录中）。
+<del>如果您使用的是免费版的Visual Studio Express 2013，则本工程还额外需要[Windows Driver Kit (WDK) v7.1.0][WDK]中的头文件和库方可编译。为方便直接使用，[压缩包](./packaged/)里还包括了工程编译后生成的DLL（在Release目录中）。</del>
 
 #### <a name="modification"></a>对[`k.h`][k.h]所作的改动：
 
@@ -37,43 +37,46 @@ This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wi
         #define isnan _isnan
         #define finite _finite
         
-   Comment out these two lines to avoid masking corresponding C++11 functions from MSVC 2013.
+   Comment out these two lines to avoid masking corresponding C++11 functions from MSVC <del>2013</del>2015.
 2. Line 90:
         
         extern double log(double);
 
-   Comment out this line to avoid conflicting signature in `math.h` from MSVC 2013.
+   Comment out this line to avoid conflicting signature in `math.h` from MSVC <del>2013</del>2015.
 
 ### Change Log
 
-* [2015.02.27](./packaged/CE.kdb+-2015.02.27.zip)
-  * Initial version to support most APIs in `WindQuantData.dll`
-* [2015.03.06](./packaged/q_Wind-2015.03.06.zip)
-  * Initial merge into GitHub
-  * Added missing support for `WST` function
-  * Fixed problem with `WSQ` subscribers being not able to modify global data in q
-* 2015.03&ndash;04
-  * Various bug fixes
-* 2015.07
-  * Added support for Wind TDF/TDB APIs -- Only part of the APIs have been implemented, still work in progress...
-* 2015.08
-  * Suspended development for TDF API due to the lack of need
-  * More complete API support for TDB
-* 2015.12
-  * Added simple ODBC-based wrapper for RD database
-* 2016.01
-  * Upgrade TDB to v3 API (on-the-wire data compression, faster access)
-  * Merged multiple tick data extraction functions (TDB v3 change)
-  * Added support for OHLC (a.k.a. K-line) data extraction
+* 2018.01
+  * Upgraded from MSVC 2013 to 2015
+  * Various bug fixes for `Wind_RD.q` module
+* 2017.05
+  * Add support for the new `h2code` function
+* 2017.03
+  * Move code documentation to [q-doc](https://github.com/FlyingOE/q-doc) format
 * 2017.01
   * Upgrade TDB to v3.20161219 API (server-side upgrade)
   * WindQuantAPI queries: missing (N/A) data items return as identities (::) instead of empty lists ()
   * Add preliminary support for COM automation
   * Various bugfixes
-* 2017.03
-  * Move code documentation to [q-doc](https://github.com/FlyingOE/q-doc) format
-* 2017.05
-  * Add support for the new `h2code` function
+* 2016.01
+  * Upgrade TDB to v3 API (on-the-wire data compression, faster access)
+  * Merged multiple tick data extraction functions (TDB v3 change)
+  * Added support for OHLC (a.k.a. K-line) data extraction
+* 2015.12
+  * Added simple ODBC-based wrapper for RD database
+* 2015.08
+  * Suspended development for TDF API due to the lack of need
+  * More complete API support for TDB
+* 2015.07
+  * Added support for Wind TDF/TDB APIs -- Only part of the APIs have been implemented, still work in progress...
+* 2015.03&ndash;04
+  * Various bug fixes
+* [2015.03.06](./packaged/q_Wind-2015.03.06.zip)
+  * Initial merge into GitHub
+  * Added missing support for `WST` function
+  * Fixed problem with `WSQ` subscribers being not able to modify global data in q
+* [2015.02.27](./packaged/CE.kdb+-2015.02.27.zip)
+  * Initial version to support most APIs in `WindQuantData.dll`
 
 ### References
 

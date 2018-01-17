@@ -16,8 +16,8 @@ std::vector<std::string> util::EnumBase<C, E>::getAllStrings() {
 }
 
 template <typename C, typename E>
-std::string const& util::EnumBase<C, E>::toString(E const e) {
-	for (auto const i = getMap().cbegin(); i != getMap.cend(); ++i) {
+std::string util::EnumBase<C, E>::toString(E const e) {
+	for (auto i = getMap().cbegin(); i != getMap().cend(); ++i) {
 		if (i->second == e) {
 			return i->first;
 		}

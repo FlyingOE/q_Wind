@@ -29,7 +29,7 @@ namespace util {
 	public:
 		static std::vector<std::string> getAllStrings();
 
-		static std::string const& toString(E const e);
+		static std::string toString(E const e);
 
 		static E fromString(char const* str);
 		static E fromString(std::string const& str) { return fromString(str.c_str()); }

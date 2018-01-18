@@ -21,8 +21,11 @@ namespace q {
 		inline F uz(F f) {	// unix from kdb+ datetime
 			return 86400 * (f + 10957);
 		}
-		inline J pu(I u) {	// kdb+ timestamp from unix, use ktj(Kj,n) to create timestamp from n
+		inline J pu(F u) {
 			return static_cast<J>(8.64e13 * (u / 86400. - 10957));
+		}
+		inline J pu(I u) {	// kdb+ timestamp from unix, use ktj(Kj,n) to create timestamp from n
+			return pu(static_cast<F>(u));
 		}
 		inline I up(J f) {	// unix from kdb+ timestamp
 			return static_cast<I>((f / 8.64e13 + 10957) * 86400);

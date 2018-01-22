@@ -337,6 +337,15 @@ std::vector<q::tm_ext> q::qList2tm(K data) throw(std::runtime_error) {
 	return result;
 }
 
+K q::String2qList(std::vector<std::string> const & list)
+{
+	q::K_ptr result(ktn(KS, list.size()));
+	for (size_t i = 0; i < list.size(); ++i) {
+		kS(result.get())[i] = ss(const_cast<S>(list[i].c_str()));
+	}
+	return result.release();
+}
+
 ::VARIANT q::q2Variant(K data) throw(std::runtime_error) {
 	if (data == K_NIL) {
 		throw std::runtime_error("nil value");

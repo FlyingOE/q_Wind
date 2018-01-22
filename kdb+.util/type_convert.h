@@ -43,6 +43,9 @@ namespace q {
 	tm_ext q2tm(K data) throw(std::runtime_error);
 	std::vector<tm_ext> qList2tm(K data) throw(std::runtime_error);
 
+	// Convert a C++ string vector into q symbol list
+	K String2qList(std::vector<std::string> const& list);
+
 	// Convert anything to Windows VARIANT type
 	::VARIANT q2Variant(K data) throw(std::runtime_error);
 	// Convert Windows VARIANT type to q type

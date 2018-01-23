@@ -59,10 +59,10 @@ namespace Wind {
 	}//namespace Wind::util
 }//namespace Wind
 
+#include "util.inl"
+
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif
-
-#include "util.inl"
 
 #endif//__WIND_API__UTIL_H__

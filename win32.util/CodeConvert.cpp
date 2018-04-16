@@ -53,8 +53,11 @@ std::wstring ml::convert(UINT frCP, char const* inStr) throw(std::runtime_error)
 	if (len == 0) {
 		throw getEncodeError("MultiByteToWideChar<<", ::GetLastError(), inStr);
 	}
+	else if (len >= static_cast<size_t>(std::numeric_limits<int>::max())) {
+		throw std::runtime_error("string too long for MultiByteToWideChar!");
+	}
 	std::vector<wchar_t> outUcs(len, L'\0');
-	int const result = ::MultiByteToWideChar(frCP, MB_ERR_INVALID_CHARS, inStr, -1, &outUcs[0], len);
+	int const result = ::MultiByteToWideChar(frCP, MB_ERR_INVALID_CHARS, inStr, -1, &outUcs[0], static_cast<int>(len));
 	if (result == 0) {
 		throw getEncodeError("MultiByteToWideChar>>", ::GetLastError(), inStr);
 	}
@@ -71,8 +74,11 @@ std::string ml::convert(UINT toCP, wchar_t const* inUcs) throw(std::runtime_erro
 	if (len == 0) {
 		throw getEncodeError("WideCharToMultiByte<<", ::GetLastError(), inUcs);
 	}
+	else if (len >= static_cast<size_t>(std::numeric_limits<int>::max())) {
+		throw std::runtime_error("string too long for WideCharToMultiByte!");
+	}
 	std::vector<char> outStr(len, '\0');
-	int const result = ::WideCharToMultiByte(toCP, flags, inUcs, -1, &outStr[0], len, NULL, NULL);
+	int const result = ::WideCharToMultiByte(toCP, flags, inUcs, -1, &outStr[0], static_cast<int>(len), NULL, NULL);
 	if (result == 0) {
 		throw getEncodeError("WideCharToMultiByte>>", ::GetLastError(), inUcs);
 	}

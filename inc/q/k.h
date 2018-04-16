@@ -86,7 +86,11 @@ extern K ee(K),ktj(I,J),ka(I),kb(I),kg(I),kh(I),ki(I),kj(J),ke(F),kf(F),kc(I),ks
 #define nf (log(-1.0))
 #define wf (-log(0.0))
 #define finite _finite
+//Flying >>>
+#if !(_WIN32 || _WIN64)	//conflict with MSVC
 extern double log(double);
+#endif
+//<<< Flying
 #else  
 #define nf (0/0.0)
 #define wf (1/0.0)

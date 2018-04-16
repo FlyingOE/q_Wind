@@ -246,3 +246,7 @@ ModelManifest.xml
 
 # Vim swap file
 *.sw?
+
+#####
+!lib/*/x86*/
+!lib/*/x64*/

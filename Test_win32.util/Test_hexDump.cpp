@@ -20,7 +20,11 @@ namespace Test_util
 			int* const p = reinterpret_cast<int*>(69957480);
 			std::ostringstream buffer;
 			buffer << util::hexBytes(p);
-			Assert::AreEqual("042B7768", buffer.str().c_str(), true,
+			Assert::AreEqual(
+#			if _WIN64
+				"00000000"
+#			endif
+				"042B7768", buffer.str().c_str(), true,
 				NULL, LINE_INFO());
 		}
 

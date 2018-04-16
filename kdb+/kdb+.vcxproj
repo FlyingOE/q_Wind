@@ -104,7 +104,7 @@
 )
 IF EXIST $(SolutionDir)..\..\lib\ (
     CALL $(SolutionDir)ROBOCOPY ^
-        $(TargetDir)     $(SolutionDir)..\..\lib\w32\ ^
+        $(TargetDir)     $(SolutionDir)..\..\lib\w$(PlatformArchitecture)\ ^
         /LEV:1 /IF kdb+.dll kdb+.pdb
 )</Command>
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>
@@ -143,7 +143,7 @@ CALL $(SolutionDir)ROBOCOPY ^
 )
 IF EXIST $(SolutionDir)..\..\lib\ (
     CALL $(SolutionDir)ROBOCOPY ^
-        $(TargetDir)     $(SolutionDir)..\..\lib\w64\ ^
+        $(TargetDir)     $(SolutionDir)..\..\lib\w$(PlatformArchitecture)\ ^
         /LEV:1 /IF kdb+.dll kdb+.pdb
 )</Command>
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>
@@ -185,7 +185,7 @@ CALL $(SolutionDir)ROBOCOPY ^
 )
 IF EXIST $(SolutionDir)..\..\lib\ (
     CALL $(SolutionDir)ROBOCOPY ^
-        $(TargetDir)     $(SolutionDir)..\..\lib\w32\ ^
+        $(TargetDir)     $(SolutionDir)..\..\lib\w$(PlatformArchitecture)\ ^
         /LEV:1 /IF kdb+.dll kdb+.pdb
 )</Command>
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>
@@ -227,7 +227,7 @@ CALL $(SolutionDir)ROBOCOPY ^
 )
 IF EXIST $(SolutionDir)..\..\lib\ (
     CALL $(SolutionDir)ROBOCOPY ^
-        $(TargetDir)     $(SolutionDir)..\..\lib\w64\ ^
+        $(TargetDir)     $(SolutionDir)..\..\lib\w$(PlatformArchitecture)\ ^
         /LEV:1 /IF kdb+.dll kdb+.pdb
 )</Command>
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>

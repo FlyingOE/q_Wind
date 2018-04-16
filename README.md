@@ -26,26 +26,31 @@ This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wi
 
 ### Build
 
-如果您使用<del>正版的Visual Studio 2013</del>Visual Studio 2015（包括社区版），则本工程只需要[Kx][]的[`k.h`][k.h]（须作[少许改动](#modification)）和[`q.lib`][q.lib]即可编译通过。（如需运行单元测试项目`Test_kdb+.util`，则还额外需要[`c.lib`][c.lib]和[`c.dll`][c.dll]。）
+如果您使用<del>正版的Visual Studio 2013</del>Visual Studio 2015（包括社区版），则本工程只需要[Kx][]的[`k.h`][github_c]（须作[少许改动](#modification)）和[`q.lib`][github_w]即可编译通过。（如需运行单元测试项目`Test_kdb+.util`，则还额外需要[`c.lib`][github_w]和[`c.dll`][github_w]。）
 
 <del>如果您使用的是免费版的Visual Studio Express 2013，则本工程还额外需要[Windows Driver Kit (WDK) v7.1.0][WDK]中的头文件和库方可编译。为方便直接使用，[压缩包](./packaged/)里还包括了工程编译后生成的DLL（在Release目录中）。</del>
 
-#### <a name="modification"></a>对[`k.h`][k.h]所作的改动：
+#### <a name="modification"></a>对[`k.h`][github_c]所作的改动：
 
-1. Lines 88&ndash;89:
-        
-        #define isnan _isnan
-        #define finite _finite
-        
-   Comment out these two lines to avoid masking corresponding C++11 functions from MSVC <del>2013</del>2015.
-2. Line 90:
+1. Line 89:
         
         extern double log(double);
-
+        
    Comment out this line to avoid conflicting signature in `math.h` from MSVC <del>2013</del>2015.
+
+#### 对`Wind_API`项目所作的改动：
+
+1. `Additional Include Directories`:
+　   
+   Change `D:\Wind\Wind.NET.Client\WindNET\...` to the installation path of your 万得金融终端.
+2. `Additional Library Directories`:
+　   
+   Change `D:\Wind\Wind.NET.Client\WindNET\...` to the installation path of your 万得金融终端.
 
 ### Change Log
 
+* 2018.04
+  * Added support for x64 build
 * 2018.01
   * Upgraded from MSVC 2013 to 2015
   * Various bug fixes for `Wind_RD.q` module
@@ -81,10 +86,8 @@ This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wi
 ### References
 
 [Kx]:    http://www.kx.com
-[k.h]:   http://code.kx.com/wsvn/code/kx/kdb%2B/c/c/k.h
-[q.lib]: http://code.kx.com/wsvn/code/kx/kdb%2B/w32/q.lib
-[c.lib]: http://code.kx.com/wsvn/code/kx/kdb%2B/w32/c.lib
-[c.dll]: http://code.kx.com/wsvn/code/kx/kdb%2B/w32/c.dll
+[github_c]:   https://github.com/KxSystems/kdb/tree/master/c/c
+[github_w]:   https://github.com/KxSystems/kdb
 [WDK]:   http://www.microsoft.com/en-us/download/details.aspx?id=11800
 [Wind Info]:      http://www.wind.com.cn/En/
 [Wind Quant API]: http://www.dajiangzhang.com/download

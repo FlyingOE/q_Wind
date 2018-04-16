@@ -9,7 +9,8 @@
 
 KDB_API K K_DECL cwd(K _) {
 	std::vector<wchar_t> buffer(MAX_PATH, L'\0');
-	DWORD result = ::GetCurrentDirectoryW(buffer.size(), &buffer[0]);
+	assert(MAX_PATH <= std::numeric_limits<DWORD>::max());
+	DWORD result = ::GetCurrentDirectoryW(static_cast<DWORD>(buffer.size()), &buffer[0]);
 	if (FAILED(result)) {
 		result = ::GetLastError();
 		if (FAILED(result)) {

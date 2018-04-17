@@ -169,7 +169,7 @@ namespace Wind {
 			case eWQOthers:
 				// Detect unsubscribe and free up socket pair
 				if (pEvent->ErrCode == WQERR_USER_CANCEL) {
-					assert(*socks[CLIENT] <= std::numeric_limits<I>::max());
+					assert(*socks[CLIENT] <= static_cast<::SOCKET>(std::numeric_limits<I>::max()));
 					sd0(static_cast<I>(*socks[CLIENT]));
 					REGISTRY.erase(pEvent->RequestID);
 					delete[] socks;
@@ -233,7 +233,7 @@ K Wind_subscribe(::WQID(WINAPI *func)(LPCWSTR, LPCWSTR, LPCWSTR, ::IEventHandler
 		return q::error2q(buffer.str());
 	}
 	else {
-		assert(*socks[CLIENT] <= std::numeric_limits<I>::max());
+		assert(*socks[CLIENT] <= static_cast<::SOCKET>(std::numeric_limits<I>::max()));
 		sd1(static_cast<I>(*socks[CLIENT]), &Wind::pubsub::invokeCallback);
 		Wind::pubsub::REGISTRY[qid] = cb;
 		socks.release();

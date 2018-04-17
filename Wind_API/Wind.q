@@ -13,14 +13,18 @@ DLL:hsym`${$[x~"";"";x,y]}[getenv[`KDBLIB];"/",string[.z.o],"/"],"Wind_API"
 / Version of {@literal Wind_API.dll}
 version:DLL 2:(`version;1);
 
-/ Wind查询速度限制：查询间隔（milliseconds）
-QueryGap:3000;
+/ Wind查询速度限制：查询间隔
+QueryGap:00:00:03t;
 
 /q) .wind.getTimeout[]
-getTimeout:DLL 2:(`getTimeout;1);
+getTimeout:{[F;x]
+    `time$F x
+    }DLL 2:(`getTimeout;1);
 
-/q) .wind.setTimeout 30*1000
-setTimeout:DLL 2:(`setTimeout;1);
+/q) .wind.setTimeout 00:00:30
+setTimeout:{[F;t]
+    `time$F`long$`time$t
+    }DLL 2:(`setTimeout;1);
 
 /q) .wind.login[`w*******;"********"]
 login: DLL 2:(`Wind_login ;2);
@@ -133,18 +137,18 @@ WSET:{[F;r;p]
             ]}peach flip impl.quantData2Table F[r;impl.dict2Strings p]
     }DLL 2:(`Wind_wset;2);
 
-/q) cb:.wind.rtCallback{show(x;.z.P;y)}
-/q) qid:.wind.WSQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();`cb]    //subscribe
-/q)     .wind.WSQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();::]     //strike
-/q) qid:.wind.TDQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();`cb]
-/ @see .wind.rtCallback
+/q) callback:.wind.makeCallback{show(x;.z.P;y)}
+/q) qid:.wind.WSQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();`callback]  //subscribe
+/q)     .wind.WSQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();::]			//strike
+/q) qid:.wind.TDQ[`000001.SZ`000002.SZ`600000.SH;`rt_date`rt_time`rt_last`rt_vol;();`callback]
+/ @see .wind.makeCallback
 WSQ:{[F;c;i;p;f]
     $[not(::)~f;(::);
         {delete code from update sym:`$code from impl.quantData2Table x}]
         F[(),c;(),i;impl.dict2Strings$[p~();()!();p],(1#`REALTIME)!1#not(::)~f;f]
 	}DLL 2:(`Wind_wsq;4);
 
-/ @see .wind.rtCallback
+/ @see .wind.makeCallback
 / @deprecated {@literal WindDataQuant.dll} does not yet support this interface.
 TDQ:{[F;c;i;p;f]
 	F[(),c;(),i;impl.dict2Strings$[p~();()!();p],(1#`REALTIME)!1#1b;f]
@@ -152,7 +156,7 @@ TDQ:{[F;c;i;p;f]
 
 / @see .wind.WSQ
 / @see .wind.TDQ
-rtCallback:{[f;q;d]
+makeCallback:{[f]
     if[2<>count value[f]1;'"callback should take 2 arguments"];
     {[f;q;d]
         f[q;]delete code from

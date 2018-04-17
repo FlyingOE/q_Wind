@@ -53,6 +53,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "win32_com", "win32_com\win3
 		{15DC0B83-55C7-466E-9A76-FD5D54598F4A} = {15DC0B83-55C7-466E-9A76-FD5D54598F4A}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_Wind_API", "Test_Wind_API\Test_Wind_API.vcxproj", "{41577929-CFDA-42D7-9A03-8F77023A8D8A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FF4C0297-4686-4F23-B461-499F583AA3EA} = {FF4C0297-4686-4F23-B461-499F583AA3EA}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -143,6 +148,12 @@ Global
 		{6EB66A4D-3DF0-4FD7-A3BE-5380034A09CA}.Release|Win32.ActiveCfg = Release|Win32
 		{6EB66A4D-3DF0-4FD7-A3BE-5380034A09CA}.Release|Win32.Build.0 = Release|Win32
 		{6EB66A4D-3DF0-4FD7-A3BE-5380034A09CA}.Release|x64.ActiveCfg = Release|Win32
+		{41577929-CFDA-42D7-9A03-8F77023A8D8A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{41577929-CFDA-42D7-9A03-8F77023A8D8A}.Debug|Win32.Build.0 = Debug|Win32
+		{41577929-CFDA-42D7-9A03-8F77023A8D8A}.Debug|x64.ActiveCfg = Debug|x64
+		{41577929-CFDA-42D7-9A03-8F77023A8D8A}.Debug|x64.Build.0 = Debug|x64
+		{41577929-CFDA-42D7-9A03-8F77023A8D8A}.Release|Win32.ActiveCfg = Release|Win32
+		{41577929-CFDA-42D7-9A03-8F77023A8D8A}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

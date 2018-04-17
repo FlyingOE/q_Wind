@@ -87,14 +87,14 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;WIND_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\;D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\API\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\WindQuantAPI\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(TargetDir);D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\lib\$(PlatformName)\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\WindQuantAPI\$(PlatformTarget)\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST $(SolutionDir)..\..\code\ (
@@ -131,14 +131,14 @@ IF NOT EXIST $(TargetDir).wind.pass (
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;WIND_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\;D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\API\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\WindQuantAPI\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(TargetDir);D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\lib\$(PlatformName)\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\WindQuantAPI\$(PlatformTarget)\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST $(SolutionDir)..\..\code\ (
@@ -177,7 +177,7 @@ IF NOT EXIST $(TargetDir).wind.pass (
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;WIND_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\;D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\API\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\WindQuantAPI\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -185,7 +185,7 @@ IF NOT EXIST $(TargetDir).wind.pass (
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(TargetDir);D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\lib\$(PlatformName)\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\WindQuantAPI\$(PlatformTarget)\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST $(SolutionDir)..\..\code\ (
@@ -224,7 +224,7 @@ IF NOT EXIST $(TargetDir).wind.pass (
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;_USRDLL;WIND_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\;D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\API\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\WindQuantAPI\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
@@ -232,7 +232,7 @@ IF NOT EXIST $(TargetDir).wind.pass (
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(TargetDir);D:\Wind\Wind.NET.Client\WindNET\WindQuantAPI\WindQuantSample\lib\$(PlatformName)\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\WindQuantAPI\$(PlatformTarget)\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST $(SolutionDir)..\..\code\ (

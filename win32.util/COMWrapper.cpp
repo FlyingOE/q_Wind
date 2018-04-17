@@ -130,7 +130,10 @@ VARIANT com::COMCall(WORD context, ::IDispatch* dispatch, LPCOLESTR propName, st
 
 	// COM invocation parameters
 	::DISPPARAMS params = { NULL, NULL, 0, 0 };
-	params.cArgs = args.size();
+	if (args.size() > std::numeric_limits<UINT>::max()) {
+		throw std::runtime_error("argument list too long for UINT");
+	}
+	params.cArgs = static_cast<UINT>(args.size());
 	params.rgvarg = const_cast<VARIANT*>(args.empty() ? NULL : &args[0]);
 	::DISPID dispidNamed = DISPID_PROPERTYPUT;
 	if (context & DISPATCH_PROPERTYPUT) {

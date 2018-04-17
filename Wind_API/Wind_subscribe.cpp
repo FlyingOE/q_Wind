@@ -50,8 +50,12 @@ namespace Wind {
 
 		// Data processor (executed within q's main thread)
 		K invokeCallback(I socket) {
+#		if _WIN64
+			::SOCKET sock = static_cast<::SOCKET>(socket);
+#		else
 			static_assert(sizeof(::SOCKET) == sizeof(I), "SOCKET vs I: type mismatch!");
 			::SOCKET sock = socket;
+#		endif
 			assert(sock != INVALID_SOCKET);
 
 			// Receive (WQID, len, serialized_K) from subscription thread
@@ -72,7 +76,7 @@ namespace Wind {
 			}
 			q::K_ptr serialized(ktn(KB, len));
 			std::memset(kG(serialized.get()), 0, len);
-			recvd = ::recv(sock, reinterpret_cast<char*>(kG(serialized.get())), len, MSG_WAITALL);
+			recvd = ::recv(sock, reinterpret_cast<char*>(kG(serialized.get())), static_cast<int>(len), MSG_WAITALL);
 			RECV_CHECK(len, "data incomplete");
 #			undef RECV_CHECK
 
@@ -144,7 +148,7 @@ namespace Wind {
 			}
 			sent = ::send(*socks[SERVER], reinterpret_cast<char const*>(&len), sizeof(len), 0);
 			SEND_CHECK(sizeof(len), "size incomplete");
-			sent = ::send(*socks[SERVER], reinterpret_cast<char const*>(kG(serialized.get())), len, 0);
+			sent = ::send(*socks[SERVER], reinterpret_cast<char const*>(kG(serialized.get())), static_cast<int>(len), 0);
 			SEND_CHECK(serialized->n, "data incomplete");
 #			undef SEND_CHECK
 
@@ -165,7 +169,8 @@ namespace Wind {
 			case eWQOthers:
 				// Detect unsubscribe and free up socket pair
 				if (pEvent->ErrCode == WQERR_USER_CANCEL) {
-					sd0(*socks[CLIENT]);
+					assert(*socks[CLIENT] <= std::numeric_limits<I>::max());
+					sd0(static_cast<I>(*socks[CLIENT]));
 					REGISTRY.erase(pEvent->RequestID);
 					delete[] socks;
 					return true;
@@ -207,13 +212,19 @@ K Wind_subscribe(::WQID(WINAPI *func)(LPCWSTR, LPCWSTR, LPCWSTR, ::IEventHandler
 		buffer << "<SockPair> " << SockPair::getError(result);
 		return q::error2q(buffer.str());
 	}
+#	if _WIN64
+	if (client > std::numeric_limits<I>::max()) {
+		return q::error2q("SOCKET address out of range for q callback invocation!");
+	}
+#	else
+	static_assert(sizeof(::SOCKET) == sizeof(I), "SOCKET vs I: type mismatch!");
+#	endif
 	using Wind::pubsub::SERVER;
 	using Wind::pubsub::CLIENT;
 	socks[SERVER].reset(server);
 	socks[CLIENT].reset(client);
 
 	// Setup subscription
-	static_assert(sizeof(::SOCKET) == sizeof(I), "SOCKET vs I: type mismatch!");
 	::WQID const qid = func(codes.c_str(), indis.c_str(), paras.c_str(),
 		&Wind::pubsub::subscribe, socks.get());
 	if (qid <= 0) {
@@ -222,7 +233,8 @@ K Wind_subscribe(::WQID(WINAPI *func)(LPCWSTR, LPCWSTR, LPCWSTR, ::IEventHandler
 		return q::error2q(buffer.str());
 	}
 	else {
-		sd1(*socks[CLIENT], &Wind::pubsub::invokeCallback);
+		assert(*socks[CLIENT] <= std::numeric_limits<I>::max());
+		sd1(static_cast<I>(*socks[CLIENT]), &Wind::pubsub::invokeCallback);
 		Wind::pubsub::REGISTRY[qid] = cb;
 		socks.release();
 		static_assert(std::is_same<::WQID, J>::value, "WQID data type mismatch");

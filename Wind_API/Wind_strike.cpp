@@ -243,10 +243,10 @@ WIND_API K K_DECL Wind_tdayscnt(K beginDate, K endDate, K params) {
 	return result.waitFor(qid);
 }
 
-WIND_API K K_DECL Wind_edb(K windCode, K beginTime, K endTime, K params) {
-	std::wstring code, begin, end, paras;
+WIND_API K K_DECL Wind_edb(K windCodes, K beginTime, K endTime, K params) {
+	std::wstring codeList, begin, end, paras;
 	try {
-		code = q::q2WString(windCode);
+		codeList = Wind::util::qList2WStringJoin(windCodes, L',');
 		begin = Wind::util::q2DateTimeStr(beginTime);
 		end = Wind::util::q2DateTimeStr(endTime);
 		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
@@ -256,7 +256,7 @@ WIND_API K K_DECL Wind_edb(K windCode, K beginTime, K endTime, K params) {
 	}
 
 	Wind::callback::Result result;
-	::WQID const qid = ::EDB(code.c_str(), begin.c_str(), end.c_str(), paras.c_str(),
+	::WQID const qid = ::EDB(codeList.c_str(), begin.c_str(), end.c_str(), paras.c_str(),
 		&Wind::callback::strike, result.dup());
 	return result.waitFor(qid);
 }

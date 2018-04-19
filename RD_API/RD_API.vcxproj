@@ -80,7 +80,7 @@
       <Command>CALL $(SolutionDir)ROBOCOPY ^
     $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF Wind_RD.q
-IF NOT EXIST $(TargetDir).rd.connect THEN (
+IF NOT EXIST $(TargetDir).rd.connect (
     CALL $(SolutionDir)ROBOCOPY ^
         $(ProjectDir)     $(TargetDir) ^
         /LEV:1 /IF .rd.connect
@@ -109,7 +109,7 @@ IF NOT EXIST $(TargetDir).rd.connect THEN (
       <Command>CALL $(SolutionDir)ROBOCOPY ^
     $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF Wind_RD.q
-IF NOT EXIST $(TargetDir).rd.connect THEN (
+IF NOT EXIST $(TargetDir).rd.connect (
     CALL $(SolutionDir)ROBOCOPY ^
         $(ProjectDir)     $(TargetDir) ^
         /LEV:1 /IF .rd.connect
@@ -142,7 +142,7 @@ IF NOT EXIST $(TargetDir).rd.connect THEN (
       <Command>CALL $(SolutionDir)ROBOCOPY ^
     $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF Wind_RD.q
-IF NOT EXIST $(TargetDir).rd.connect THEN (
+IF NOT EXIST $(TargetDir).rd.connect (
     CALL $(SolutionDir)ROBOCOPY ^
         $(ProjectDir)     $(TargetDir) ^
         /LEV:1 /IF .rd.connect
@@ -175,7 +175,7 @@ IF NOT EXIST $(TargetDir).rd.connect THEN (
       <Command>CALL $(SolutionDir)ROBOCOPY ^
     $(ProjectDir)     $(TargetDir) ^
     /LEV:1 /IF Wind_RD.q
-IF NOT EXIST $(TargetDir).rd.connect THEN (
+IF NOT EXIST $(TargetDir).rd.connect (
     CALL $(SolutionDir)ROBOCOPY ^
         $(ProjectDir)     $(TargetDir) ^
         /LEV:1 /IF .rd.connect

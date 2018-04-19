@@ -300,6 +300,11 @@ extern "C"
 	WQID        WINAPI TDQ (LPCWSTR windcodes, LPCWSTR indicators, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
     // WSET函数，取相关数据集数据，如指数成分等
     WQID        WINAPI WSET (LPCWSTR reportName, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
+    // WSES函数，取板块序列数据 <Flying>
+    WQID        WINAPI WSES (LPCWSTR windcode, LPCWSTR indicators, LPCWSTR beginTime, LPCWSTR endTime, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
+    // WSEE函数，取板块多维数据 <Flying>
+    WQID        WINAPI WSEE (LPCWSTR windcodes, LPCWSTR indicators, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
+    // WST函数，取日内跳价数据，现为单品种的当日数据
     // WPF函数，取组合管理数据
 	// portfolioName参数:证券投资组合名称
     WQID		WINAPI WPF (LPCWSTR portfolioName, LPCWSTR viewName, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);

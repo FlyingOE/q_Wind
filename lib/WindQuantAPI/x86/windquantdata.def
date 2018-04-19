@@ -1,41 +1,73 @@
+	LIBRARY	"WindQuantData"
+
 EXPORTS
- BBQ
- BktDelete
- BktEnd
- BktFocus
- BktOrder
- BktQuery
- BktShare
- BktStart
- BktStatus
- BktStrategy
- BktSummary
- CancelAllRequest
- CancelRequest
- EDB
- GetInternalStatus
- SetEventHandler
- TDQ
- TDays
- TDaysCount
- TDaysOffset
- WAppAuth
- WAppMessage
- WDataAuthQuit
- WDataAuthorize
- WEQS
- WErr
- WPD
- WPF
- WPS
- WSD
- WSED
- WSEE
- WSES
- WSET
- WSI
- WSQ
- WSS
- WST
- WUPF
- htocode
+	BBQ
+	BBQ@20				@20
+	BktDelete
+	BktEnd
+	BktFocus
+	BktOrder
+	BktQuery
+	BktShare
+	BktStart
+	BktStatus
+	BktStrategy
+	BktSummary
+	CancelAllRequest
+	CancelAllRequest@0	@31
+	CancelRequest
+	CancelRequest@8		@32
+	EDB
+	EDB@24				@33
+	GetInternalStatus
+	GetInternalStatus@0	@34
+	SetEventHandler
+	SetEventHandler@4	@35
+	TDQ
+	TDQ@20				@36
+	TDays
+	TDays@20			@37
+	TDaysCount
+	TDaysCount@20		@38
+	TDaysOffset
+	TDaysOffset@20		@39
+	WAppAuth
+	WAppAuth@20			@40
+	WAppMessage
+	WAppMessage@20		@41
+	WDataAuthQuit
+	WDataAuthQuit@0		@42
+	WDataAuthorize
+	WDataAuthorize@4	@43
+	WEQS
+	WEQS@16				@44
+	WErr
+	WErr@8				@45
+	WPD
+	WPD@28				@46
+	WPF
+	WPF@20				@47
+	WPS
+	WPS@20				@48
+	WSD
+	WSD@28				@49
+	WSED
+	WSED@				@50
+	WSEE
+	WSEE@20				@51
+	WSES
+	WSES@28				@52
+	WSET
+	WSET@16				@53
+	WSI
+	WSI@28				@54
+	WSQ
+	WSQ@20				@55
+	WSS
+	WSS@20				@56
+	WST
+	WST@28				@57
+	WUPF
+	WUPF@32				@58
+	htocode
+	htocode@20			@59

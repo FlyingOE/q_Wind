@@ -26,33 +26,22 @@ This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wi
 
 ### Build
 
-如果您使用<del>正版的Visual Studio 2013</del>Visual Studio 2015（包括社区版），则本工程只需要[Kx][]的[`k.h`][github_c]（须作[少许改动](#modification)）和[`q.lib`][github_w]即可编译通过。（如需运行单元测试项目`Test_kdb+.util`，则还额外需要[`c.lib`][github_w]和[`c.dll`][github_w]。）这些编译所需要的文件都已经包含在本项目中。
+本工程需要使用<del>正版的Visual Studio 2013</del>Visual Studio 2015（包括社区版）进行编译。
 
 <del>如果您使用的是免费版的Visual Studio Express 2013，则本工程还额外需要[Windows Driver Kit (WDK) v7.1.0][WDK]中的头文件和库方可编译。为方便直接使用，[压缩包](./packaged/)里还包括了工程编译后生成的DLL（在Release目录中）。</del>
 
-#### <a name="modification"></a>对[`k.h`][github_c]所作的改动：
+### Note
 
-1. Line 89:
+万得金融终端安装时，缺省只会把安装目录下的`bin`子目录加入到`PATH`环境变量中。这种情况下只能正常使用32位版的接口。
 
-    ```cpp
-    extern double log(double);
-    ```
-Comment out this line to avoid conflicting signature in `math.h` from MSVC <del>2013</del>2015.
-
-#### 对`Wind_API`项目所作的改动：
-
-1. `Additional Include Directories`:
-
-    Change `D:\Wind\Wind.NET.Client\WindNET\...` to the installation path of your 万得金融终端.
-2. `Additional Library Directories`:
-
-    Change `D:\Wind\Wind.NET.Client\WindNET\...` to the installation path of your 万得金融终端.
+如果需要使用64位版的接口，请务必在kdb+启动前，先把万得金融终端安装目录下的`x64`子目录加入到`PATH`环境变量最前面，以便让`q.exe`进程能在32位版本之前先找到64位版本的库。
 
 ### Change Log
 
 * 2018.04
   * Include dependent headers and libraries into the project
-  * Added support for x64 build
+  * Add support for x64 build
+  * Add support for the new `WSES` and `WSEE` functions
 * 2018.01
   * Upgraded from MSVC 2013 to 2015
   * Various bug fixes for `Wind_RD.q` module

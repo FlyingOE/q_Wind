@@ -173,6 +173,42 @@ WIND_API K K_DECL Wind_wset(K reportName, K params) {
 	return result.waitFor(qid);
 }
 
+WIND_API K K_DECL Wind_wses(K windCodes, K indicator, K beginDate, K endDate, K params) {
+	std::wstring codes, indi, begin, end, paras;
+	try {
+		codes = Wind::util::qList2WStringJoin(windCodes, L',');
+		indi = q::q2WString(indicator);
+		begin = Wind::util::q2StrOrX(beginDate, &Wind::util::q2DateStr);
+		end = Wind::util::q2StrOrX(endDate, &Wind::util::q2DateStr);
+		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
+	}
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
+	}
+
+	Wind::callback::Result result;
+	::WQID const qid = ::WSES(codes.c_str(), indi.c_str(), begin.c_str(), end.c_str(), paras.c_str(),
+		&Wind::callback::strike, result.dup());
+	return result.waitFor(qid);
+}
+
+WIND_API K K_DECL Wind_wsee(K windCodes, K indicators, K params) {
+	std::wstring codes, indis, paras;
+	try {
+		codes = Wind::util::qList2WStringJoin(windCodes, L',');
+		indis = Wind::util::qList2WStringJoin(indicators, L',');
+		paras = Wind::util::qDict2WStringMapJoin(params, L';', L'=');
+	}
+	catch (std::runtime_error const& error) {
+		return q::error2q(error.what());
+	}
+
+	Wind::callback::Result result;
+	::WQID const qid = ::WSEE(codes.c_str(), indis.c_str(), paras.c_str(),
+		&Wind::callback::strike, result.dup());
+	return result.waitFor(qid);
+}
+
 WIND_API K K_DECL Wind_htocode(K codes, K type, K params) {
 	std::wstring codeList, codeType, paras;
 	try {

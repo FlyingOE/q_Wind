@@ -169,6 +169,19 @@ unsub:DLL 2:(`Wind_cr;1);
 /q) .wind.unsubAll[]
 unsubAll:DLL 2:(`Wind_car;1);
 
+/q) .wind.WSES[`1000011262000000;`sec_close_avg;.z.D-100;.z.D;(1#`DynamicTime)!1#0]
+/q) .wind.WSES[`1000011262000000`1000011263000000`1000011264000000;`sec_close_avg;.z.D-100;.z.D;(1#`DynamicTime)!1#1]
+WSES:{[F;c;i;b;e;p]
+    impl.windHack update`date$ts,`$code from
+        impl.quantData2Table F[(),c;i;b;e;impl.dict2Strings p]
+  }DLL 2:(`Wind_wses;5);
+
+/q) .wind.WSEE[`1000011262000000`1000011263000000`1000011264000000;`sec_close_avg`sec_turn_avg;`tradeDate`endDate`unit`DynamicTime!(-1 0+.z.D),1 0]
+WSEE:{[F;c;i;p]
+    impl.windHack update`$code from
+        impl.quantData2Table F[(),c;(),i;impl.dict2Strings p]
+  }DLL 2:(`Wind_wsee;3);
+
 /q) .wind.h2code[`000001                ;`stocka;()]
 /q) .wind.h2code[`000001`600000         ;`stocka;()]
 /q) .wind.h2code[`IC00`A1705            ;`future;()]
@@ -202,6 +215,7 @@ tDaysCount:{[F;b;e;p]
   }DLL 2:(`Wind_tdayscnt;3);
 
 /q) .wind.EDB[`M0009808;2011.01.01;2015.06.29;()]
+/q) .wind.EDB[`M0009808`M0009809;2011.01.01;2015.06.29;()]
 EDB:{[F;c;b;e;p]
     delete ts,code from update date:"d"$ts,sym:`$code from
         impl.quantData2Table F[(),c;b;e;impl.dict2Strings p]

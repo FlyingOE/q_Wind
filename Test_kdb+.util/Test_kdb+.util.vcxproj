@@ -88,7 +88,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\q_Wind;$(SolutionDir)inc\q;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\;$(SolutionDir)..\q_Wind\;$(SolutionDir)..\q_Wind\inc\q\;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NO_Q_LIB;WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -98,11 +98,15 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;$(SolutionDir)..\q_Wind\lib\q\$(PlatformTarget)\;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Message>Copy c.dll to test directory</Message>
-      <Command>XCOPY $(SolutionDir)lib\q\$(PlatformTarget)\c.dll $(TargetDir) /F /Y</Command>
+      <Command>IF EXIST $(SolutionDir)lib\q\$(PlatformTarget)\ (
+    XCOPY $(SolutionDir)lib\q\$(PlatformTarget)\c.dll $(TargetDir) /F /Y
+) ELSE (
+    XCOPY $(SolutionDir)..\q_Wind\lib\q\$(PlatformTarget)\c.dll $(TargetDir) /F /Y
+)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,7 +114,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\q_Wind;$(SolutionDir)inc\q;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\;$(SolutionDir)..\q_Wind\;$(SolutionDir)..\q_Wind\inc\q\;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NO_Q_LIB;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -120,11 +124,15 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;$(SolutionDir)..\q_Wind\lib\q\$(PlatformTarget)\;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Message>Copy c.dll to test directory</Message>
-      <Command>XCOPY $(SolutionDir)lib\q\$(PlatformTarget)\c.dll $(TargetDir) /F /Y</Command>
+      <Command>IF EXIST $(SolutionDir)lib\q\$(PlatformTarget)\ (
+    XCOPY $(SolutionDir)lib\q\$(PlatformTarget)\c.dll $(TargetDir) /F /Y
+) ELSE (
+    XCOPY $(SolutionDir)..\q_Wind\lib\q\$(PlatformTarget)\c.dll $(TargetDir) /F /Y
+)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -134,7 +142,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\q_Wind;$(SolutionDir)inc\q;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\;$(SolutionDir)..\q_Wind\;$(SolutionDir)..\q_Wind\inc\q\;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NO_Q_LIB;WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -145,11 +153,15 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;$(SolutionDir)..\q_Wind\lib\q\$(PlatformTarget)\;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Message>Copy c.dll to test directory</Message>
-      <Command>XCOPY $(SolutionDir)lib\q\$(PlatformTarget)\c.dll $(TargetDir) /F /Y</Command>
+      <Command>IF EXIST $(SolutionDir)lib\q\$(PlatformTarget)\ (
+    XCOPY $(SolutionDir)lib\q\$(PlatformTarget)\c.dll $(TargetDir) /F /Y
+) ELSE (
+    XCOPY $(SolutionDir)..\q_Wind\lib\q\$(PlatformTarget)\c.dll $(TargetDir) /F /Y
+)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -159,7 +171,7 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\q_Wind;$(SolutionDir)inc\q;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\;$(SolutionDir)..\q_Wind\;$(SolutionDir)..\q_Wind\inc\q\;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NO_Q_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
       <TreatWarningAsError>true</TreatWarningAsError>
@@ -170,11 +182,15 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;$(SolutionDir)..\q_Wind\lib\q\$(PlatformTarget)\;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Message>Copy c.dll to test directory</Message>
-      <Command>XCOPY $(SolutionDir)lib\q\$(PlatformTarget)\c.dll $(TargetDir) /F /Y</Command>
+      <Command>IF EXIST $(SolutionDir)lib\q\$(PlatformTarget)\ (
+    XCOPY $(SolutionDir)lib\q\$(PlatformTarget)\c.dll $(TargetDir) /F /Y
+) ELSE (
+    XCOPY $(SolutionDir)..\q_Wind\lib\q\$(PlatformTarget)\c.dll $(TargetDir) /F /Y
+)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

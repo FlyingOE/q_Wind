@@ -19,8 +19,8 @@
 #pragma comment(lib, "q.lib")
 
 // kdb+ provided okx() support since 3.2 2015.03.05. Set this to 0 for older versions.
-//@ref http://code.kx.com/wiki/Cookbook/InterfacingWithC#Serialization.2FDeserialization
-//@ref https://groups.google.com/forum/#!topic/personal-kdbplus/pjsugT7590A
+//@see http://code.kx.com/wiki/Cookbook/InterfacingWithC#Serialization.2FDeserialization
+//@see https://groups.google.com/forum/#!topic/personal-kdbplus/pjsugT7590A
 #define KX_USE_OKX	0
 
 #ifdef __cplusplus

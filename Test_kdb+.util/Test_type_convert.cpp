@@ -558,7 +558,7 @@ namespace Test_q
 			Assert::AreEqual(5703.5250254166667, q::DATE2q(42229.5250254166667), EPSILON,
 				L"DATE(2015.08.13T12:36:02.196) => D", LINE_INFO());
 
-			//@ref https://msdn.microsoft.com/en-us/library/82ab7w69.aspx
+			//@see https://msdn.microsoft.com/en-us/library/82ab7w69.aspx
 #			pragma region
 			Assert::AreEqual(-36529., q::DATE2q(-3.), EPSILON,
 				L"DATE(1899.12.27T00:00) => D", LINE_INFO());
@@ -609,7 +609,7 @@ namespace Test_q
 			Assert::AreEqual(42229.5250254166667, q::q2DATE(d.get()), EPSILON,
 				L"D(2015.08.13T12:36:02.196) => DATE", LINE_INFO());
 
-			//@ref https://msdn.microsoft.com/en-us/library/82ab7w69.aspx
+			//@see https://msdn.microsoft.com/en-us/library/82ab7w69.aspx
 #			pragma region
 			d.reset(kz(q::DATE2q(-3.)));
 			Assert::AreEqual(-3., q::q2DATE(d.get()), EPSILON,

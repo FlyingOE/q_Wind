@@ -8,6 +8,6 @@
 #include <SDKDDKVer.h>
 
 /*
-//@ref http://stackoverflow.com/questions/17102770/using-the-windows-8-sdk-to-compile-for-windows-7/
+//@see http://stackoverflow.com/questions/17102770/using-the-windows-8-sdk-to-compile-for-windows-7/
 #define _WIN32_WINNT	0x0601
 */

@@ -5,7 +5,7 @@
 #include <string>
 
 #ifdef _MSC_VER
-//@ref https://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k(C4290);k(VS.ErrorList)&rd=true
+//@see https://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k(C4290);k(VS.ErrorList)&rd=true
 #pragma warning(disable: 4290)
 #endif
 

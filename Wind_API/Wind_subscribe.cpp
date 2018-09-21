@@ -82,7 +82,7 @@ namespace Wind {
 
 			// Deserialize K object
 #			if KX_USE_OKX
-			//@ref https://groups.google.com/forum/#!topic/personal-kdbplus/pjsugT7590A
+			//@see https://groups.google.com/forum/#!topic/personal-kdbplus/pjsugT7590A
 			if (!okx(serialized.get())) {
 				std::cerr << "<recv> bad data: ["
 					<< ::util::hexBytes(&kG(serialized.get())[0], static_cast<size_t>(serialized->n))

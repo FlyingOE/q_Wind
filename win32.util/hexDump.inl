@@ -14,7 +14,7 @@ util::hexByteGenerator util::hexBytes(T const& p) {
 	return hexBytes(reinterpret_cast<hexByteGenerator::iterator>(&p), sizeof(p), true);
 }
 
-//@ref http://stackoverflow.com/questions/10599068/how-do-i-print-bytes-as-hexadecimal
+//@see http://stackoverflow.com/questions/10599068/how-do-i-print-bytes-as-hexadecimal
 template <typename Char, typename Traits>
 std::basic_ostream<Char, Traits>& util::operator<<(std::basic_ostream<Char, Traits>& os, util::hexByteGenerator const& hex) {
 	hexByteGenerator::iterator begin, end;

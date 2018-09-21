@@ -6,7 +6,7 @@
 #include <vector>
 
 // Mapping between enum and string
-//@ref http://www.codeproject.com/Articles/42035/Enum-to-String-and-Vice-Versa-in-C
+//@see http://www.codeproject.com/Articles/42035/Enum-to-String-and-Vice-Versa-in-C
 
 
 #define BEGIN_ENUM_STRING(E)	\

@@ -6,7 +6,7 @@
 #include "win32.util/CodeConvert.h"
 #include <cassert>
 #ifdef _MSC_VER
-//@ref https://msdn.microsoft.com/en-us/library/dn607301.aspx
+//@see https://msdn.microsoft.com/en-us/library/dn607301.aspx
 #include <iterator>	//MSVC: stdext::make_unchecked_array_iterator
 #endif
 #include <sstream>
@@ -27,7 +27,7 @@ std::string Wind::util::error2Text(::WQErr error) {
 
 char const* Wind::util::eventType2Text(::WQEventType type) {
 	static char const* EVENT_TYPES[] = {
-		NULL,	//@ref WindQuantAPI.h
+		NULL,	//@see WindQuantAPI.h
 		"eWQLogin",
 		"eWQResponse",
 		"eWQPartialResponse",

@@ -20,7 +20,7 @@ namespace util {
 	template <typename Char>
 	std::vector<std::basic_string<Char> > split(Char const* str, Char delim);
 
-	//@ref http://stackoverflow.com/questions/4261673/templates-and-string-literals-and-unicode
+	//@see http://stackoverflow.com/questions/4261673/templates-and-string-literals-and-unicode
 #	define LITERAL(Char, x) ::util::literal_traits<Char>::choose(x, L##x)
 	template <typename Char>
 	struct literal_traits {

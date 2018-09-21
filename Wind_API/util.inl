@@ -6,7 +6,7 @@ static_assert(0, "Include Wind_API/util.h instead!");
 #include <cassert>
 #include <algorithm>
 #ifdef _MSC_VER
-//@ref https://msdn.microsoft.com/en-us/library/dn607301.aspx
+//@see https://msdn.microsoft.com/en-us/library/dn607301.aspx
 #include <iterator>	//MSVC: stdext::make_unchecked_array_iterator
 #endif
 #include <memory>	//C++11: std::unique_ptr<>

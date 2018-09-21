@@ -120,7 +120,7 @@ bool SockPair::finalize() {
 	return true;
 }
 
-//@ref https://github.com/ncm/selectable-socketpair/
+//@see https://github.com/ncm/selectable-socketpair/
 int SockPair::make_socket_pair(::SOCKET& svr, ::SOCKET& clt) {
 	svr = clt = INVALID_SOCKET;
 

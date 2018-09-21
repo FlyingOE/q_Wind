@@ -7,7 +7,7 @@
 Wind::MatrixDataParser::MatrixDataParser(::VARIANT const& array) : data_(array) {
 }
 
-//@ref struct Wind::MatrixDataParser::qTypeTraits<::VARIANT>
+//@see struct Wind::MatrixDataParser::qTypeTraits<::VARIANT>
 K Wind::MatrixDataParser::parse() const throw() {
 	if ((data_.vt & ::VT_ARRAY) != ::VT_ARRAY) {
 		return q::error2q("Wind MatrixData is not an array");

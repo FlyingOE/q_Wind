@@ -8,7 +8,7 @@
 #include <ctime>
 
 // Utilities to deal with q datetime/timestamp data types in C.
-//@ref http://code.kx.com/wiki/Cookbook/InterfacingWithC#Strings_and_datetimes
+//@see http://code.kx.com/wiki/Cookbook/InterfacingWithC#Strings_and_datetimes
 namespace q {
 	namespace Cookbook {
 

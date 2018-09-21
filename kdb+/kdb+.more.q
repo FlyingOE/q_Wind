@@ -46,7 +46,7 @@ round:{x*"j"$y%x};
 scale:{round[y;]z%x};
 
 // Exponential average
-/@ref http://www.timestored.com/b/exponential-moving-average-ema-kdb/
+/@see http://www.timestored.com/b/exponential-moving-average-ema-kdb/
 $[(.z.K>=3.4)and(.z.k>=2016.06.05);
 	.math.ema:ema;
 	.math.ema:.q.ema:$[(.z.K>=3.1)and(.z.k>=2013.07.07);

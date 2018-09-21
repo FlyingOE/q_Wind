@@ -563,7 +563,7 @@ std::time_t tm2time_t(std::tm const& tm) {
 	if (!::SystemTimeToFileTime(&systime, &filetime))
 		return static_cast<std::time_t>(-1);
 
-	//@ref https://support.microsoft.com/en-us/kb/167296
+	//@see https://support.microsoft.com/en-us/kb/167296
 	LONGLONG const result = *reinterpret_cast<LONGLONG*>(&filetime) / 10000000LL - 11644473600LL;
 	if ((std::numeric_limits<std::time_t>::min() > result) || (result > std::numeric_limits<std::time_t>::max()))
 		return static_cast<std::time_t>(-1);
@@ -588,7 +588,7 @@ q::tm_ext time_t2tm(std::time_t const time, int millis = 0) {
 #	ifdef _MSC_VER
 
 	//NOTE: MSVC's <time.h> cannot handle anything before Unix epoch! Use Win32 API instead.
-	//@ref https://support.microsoft.com/en-us/kb/167296
+	//@see https://support.microsoft.com/en-us/kb/167296
 	LONGLONG ft64 = time * 10000000LL + millis * 10000LL + 116444736000000000LL;
 	::FILETIME filetime = {
 		static_cast<DWORD>(ft64),
@@ -624,8 +624,8 @@ int const MONTH_DAYS[] = {
 	0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365,
 	std::numeric_limits<int>::max() };
 
-//@ref http://www.codeguru.com/cpp/cpp/cpp_mfc/article.php/c765/An-ATL-replacement-for-COleDateTime.htm
-//@ref http://www.codeproject.com/Articles/144159/Time-Format-Conversion-Made-Easy
+//@see http://www.codeguru.com/cpp/cpp/cpp_mfc/article.php/c765/An-ATL-replacement-for-COleDateTime.htm
+//@see http://www.codeproject.com/Articles/144159/Time-Format-Conversion-Made-Easy
 F q::DATE2q(::DATE date) throw(std::runtime_error) {
 	// Negative DATEs are not continuous!
 	if (date < 0) {
@@ -732,8 +732,8 @@ F q::DATE2q(::DATE date) throw(std::runtime_error) {
 	return Cookbook::zu(time + (nSecs - nSecsOnly));
 }
 
-//@ref http://www.codeguru.com/cpp/cpp/cpp_mfc/article.php/c765/An-ATL-replacement-for-COleDateTime.htm
-//@ref http://www.codeproject.com/Articles/144159/Time-Format-Conversion-Made-Easy
+//@see http://www.codeguru.com/cpp/cpp/cpp_mfc/article.php/c765/An-ATL-replacement-for-COleDateTime.htm
+//@see http://www.codeproject.com/Articles/144159/Time-Format-Conversion-Made-Easy
 ::DATE q::q2DATE(K d) throw(std::runtime_error) {
 	tm_ext const tm = q2tm(d);
 	int const year = tm.tm_year + 1900;

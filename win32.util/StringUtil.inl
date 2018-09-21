@@ -9,7 +9,7 @@ std::basic_string<Char, Traits, Alloc>& util::replaceAll(std::basic_string<Char,
 	return replaceAll(str, std::basic_string<Char, Traits, Alloc>(probe), std::basic_string<Char, Traits, Alloc>(repl));
 }
 
-//@ref http://stackoverflow.com/questions/1494399/how-do-i-search-find-and-replace-in-a-standard-string
+//@see http://stackoverflow.com/questions/1494399/how-do-i-search-find-and-replace-in-a-standard-string
 template <typename Char, typename Traits, typename Alloc>
 std::basic_string<Char, Traits, Alloc>& util::replaceAll(
 	std::basic_string<Char, Traits, Alloc>& str,
@@ -23,7 +23,7 @@ std::basic_string<Char, Traits, Alloc>& util::replaceAll(
 	return str;
 }
 
-//@ref http://stackoverflow.com/questions/236129/split-a-string-in-c
+//@see http://stackoverflow.com/questions/236129/split-a-string-in-c
 template <typename Char, typename Traits, typename Alloc>
 std::vector<std::basic_string<Char, Traits, Alloc> > util::split(
 	std::basic_string<Char, Traits, Alloc> const&str, Char delim)

@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "COMWrapper.h"
 
-//@ref https://code.msdn.microsoft.com/office/CppAutomateExcel-be36992e
-//@ref https://support.microsoft.com/en-us/kb/196776
+//@see https://code.msdn.microsoft.com/office/CppAutomateExcel-be36992e
+//@see https://support.microsoft.com/en-us/kb/196776
 #include "CodeConvert.h"
 #include "hexDump.h"
 #include <cassert>
@@ -22,7 +22,7 @@ std::string com::getError(::HRESULT const& hr) {
 	return buffer.str();
 }
 
-//@ref https://support.microsoft.com/en-us/kb/216686
+//@see https://support.microsoft.com/en-us/kb/216686
 bool com::Initialize() {
 	::HRESULT const result = ::CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 	switch (result) {

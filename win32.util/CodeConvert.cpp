@@ -87,7 +87,7 @@ std::string ml::convert(UINT toCP, wchar_t const* inUcs) throw(std::runtime_erro
 	return &outStr[0];
 }
 
-//@ref http://blog.csdn.net/xiaohu_2012/article/details/14454299
+//@see http://blog.csdn.net/xiaohu_2012/article/details/14454299
 std::string ml::convert(UINT frCP, UINT toCP, char const* inStr) throw(std::runtime_error) {
 	return convert(toCP, convert(frCP, inStr).c_str());
 }

@@ -72,7 +72,7 @@ struct Wind::MatrixDataParser::qTypeTraits<::BSTR> : q::type_traits<void> {
 	}
 };
 
-//@ref Wind::MatrixDataParser::parse()
+//@see Wind::MatrixDataParser::parse()
 template <>
 struct Wind::MatrixDataParser::qTypeTraits<::VARIANT> : q::type_traits<void> {
 	static K convert(::VARIANT const& x) {

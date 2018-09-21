@@ -6,7 +6,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace Test_ml
 {
-	//@ref http://chars.suikawiki.org/string?s=
+	//@see http://chars.suikawiki.org/string?s=
 	TEST_CLASS(Test_multilang)
 	{
 	public:

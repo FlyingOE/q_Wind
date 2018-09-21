@@ -147,6 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cookbook.inl" />
+    <ClInclude Include="init.h" />
     <ClInclude Include="types.h" />
     <ClInclude Include="type_convert.h" />
     <ClInclude Include="util.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="type_traits.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="init.cpp" />
     <ClCompile Include="type_convert.cpp" />
     <ClCompile Include="type_traits.cpp" />
     <ClCompile Include="util.cpp" />

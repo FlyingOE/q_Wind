@@ -1,6 +1,5 @@
 #ifndef __K_PTR_H__
 #define __K_PTR_H__
-#pragma comment(lib, "kdb+.util.lib")
 
 #include "types.h"
 

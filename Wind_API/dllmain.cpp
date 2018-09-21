@@ -2,6 +2,7 @@
 #include "stdafx.h"
 
 #include "Wind_API.h"
+#include "kdb+.util/init.h"
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
@@ -12,19 +13,18 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 	switch (ul_reason_for_call)
 	{
 	case DLL_PROCESS_ATTACH:
-		//@see https://msdn.microsoft.com/en-us/library/aa370448(v=vs.85).aspx
-		::DisableThreadLibraryCalls(hModule);
-		setm(1);
+		q::onAttachProcess();
 		status = Wind::prepare();
 		break;
 	case DLL_THREAD_ATTACH:
+		q::onAttachThread();
 		break;
 	case DLL_THREAD_DETACH:
-		// Free up kdb+ memory allocated for the thread's pool
-		m9();
+		q::onDetachThread();
 		break;
 	case DLL_PROCESS_DETACH:
 		status = Wind::finalize();
+		q::onDetachProcess();
 		break;
 	}
 	return status;

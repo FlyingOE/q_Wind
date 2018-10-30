@@ -6,6 +6,7 @@
 
 #include <cassert>
 #include <algorithm>
+#include <sstream>
 
 namespace q {
 	namespace impl {
@@ -29,4 +30,10 @@ K q::error2q(wchar_t const* error, bool isSystemError, UINT toCP) throw() {
 
 K q::error2q(std::wstring const& error, bool isSystemError, UINT toCP) throw() {
 	return error2q(error.c_str(), isSystemError, toCP);
+}
+
+K q::version(char const* gitId) throw() {
+	std::ostringstream buffer;
+	buffer << gitId << " @ " __DATE__ " " __TIME__;
+	return kp(const_cast<S>(buffer.str().c_str()));
 }

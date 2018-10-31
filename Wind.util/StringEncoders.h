@@ -1,6 +1,5 @@
 #ifndef __STRINGENCODERS_H__
 #define __STRINGENCODERS_H__
-#pragma comment(lib, "Wind.util.lib")
 
 #include <string>
 
@@ -24,5 +23,11 @@ namespace Wind {
 }//namespace Wind
 
 #include "StringEncoders.inl"
+
+#ifdef NDEBUG
+#	pragma comment(lib, "Wind.util.lib")
+#else
+#	pragma comment(lib, "Wind.utild.lib")
+#endif
 
 #endif//__STRINGENCODERS_H__

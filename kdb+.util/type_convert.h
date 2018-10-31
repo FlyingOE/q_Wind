@@ -1,6 +1,5 @@
 #ifndef __TYPE_CONVERT_H__
 #define __TYPE_CONVERT_H__
-#pragma comment(lib, "kdb+.util.lib")
 
 #include "multilang.h"
 
@@ -67,5 +66,11 @@ namespace q {
 }//namespace q
 
 #include "Cookbook.inl"
+
+#ifdef NDEBUG
+#	pragma comment(lib, "kdb+.util.lib")
+#else
+#	pragma comment(lib, "kdb+.utild.lib")
+#endif
 
 #endif//__TYPE_CONVERT_H__

@@ -1,6 +1,5 @@
 #ifndef __MULTILANG_H__
 #define __MULTILANG_H__
-#pragma comment(lib, "kdb+.util.lib")
 
 #include <string>
 
@@ -20,5 +19,11 @@ namespace q {
 	K convert(UINT frCP, UINT toCP, K str) throw();
 
 }//namespace q
+
+#ifdef NDEBUG
+#	pragma comment(lib, "kdb+.util.lib")
+#else
+#	pragma comment(lib, "kdb+.utild.lib")
+#endif
 
 #endif//__MULTILANG_H__

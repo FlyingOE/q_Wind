@@ -1,6 +1,5 @@
 #ifndef __KDB__UTIL_H__
 #define __KDB__UTIL_H__
-#pragma comment(lib, "kdb+.util.lib")
 
 #include "multilang.h"
 
@@ -23,5 +22,11 @@ namespace q {
 }//namespace q
 
 #include "util.inl"
+
+#ifdef NDEBUG
+#	pragma comment(lib, "kdb+.util.lib")
+#else
+#	pragma comment(lib, "kdb+.utild.lib")
+#endif
 
 #endif//__KDB__UTIL_H__

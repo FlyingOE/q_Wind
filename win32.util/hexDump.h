@@ -1,6 +1,5 @@
 #ifndef __HEXDUMP_H__
 #define __HEXDUMP_H__
-#pragma comment(lib, "win32.util.lib")
 
 #include "msvc.h"
 
@@ -36,5 +35,11 @@ namespace util {
 }//namespace util
 
 #include "hexDump.inl"
+
+#ifdef NDEBUG
+#	pragma comment(lib, "win32.util.lib")
+#else
+#	pragma comment(lib, "win32.utild.lib")
+#endif
 
 #endif//__HEXDUMP_H__

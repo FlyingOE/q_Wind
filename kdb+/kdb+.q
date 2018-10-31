@@ -1,8 +1,9 @@
 \d .CE
 
 / Path to {@literal kdb+.dll}<p>
-/ NOTE: When loaded from within TorQ, a {@literal $KDBLIB}-based path is constructed. 
-DLL:hsym`${$[x~"";"";x,y]}[getenv[`KDBLIB];"/",string[.z.o],"/"],"kdb+"
+/ NOTE: When loaded from within TorQ, a {@literal $KDBLIB}-based path is constructed.<p>
+/ NOTE: When global {@code NDEBUG} is defined to be 0b, debug DLL will be loaded instead.
+DLL:hsym`${$[x~"";"";x,y]}[getenv[`KDBLIB];"/",string[.z.o],"/"],"kdb+",$[@[value;`..NDEBUG;{1b}];"";"d"]
 
 / Version of {@literal kdb+.dll}
 version:DLL 2:(`version;1);

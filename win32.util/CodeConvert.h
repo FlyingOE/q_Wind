@@ -1,6 +1,5 @@
 #ifndef __CODECONVERT_H__
 #define __CODECONVERT_H__
-#pragma comment(lib, "win32.util.lib")
 
 #include <string>
 #include <stdexcept>
@@ -24,5 +23,11 @@ namespace ml {
 	std::string  convert(UINT frCP, UINT toCP, char const* inStr) throw(std::runtime_error);
 
 }//namespace ml
+
+#ifdef NDEBUG
+#	pragma comment(lib, "win32.util.lib")
+#else
+#	pragma comment(lib, "win32.utild.lib")
+#endif
 
 #endif//__CODECONVERT_H__

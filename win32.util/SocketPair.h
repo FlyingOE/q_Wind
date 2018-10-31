@@ -1,6 +1,5 @@
 #ifndef __SOCKETPAIR_H__
 #define __SOCKETPAIR_H__
-#pragma comment(lib, "win32.util.lib")
 
 #include <WS2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
@@ -28,5 +27,11 @@ namespace SockPair {
 	int make_socket_pair(::SOCKET& svr, ::SOCKET& clt);
 
 }//namespace SockPair
+
+#ifdef NDEBUG
+#	pragma comment(lib, "win32.util.lib")
+#else
+#	pragma comment(lib, "win32.utild.lib")
+#endif
 
 #endif//__SOCKETPAIR_H__

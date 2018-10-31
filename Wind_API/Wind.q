@@ -8,7 +8,8 @@
 
 / Path to {@literal Wind_API.dll}<p>
 / NOTE: When loaded from within TorQ, a {@literal $KDBLIB}-based path is constructed.
-DLL:hsym`${$[x~"";"";x,y]}[getenv[`KDBLIB];"/",string[.z.o],"/"],"Wind_API"
+/ NOTE: When global {@code NDEBUG} is defined to be 0b, debug DLL will be loaded instead.
+DLL:hsym`${$[x~"";"";x,y]}[getenv[`KDBLIB];"/",string[.z.o],"/"],"Wind_API",$[@[value;`..NDEBUG;{1b}];"";"d"]
 
 / Version of {@literal Wind_API.dll}
 version:DLL 2:(`version;1);

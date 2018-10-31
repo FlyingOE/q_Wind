@@ -3,6 +3,7 @@
 \c 25 2000
 
 // Load Wind_API
+NDEBUG:0b
 /system" "sv("cd";1_string LIB_DIR)
 \l kdb+.q
 \l Wind.q

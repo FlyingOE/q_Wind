@@ -22,7 +22,6 @@
     <ProjectGuid>{41577929-CFDA-42D7-9A03-8F77023A8D8A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Test_Wind_API</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

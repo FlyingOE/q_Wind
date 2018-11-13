@@ -94,11 +94,14 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
       <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;$(SolutionDir)..\q_Wind\lib\q\$(PlatformTarget)\;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Message>Copy c.dll to test directory</Message>
@@ -120,11 +123,14 @@
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
       <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;$(SolutionDir)..\q_Wind\lib\q\$(PlatformTarget)\;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Message>Copy c.dll to test directory</Message>
@@ -147,6 +153,8 @@
       <UseFullPaths>true</UseFullPaths>
       <TreatWarningAsError>true</TreatWarningAsError>
       <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -154,6 +162,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;$(SolutionDir)..\q_Wind\lib\q\$(PlatformTarget)\;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Message>Copy c.dll to test directory</Message>
@@ -176,6 +185,8 @@
       <UseFullPaths>true</UseFullPaths>
       <TreatWarningAsError>true</TreatWarningAsError>
       <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -183,6 +194,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;$(SolutionDir)..\q_Wind\lib\q\$(PlatformTarget)\;$(VCInstallDir)UnitTest\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Message>Copy c.dll to test directory</Message>

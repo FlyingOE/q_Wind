@@ -92,11 +92,14 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\TDB_C++_v3\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).Release\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>
@@ -137,11 +140,14 @@ IF NOT EXIST $(TargetDir).tdb3.connect (
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\TDB_C++_v3\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).Release\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>
@@ -183,6 +189,8 @@ IF NOT EXIST $(TargetDir).tdb3.connect (
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\TDB_C++_v3\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -190,6 +198,7 @@ IF NOT EXIST $(TargetDir).tdb3.connect (
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).Release\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>
@@ -231,6 +240,8 @@ IF NOT EXIST $(TargetDir).tdb3.connect (
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\TDB_C++_v3\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -238,6 +249,7 @@ IF NOT EXIST $(TargetDir).tdb3.connect (
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\TDB_C++_v3\$(PlatformTarget).Release\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Message>Copy DLL &amp; driver script(s) to project directory</Message>

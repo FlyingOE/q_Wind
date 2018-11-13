@@ -83,6 +83,9 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <EnablePREfast>true</EnablePREfast>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -90,6 +93,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\</AdditionalLibraryDirectories>
+      <TreatLibWarningAsErrors>true</TreatLibWarningAsErrors>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -101,6 +105,9 @@
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <EnablePREfast>true</EnablePREfast>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -108,6 +115,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\</AdditionalLibraryDirectories>
+      <TreatLibWarningAsErrors>true</TreatLibWarningAsErrors>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -120,6 +128,9 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -129,6 +140,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\</AdditionalLibraryDirectories>
+      <TreatLibWarningAsErrors>true</TreatLibWarningAsErrors>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -141,6 +153,9 @@
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,6 +165,7 @@
     </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\</AdditionalLibraryDirectories>
+      <TreatLibWarningAsErrors>true</TreatLibWarningAsErrors>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>

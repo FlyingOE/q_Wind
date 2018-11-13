@@ -92,11 +92,14 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\q_Wind\;$(SolutionDir)inc\q\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST $(SolutionDir)..\..\code\ (
@@ -131,11 +134,14 @@ CALL $(SolutionDir)ROBOCOPY ^
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\q_Wind\;$(SolutionDir)inc\q\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST $(SolutionDir)..\..\code\ (
@@ -171,6 +177,8 @@ CALL $(SolutionDir)ROBOCOPY ^
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\q_Wind\;$(SolutionDir)inc\q\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -178,6 +186,7 @@ CALL $(SolutionDir)ROBOCOPY ^
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST $(SolutionDir)..\..\code\ (
@@ -213,6 +222,8 @@ CALL $(SolutionDir)ROBOCOPY ^
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)..\q_Wind\;$(SolutionDir)inc\q\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -220,6 +231,7 @@ CALL $(SolutionDir)ROBOCOPY ^
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST $(SolutionDir)..\..\code\ (

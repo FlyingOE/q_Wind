@@ -92,11 +92,14 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\WindQuantAPI\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\WindQuantAPI\$(PlatformTarget)\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST $(SolutionDir)..\..\code\ (
@@ -136,11 +139,14 @@ IF NOT EXIST $(TargetDir).wind.pass (
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\WindQuantAPI\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\WindQuantAPI\$(PlatformTarget)\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST $(SolutionDir)..\..\code\ (
@@ -181,6 +187,8 @@ IF NOT EXIST $(TargetDir).wind.pass (
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\WindQuantAPI\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -188,6 +196,7 @@ IF NOT EXIST $(TargetDir).wind.pass (
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\WindQuantAPI\$(PlatformTarget)\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST $(SolutionDir)..\..\code\ (
@@ -228,6 +237,8 @@ IF NOT EXIST $(TargetDir).wind.pass (
       <SDLCheck>true</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\WindQuantAPI\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -235,6 +246,7 @@ IF NOT EXIST $(TargetDir).wind.pass (
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(TargetDir);$(SolutionDir)lib\WindQuantAPI\$(PlatformTarget)\;$(SolutionDir)lib\q\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
+      <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST $(SolutionDir)..\..\code\ (

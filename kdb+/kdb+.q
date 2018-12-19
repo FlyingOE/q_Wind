@@ -33,7 +33,7 @@ utf8_gb18030:lineOrLines .CE.DLL 2:(`utf8_gb18030;1);
                4096 64 1*     -224 -128 -128+;
         262144 4096 64 1*-240 -128 -128 -128+);
     sum each map[count each x]@'"j"$x
-    }.text.split@;
+  }.text.split@;
 
 / Encode a UTF-8 string using JSON/JavaScript {@literal \u} escape sequence
 .j.escape:raze{raze$[x<128;"c"$x;"\\u",string{1_x}/[0=first@;0x0 vs x]]}each utf8_unicode@;
@@ -42,8 +42,13 @@ utf8_gb18030:lineOrLines .CE.DLL 2:(`utf8_gb18030;1);
 
 / Current Working Directory
 cwd:@[value;`.os.cwd;{
-	$[.z.o like"w*";.CE.DLL 2:(`cwd;1);{first system"pwd"}]
-	}];
+    $[.z.o like"w*";.CE.DLL 2:(`cwd;1);{first system"pwd"}]
+  }];
+
+/ Current Executable's Directory
+exepath:@[value;`.os.exedir;{
+    $[.z.o like"w*";.CE.DLL 2:(`exepath;1);{'"readlink /proc/<pid>/exe!"}]
+  }];
 
 \d .
 0N!(.CE.DLL;.CE.version[]);

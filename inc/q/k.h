@@ -86,7 +86,11 @@ extern K ee(K),ktj(I,J),ka(I),kb(I),kg(I),kh(I),ki(I),kj(J),ke(F),kf(F),kc(I),ks
 #define nf (log(-1.0))
 #define wf (-log(0.0))
 #define finite _finite
+//freddie.wu >>>
+#if !(_MSC_VER>0)		//FIXME: conflict with MSVC!
 extern double log(double);
+#endif
+//freddie.wu <<<
 #else  
 #define nf (0/0.0)
 #define wf (1/0.0)

@@ -31,6 +31,7 @@ extern "C" {
 	KDB_API K K_DECL utf8_gb18030(K strUTF);
 
 	KDB_API K K_DECL cwd(K/*NOTE: at least one argument required by 2:!*/);
+	KDB_API K K_DECL exepath(K/*NOTE: at least one argument required by 2:!*/);
 
 	KDB_API K K_DECL version(K/*NOTE: at least one argument required by 2:!*/);
 

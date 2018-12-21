@@ -4,6 +4,28 @@
 #include <cassert>
 #include <iostream>
 #include <sstream>
+#include <atomic>
+
+namespace {
+	volatile std::atomic_int init_level = 0;
+}
+
+bool SockPair::prepare() {
+	if (0 < init_level++) return true;
+	::WSADATA wsaData;
+	int result = ::WSAStartup(MAKEWORD(2, 2), &wsaData);
+	if (result != 0) {
+		std::cerr << "<WSAStartup> init failure: " << getError(result) << std::endl;
+		return false;
+	}
+	return true;
+}
+
+bool SockPair::finalize() {
+	if (0 < --init_level) return true;
+	::WSACleanup();
+	return true;
+}
 
 SockPair::SOCKET_ptr::SOCKET_ptr(::SOCKET socket) : socket_(socket) {
 }
@@ -103,21 +125,6 @@ char const* SockPair::getError(int error) {
 	buffer << "unknown error " << error;
 	ERROR_MSG = buffer.str();
 	return ERROR_MSG.c_str();
-}
-
-bool SockPair::prepare() {
-	::WSADATA wsaData;
-	int result = ::WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (result != 0) {
-		std::cerr << "<WSAStartup> init failure: " << getError(result) << std::endl;
-		return false;
-	}
-	return true;
-}
-
-bool SockPair::finalize() {
-	::WSACleanup();
-	return true;
 }
 
 //@see https://github.com/ncm/selectable-socketpair/

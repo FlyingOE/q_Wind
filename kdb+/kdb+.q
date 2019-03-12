@@ -38,6 +38,11 @@ utf8_gb18030:lineOrLines .CE.DLL 2:(`utf8_gb18030;1);
 / Encode a UTF-8 string using JSON/JavaScript {@literal \u} escape sequence
 .j.escape:raze{raze$[x<128;"c"$x;"\\u",string{1_x}/[0=first@;0x0 vs x]]}each utf8_unicode@;
 
+\d .zlib
+
+/ Decompress a ZLIB byte/char stream
+decompress:.CE.DLL 2:(`decompress;1);
+
 \d .os
 
 / Current Working Directory

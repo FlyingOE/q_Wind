@@ -38,10 +38,25 @@ utf8_gb18030:lineOrLines .CE.DLL 2:(`utf8_gb18030;1);
 / Encode a UTF-8 string using JSON/JavaScript {@literal \u} escape sequence
 .j.escape:raze{raze$[x<128;"c"$x;"\\u",string{1_x}/[0=first@;0x0 vs x]]}each utf8_unicode@;
 
-\d .zlib
+\d .gzip
 
-/ Decompress a ZLIB byte/char stream
-decompress:.CE.DLL 2:(`decompress;1);
+/ Compress a byte/char stream with GZIP
+/ @param blockSize (Long) equivalent to the first element in {@code .z.zd} ({@code blockSize within 12 20})
+/ @param level (Long) equivalent to the last element in {@code .z.zd}
+/ @param original (String|ByteList) byte stream to be compressed
+/ @return (String|ByteList) of same type as {@code original}
+compress:{[F;blockSize;level;original]
+    F[(*/)blockSize#2;level;original]
+  } .CE.DLL 2:(`gzipCompress;3);
+
+/ Decompress a GZIP byte/char stream
+/ @param blockSize (Long) decompression block size ({@code blockSize within 12 20})
+/ @param isRaw (Bool) whether {@code compressed} is a raw deflate stream (with no header/checksum)
+/ @param compressed (String|ByteList) byte stream to be decompressed
+/ @return (String|ByteList) of same type as {@code compressed}
+decompress:{[F;blockSize;isRaw;compressed]
+    F[(*/)blockSize#2;isRaw;compressed]
+  } .CE.DLL 2:(`gzipDecompress;3);
 
 \d .os
 

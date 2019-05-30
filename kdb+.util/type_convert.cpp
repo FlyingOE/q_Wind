@@ -462,6 +462,17 @@ K q::Variant2q(::VARIANT const& data) throw() {
 	case VT_UI1:
 		static_assert(sizeof(G) == sizeof(BYTE), "type mismatch: G vs VT_BOOL");
 		return kg(data.bVal);
+	case VT_UI2:
+		static_assert(sizeof(I) >= sizeof(USHORT), "type mismatch: I vs VT_UI2");
+		return ki(data.uiVal);
+	case VT_UI4:
+		static_assert(sizeof(J) >= sizeof(ULONG), "type mismatch: J vs VT_UI4");
+		return kj(data.ulVal);
+	case VT_UI8:
+		return kf(data.ullVal + 0.);
+	case VT_I1:
+		static_assert(sizeof(C) == sizeof(CHAR), "type mismatch: C vs VT_I1");
+		return kc(data.cVal);
 	case VT_I2:
 		static_assert(sizeof(H) == sizeof(SHORT), "type mismatch: H vs VT_I2");
 		return kh(data.iVal);
@@ -493,9 +504,6 @@ K q::Variant2q(::VARIANT const& data) throw() {
 		else {
 			return kf(data.dblVal);
 		}
-	case VT_I1:
-		static_assert(sizeof(C) == sizeof(CHAR), "type mismatch: C vs VT_I1");
-		return kc(data.cVal);
 	case VT_DATE:
 		return kz(DATE2q(data.date));
 	case VT_BSTR: {

@@ -38,6 +38,10 @@ This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wi
 
 ### Change Log
 
+* 2019.09
+  * WindQuantData library change caused by Wind WFT upgrade to 'Everest'
+* 2019.05
+  - WindQuantData API data type change caused by Wind WFT upgrade to '泰山' (Mt. Taishan)
 * 2018.04
   * Include dependent headers and libraries into the project
   * Add support for x64 build

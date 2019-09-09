@@ -92,6 +92,8 @@ typedef __int64 WQID;
 // 个人版版本失效
 #define WQERR_PER_VERSION_FAILURE     WQERR_GENERAL_CLASS - 16
 
+// 查询错误
+#define WQERR_STATE_ERROR		      WQERR_GENERAL_CLASS - 17
 
 
 // 网络数据存取错误
@@ -188,6 +190,7 @@ typedef __int64 WQID;
 
 // 不支持的请求参数
 #define WQERR_ILLEGAL_ARG_COMBINATION WQERR_INVALID_CLASS - 18
+
 
 // 日期时间数组定义
 typedef struct 
@@ -290,10 +293,6 @@ extern "C"
     WQID        WINAPI WSD (LPCWSTR windcode, LPCWSTR indicators, LPCWSTR beginTime, LPCWSTR endTime, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
     // WSS函数，取快照数据，支持多品种多指标单时间
     WQID        WINAPI WSS (LPCWSTR windcodes, LPCWSTR indicators, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
-    // WSES函数，取板块序列数据 <Flying>
-    WQID        WINAPI WSES (LPCWSTR windcode, LPCWSTR indicators, LPCWSTR beginTime, LPCWSTR endTime, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
-    // WSEE函数，取板块多维数据 <Flying>
-    WQID        WINAPI WSEE (LPCWSTR windcodes, LPCWSTR indicators, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
     // WST函数，取日内跳价数据，现为单品种的当日数据
     WQID        WINAPI WST (LPCWSTR windcode, LPCWSTR indicators, LPCWSTR beginTime, LPCWSTR endTime, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
     // WSI函数，取分钟序列数据，现支持单品种最近一年的数据（单次限制为三个月）
@@ -325,6 +324,15 @@ extern "C"
     WQID        WINAPI WPD (LPCWSTR portfolioName, LPCWSTR indicators, LPCWSTR beginTime, LPCWSTR endTime, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
     // WPS函数，取组合多维数据
     WQID        WINAPI WPS (LPCWSTR portfolioName, LPCWSTR indicators, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
+
+    // WSES函数，取单板块多时间序列
+    WQID        WINAPI WSES (LPCWSTR sectorIDs, LPCWSTR indicators, LPCWSTR beginTime, LPCWSTR endTime, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
+    // WSEE函数，取多板块非时间序列
+    WQID        WINAPI WSEE (LPCWSTR sectorIDs, LPCWSTR indicators, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
+    // WSED函数，取板块指标成分明细命令
+    WQID        WINAPI WSED (LPCWSTR sectorIDs, LPCWSTR indicators, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
+
+	WQID        WINAPI WCEL (LPCWSTR funname, LPCWSTR windid, LPCWSTR params, IEventHandler reqEventHandler, LPVOID lpReqParam);
     
 
 	//回测函数

@@ -1,5 +1,7 @@
 # Create `WindQuantData.lib` from `WindQuantData.dll`
 
+**NOTE** As of 2019.09.09, Wind is publishing the required LIB files along with WFT upgrades. The steps below are no longer required.
+
 ## For 32-bit build
 
 1. In command prompt, run `vsvars32.bat` to initial MSVC environment.

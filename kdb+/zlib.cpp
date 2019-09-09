@@ -122,7 +122,8 @@ KDB_API K K_DECL gzipCompress(K blockSize, K cprzLevel, K bytes) {
 	stream.next_in = kG(bytes);
 	do {
 		do {
-			stream.avail_out = chunkSize;
+			assert(chunkSize <= std::numeric_limits<uInt>::max());
+			stream.avail_out = static_cast<uInt>(chunkSize);
 			stream.next_out = &chunk[0];
 			status = ::deflate(&stream, (stream.avail_in == 0) ? Z_FINISH : Z_NO_FLUSH);
 			assert(status != Z_STREAM_ERROR);	//zlib state not clobbered
@@ -196,7 +197,8 @@ KDB_API K K_DECL gzipDecompress(K blockSize, K isRaw, K bytes) {
 	stream.next_in = kG(bytes);
 	do {
 		do {
-			stream.avail_out = chunkSize;
+			assert(chunkSize <= std::numeric_limits<uInt>::max());
+			stream.avail_out = static_cast<uInt>(chunkSize);
 			stream.next_out = &chunk[0];
 			status = ::inflate(&stream, Z_NO_FLUSH);
 			assert(status != Z_STREAM_ERROR);	//zlib state not clobbered

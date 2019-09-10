@@ -23,7 +23,7 @@ show
     .wind.setTimeout 00:01;
 -1"=== Login =================";
 //NOTE: no longer require username/password, as account is tied to Wind Terminal
-    .wind.login[`;`];
+    .wind.login[];
 /    .wind.logout[];
 -1"=== WSD =================";
 show

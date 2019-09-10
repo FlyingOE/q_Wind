@@ -8,8 +8,31 @@
 #include "win32.util/CodeConvert.h"
 #include <iostream>
 
+WIND_API K K_DECL Wind_login(K _) {
+	::WQAUTH_INFO login = { true };	//silent logon
+	std::wmemset(login.strUserName, L'\0', _countof(login.strUserName));
+	std::wmemset(login.strPassword, L'\0', _countof(login.strPassword));
 
-WIND_API K K_DECL Wind_login(K username, K password) {
+	static_assert(std::is_same<std::wstring::value_type, TCHAR>::value, "UNICODE/_UNICODE not defined");
+#	ifndef NDEBUG
+	std::wcerr << L">>> WDataAuthorize({\""
+		<< login.strUserName << L"\", \"" << login.strPassword
+		<< L"\"})" << std::endl;
+#	endif
+	::WQErr const error = ::WDataAuthorize(&login);
+#	ifndef NDEBUG
+	std::wcerr << L"<<< WDataAuthorize = " << error << std::endl;
+#	endif
+	if (error == WQERR_OK) {
+		std::cerr << "<Wind> login successful." << std::endl;
+		return kb(true);
+	}
+	else {
+		return q::error2q(Wind::util::error2Text(error));
+	}
+}
+
+WIND_API K K_DECL Wind_login2(K username, K password) {
 	std::wstring uid, pwd;
 	try {
 		uid = q::q2WString(username);
@@ -33,7 +56,6 @@ WIND_API K K_DECL Wind_login(K username, K password) {
 	std::wcsncpy(login.strUserName, uid.c_str(), _countof(login.strUserName));
 	std::wcsncpy(login.strPassword, pwd.c_str(), _countof(login.strPassword));
 #	endif
-
 #	ifndef NDEBUG
 	std::wcerr << L">>> WDataAuthorize({\""
 		<< login.strUserName << L"\", \"" << login.strPassword

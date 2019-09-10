@@ -28,7 +28,9 @@ extern "C" {
 	WIND_API K K_DECL getTimeout(K/*NOTE: at least one argument required by `2:'*/);
 	WIND_API K K_DECL setTimeout(K timeout);
 
-	WIND_API K K_DECL Wind_login(
+	WIND_API K K_DECL Wind_login(K/*NOTE: at least one argument required by `2:'*/);
+	// Legacy API
+	WIND_API K K_DECL Wind_login2(
 		K username,	//-11h or 10h
 		K password	//-11h or 10h
 		);

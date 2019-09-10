@@ -27,11 +27,18 @@ setTimeout:{[F;t]
     `time$F`long$`time$t
   }DLL 2:(`setTimeout;1);
 
-/q) .wind.login[`w*******;"********"]
-login: DLL 2:(`Wind_login ;2);
+/ Login using credential remembered by WFT.
+/ @see .wind.login2
+/q) .wind.login[]
+login:DLL 2:(`Wind_login;1);
+/ @see .wind.login
+/q) .wind.login2[`w*******;"********"]	/Legacy API
+login2:DLL 2:(`Wind_login2;2);
 
-/q) .wind.start`:.wind.pass
-start:{login .@[;0 2](0,k,1+k:p?":")_p:first read0 x};
+/ Login using custom credential.
+/ <p>NOTE: WFT must not be running. Or if it's running, it must have been logged in with the same credential.
+/q) .wind.start2`:.wind.pass	/Legacy API
+start:{login2 .@[;0 2](0,k,1+k:p?":")_p:first read0 x};
 
 /q) .wind.logout`
 logout:DLL 2:(`Wind_logout;1);

@@ -40,6 +40,8 @@ This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wi
 
 * 2019.09
   * WindQuantData library change caused by Wind WFT upgrade to 'Everest'
+  * `.wind.login[]` no longer require username/password by default (uses WFT credential automatically)
+  * Fix compilation issues in 64-bit build
 * 2019.05
   - WindQuantData API data type change caused by Wind WFT upgrade to '泰山' (Mt. Taishan)
 * 2018.04

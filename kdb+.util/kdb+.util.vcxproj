@@ -84,7 +84,6 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\;$(SolutionDir)..\q_Wind\;$(SolutionDir)..\q_Wind\inc\q\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
@@ -105,7 +104,6 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\;$(SolutionDir)..\q_Wind\;$(SolutionDir)..\q_Wind\inc\q\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>

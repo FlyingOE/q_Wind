@@ -92,7 +92,6 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\TDB_C++_v3\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
@@ -140,7 +139,6 @@ IF NOT EXIST $(TargetDir).tdb3.connect (
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\TDB_C++_v3\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>

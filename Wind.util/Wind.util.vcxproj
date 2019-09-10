@@ -84,7 +84,6 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <EnablePREfast>true</EnablePREfast>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
@@ -106,7 +105,6 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <EnablePREfast>true</EnablePREfast>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>

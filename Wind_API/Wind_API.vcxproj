@@ -92,7 +92,6 @@
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\WindQuantAPI\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>
@@ -139,7 +138,6 @@ IF NOT EXIST $(TargetDir).wind.pass (
       <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)inc\WindQuantAPI\;$(SolutionDir)inc\q\</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <EnablePREfast>true</EnablePREfast>
-      <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
     </ClCompile>
     <Link>

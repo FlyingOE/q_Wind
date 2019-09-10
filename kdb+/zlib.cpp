@@ -74,7 +74,7 @@ namespace {
 		switch (bytes->t) {
 		case KG:
 		case KC:
-			assert((0 <= bytes->n) && (bytes->n <= std::numeric_limits<size_t>::max()));
+			assert((0 <= bytes->n) && (static_cast<size_t>(bytes->n) <= std::numeric_limits<size_t>::max()));
 			length = static_cast<size_t>(bytes->n);
 			return kG(bytes);
 		default:

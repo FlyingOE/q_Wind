@@ -9,7 +9,7 @@ This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wi
 * [Wind TDB API][], a historical database API for what is provided by TDF API at real-time;
 * [Wind RD Database][], a Quants research database for global markets.
 
-## Wind 万得 kdb+/q 数据接口（non-COM version）
+## Wind 万得 kdb+/q 数据接口（非COM接口版）
 
 本项目提供了四个kdb+/q的接口，用于连接[万得Wind][Wind Info]几个不同的编程接口：
 * [Wind Quant API][]——量化编程接口（机构版）；
@@ -18,7 +18,7 @@ This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wi
 * [Wind TDB API][]——对应TDF API的历史市场数据接口；
 * [Wind RD Database][]——量化研究数据库。
 
-本项目是使用Visual Studio <del>2013</del>2015编译的工程。与[zwz][]的《[WindKdb+数据及交易接口V1.1][WindKdb+]》不同，本工程对Wind Quant API的支持直接使用`WindQuantData.dll`的API而不须使用基于COM的`WAPIWrapperCpp.dll`。虽然没有使用`WAPIWrapperCpp.dll`，不过本接口已经把所有接数的函数封装为同步函数（`WSQ`/`TDQ`数据订阅函数除外），以方便在q程序内使用。
+本项目是使用Visual Studio <del>2013</del>2015编译的工程。与[zwz][]的《[WindKdb+数据及交易接口V1.1][WindKdb+]》不同，本工程对Wind Quant API的支持直接使用`WindQuantData.dll`的API而不须使用基于COM的`WAPIWrapperCpp.dll`。虽然没有使用`WAPIWrapperCpp.dll`，但是本接口已经把所有接口的查询函数封装为同步函数（`WSQ`/`TDQ`数据订阅函数除外），以方便在q程序内使用。
 
 ### License
 
@@ -38,40 +38,40 @@ This project provides kdb+/q support for 4 distinct sets of APIs provided by [Wi
 
 ### Change Log
 
-* 2019.09
+* 2019.09m
   * WindQuantData library change caused by Wind WFT upgrade to 'Everest'
   * `.wind.login[]` no longer require username/password by default (uses WFT credential automatically)
   * Fix compilation issues in 64-bit build
-* 2019.05
+* 2019.05m
   - WindQuantData API data type change caused by Wind WFT upgrade to '泰山' (Mt. Taishan)
-* 2018.04
+* 2018.04m
   * Include dependent headers and libraries into the project
   * Add support for x64 build
   * Add support for the new `WSES` and `WSEE` functions
-* 2018.01
+* 2018.01m
   * Upgraded from MSVC 2013 to 2015
   * Various bug fixes for `Wind_RD.q` module
-* 2017.05
+* 2017.05m
   * Add support for the new `h2code` function
-* 2017.03
+* 2017.03m
   * Move code documentation to [q-doc](https://github.com/FlyingOE/q-doc) format
-* 2017.01
+* 2017.01m
   * Upgrade TDB to v3.20161219 API (server-side upgrade)
   * WindQuantAPI queries: missing (N/A) data items return as identities (::) instead of empty lists ()
   * Add preliminary support for COM automation
   * Various bugfixes
-* 2016.01
+* 2016.01m
   * Upgrade TDB to v3 API (on-the-wire data compression, faster access)
   * Merged multiple tick data extraction functions (TDB v3 change)
   * Added support for OHLC (a.k.a. K-line) data extraction
-* 2015.12
+* 2015.12m
   * Added simple ODBC-based wrapper for RD database
-* 2015.08
+* 2015.08m
   * Suspended development for TDF API due to the lack of need
   * More complete API support for TDB
-* 2015.07
+* 2015.07m
   * Added support for Wind TDF/TDB APIs -- Only part of the APIs have been implemented, still work in progress...
-* 2015.03&ndash;04
+* 2015.03m&ndash;2015.04m
   * Various bug fixes
 * [2015.03.06](./packaged/q_Wind-2015.03.06.zip)
   * Initial merge into GitHub

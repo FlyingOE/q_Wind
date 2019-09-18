@@ -5,6 +5,7 @@
 
 #include "kdb+.util/util.h"
 #include "kdb+.util/type_convert.h"
+#include <iostream>
 #include <sstream>
 
 Wind::callback::Result::Result() : result_(new Wind::callback::Result::promise_ptr::element_type) {}
@@ -56,14 +57,35 @@ int WINAPI Wind::callback::strike(::WQEvent* pEvent, LPVOID lpUserParam) {
 	case eWQErrorReport:
 		result->set_value(new Event(*pEvent));
 		return true;
-	case eWQPartialResponse:
 	default: {
 			std::ostringstream buffer;
-			buffer << "<WQ> unsupported strike response: " << *pEvent;
+			buffer << "<WQ> unexpected/unsupported strike response: " << *pEvent;
 			result->set_exception(std::make_exception_ptr(std::runtime_error(buffer.str())));
 			return false;
 		}
 	}
+}
+
+/* NOTE: Required for WSQ strikes!
+ *
+ * Wind's sample progress sets a global event handler ::SetEventHandler(IEventHandler)
+ * to catch all async query results, while it uses a local event handler for WSQ subscriptions.
+ * That is, WSQ uses whether there is a local event handler to differentiate subscriptions from
+ * strikes.
+ *
+ * For us, however, local event handlers are required for all async queries, therefore depriving
+ * WSQ the information to differentiate both types of the queries. So we need to manually
+ * unsubscribe a WSQ query if it was intended as a strike instead of a subscription.
+ */
+int WINAPI Wind::callback::strikeAndUnsub(::WQEvent* pEvent, LPVOID lpUserParam) {
+	if ((pEvent->EventType == eWQOthers) && (pEvent->ErrCode == WQERR_USER_CANCEL))
+		return false;	// Break the reentrance cycle called by calling CancelRequest below!
+	int const result = strike(pEvent, lpUserParam);
+	::WQErr const error = ::CancelRequest(pEvent->RequestID);
+	if (error != WQERR_OK) {
+		std::cerr << "<WQ> WSQ strike cancellation error: " << Wind::util::error2Text(error) << std::endl;
+	}
+	return result;
 }
 
 WIND_API K K_DECL Wind_wsd(K windCodes, K indicators, K beginDate, K endDate, K params) {
@@ -153,7 +175,7 @@ WIND_API K K_DECL Wind_wsq_strike(K windCodes, K indicators, K params) {
 
 	Wind::callback::Result result;
 	::WQID const qid = ::WSQ(codes.c_str(), indis.c_str(), paras.c_str(),
-		&Wind::callback::strike, result.dup());
+		&Wind::callback::strikeAndUnsub, result.dup());
 	return result.waitFor(qid);
 }
 

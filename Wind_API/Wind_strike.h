@@ -27,6 +27,7 @@ namespace Wind {
 		};
 
 		int WINAPI strike(::WQEvent* pEvent, LPVOID lpUserParam);
+		int WINAPI strikeAndUnsub(::WQEvent* pEvent, LPVOID lpUserParam);
 
 	}//namespace Wind::callback
 }//namespace Wind

@@ -48,27 +48,30 @@ TDFAPI THANDLE TDF_OpenProxy(TDF_OPEN_SETTING* pOpenSettings, TDF_PROXY_SETTING*
 TDFAPI THANDLE TDF_OpenProxyExt(TDF_OPEN_SETTING_EXT* pOpenSettings, TDF_PROXY_SETTING* pProxySettings, TDF_ERR* pErr);
 
 //获取指定市场的代码表，在已经收到MSG_SYS_CODETABLE_RESULT 消息之后，可以获得代码表
+//szMarket格式为：market-level-source(SHF-1-0)
 //获取到的代码表，需要调用TDF_FreeArr来释放内存
 TDFAPI int TDF_GetCodeTable(THANDLE hTdf, const char* szMarket, TDF_CODE** pCode, unsigned int* pItems);
 
 // 从万得代码来获取详细的期权代码信息
 // pCodeInfo指针由用户提供，
 // 如果成功获取，则返回TDF_ERR_SUCCESS，否则返回 TDF_ERR_NO_CODE_TABLE 或 TDF_ERR_INVALID_PARAMS
-
-TDFAPI int TDF_GetOptionCodeInfo(THANDLE hTdf, const char* szWindCode, TDF_OPTION_CODE* pCodeInfo);
+// szCode 格式为原始code + . + 市场(如ag.SHF)
+TDFAPI int TDF_GetOptionCodeInfo(THANDLE hTdf, const char* szCode, TDF_OPTION_CODE* pCodeInfo, const char* szMarket);
 
 //同步函数，关闭连接，不要在回调函数里面调用，否则会卡死
 TDFAPI int TDF_Close(THANDLE hTdf);
 
 TDFAPI void TDF_FreeArr(void *pArr);
 
-//登陆后订阅; 此函数是个异步函数，最好在TDF_Open成功之后调用
+//登陆后订阅; 此函数是个异步函数，在TDF_Open成功之后调用
+//szSubScriptions:需要订阅的股票(单个股票格式为原始Code+.+市场，如999999.SH)，以“;”分割，例如"600000.SH;ag.SHF;000001.SZ"
 TDFAPI int TDF_SetSubscription(THANDLE hTdf, const char* szSubScriptions, SUBSCRIPTION_STYLE nSubStyle);
 
 //打开获取参考数据的服务
 TDFAPI THANDLE TDF_Open_RefData(TDF_OPEN_REFDATA_SETTING* pSettings, TDF_ERR* pErr);
 
-//获取ETF清单
+//获取ETF清单,szMarketAbbr格式为为SH
+//reqCode格式为原始code(999999)
 TDFAPI int TDF_ReqETFList(THANDLE hTdf, int reqID, const char* szMarketAbbr, const char* reqCode, int reqDate, int dataLevel, int marektSource = 0);
 
 //获取连接状态信息
@@ -76,15 +79,20 @@ TDFAPI int TDF_GetConStatInfo(THANDLE hTdf, int conIndex, ConStatInfo* pConsStat
 
 //释放全局的内存：整个程序退出时，如果需要测试内存分配，可调用释放全局内存. 调用后，API库不可用
 TDFAPI void TDF_EXIT();
-//
+//获取当前API版本号
 TDFAPI const char* TDF_Version();
 
-//获取当前最新行情,需调用TDF_FreeArr(void*)释放内存
+//////////////////////////////////以下为主动获取行情接口//////////////////////////////////////////
+//获取当前最新行情,szMarket格式为market-level-source,需调用TDF_FreeArr(void*)释放内存
 TDFAPI int TDF_GetLastMarketData(THANDLE hTdf, const char* szMarket, TDF_MARKET_DATA** pMarketData, int* nItems);
-//获取当前最新指数,需调用TDF_FreeArr(void*)释放内存
+//获取当前最新指数,szMarket格式为market-level-source,需调用TDF_FreeArr(void*)释放内存
 TDFAPI int TDF_GetLastIndexData(THANDLE hTdf, const char* szMarket, TDF_INDEX_DATA** pIndexData, int* nItems);
-//获取当前最新期货(期权),需调用TDF_FreeArr(void*)释放内存
+//获取当前最新期货(期权),szMarket格式为market-level-source,需调用TDF_FreeArr(void*)释放内存
 TDFAPI int TDF_GetLastFutureData(THANDLE hTdf, const char* szMarket, TDF_FUTURE_DATA** pFutureData, int* nItems);
+//获取当前最新快照,内核模式使用,szMarket格式为market-level-source,需调用TDF_FreeArr(void*)释放内存
+TDFAPI int TDF_GetLastSnapShot(THANDLE hTdf, const char* szMarket, void** pSnapShot, unsigned int* nItems);
+//根据windcode获取当前最新快照,内核模式使用,szMarket格式为market-level-source,需调用TDF_FreeArr(void*)释放内存
+TDFAPI int TDF_GetSnapShotByWindcode(THANDLE hTdf, const char* szMarket, void** pOneSnapShot, const char* szWindCode);
 
 #ifdef __cplusplus
 }

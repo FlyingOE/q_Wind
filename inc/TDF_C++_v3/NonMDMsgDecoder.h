@@ -2,6 +2,7 @@
 #pragma pack(1)
 
 #include <string.h>
+#include "TDFAPIStruct.h"
 
 #ifndef UINT32
 #define UINT32 unsigned int

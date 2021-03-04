@@ -78,8 +78,9 @@ int WINAPI Wind::callback::strike(::WQEvent* pEvent, LPVOID lpUserParam) {
  * unsubscribe a WSQ query if it was intended as a strike instead of a subscription.
  */
 int WINAPI Wind::callback::strikeAndUnsub(::WQEvent* pEvent, LPVOID lpUserParam) {
-	if ((pEvent->EventType == eWQOthers) && (pEvent->ErrCode == WQERR_USER_CANCEL))
+	if ((pEvent->EventType == eWQOthers) && (pEvent->ErrCode == WQERR_USER_CANCEL)) {
 		return false;	// Break the reentrance cycle called by calling CancelRequest below!
+	}
 	int const result = strike(pEvent, lpUserParam);
 	::WQErr const error = ::CancelRequest(pEvent->RequestID);
 	if (error != WQERR_OK) {

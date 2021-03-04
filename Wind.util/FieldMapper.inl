@@ -39,7 +39,7 @@ void Wind::mapper::Fields<T>::getFields(char const* category, std::vector<std::s
 	if (category == NULL) {
 		category = "";
 	}
-	list.empty();
+	list.clear();
 	list.reserve(catalog_.size());
 	for (auto c = catalog_.cbegin(); c != catalog_.cend(); ++c) {
 		if (c->first == category) {
@@ -93,7 +93,7 @@ void Wind::mapper::Fields<T>::addField(std::string const& category,
 
 template <typename T>
 void Wind::mapper::Fields<T>::getCategories(std::vector<std::string>& list) const {
-	list.empty();
+	list.clear();
 	std::set<std::string> cats;
 	for (auto c = catalog_.cbegin(); c != catalog_.cend(); ++c) {
 		cats.emplace(c->first);

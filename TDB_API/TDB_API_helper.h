@@ -3,6 +3,7 @@
 
 #include "kdb+.util/type_traits.h"
 
+#include <stdexcept>
 #include <string>
 #include <vector>
 

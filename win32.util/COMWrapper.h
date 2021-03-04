@@ -3,7 +3,9 @@
 #pragma comment(lib, "win32.util.lib")
 
 #include <Ole2.h>
+#include <stdexcept>
 #include <vector>
+#include <string>
 
 // Utilities to interface with COM library
 //@see https://support.microsoft.com/en-us/kb/216686

@@ -954,10 +954,12 @@ namespace Microsoft{
 	namespace VisualStudio {
 		namespace CppUnitTestFramework {
 
+#			if _MSC_VER < 1920	// pre-VS2019
 			template<>
 			static std::wstring ToString<long long>(long long const& value) {
 				return q::test::ToString(value);
 			}
+#			endif
 
 			template<>
 			static std::wstring ToString<std::vector<long long> >(std::vector<long long> const& value) {

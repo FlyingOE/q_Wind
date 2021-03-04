@@ -1,6 +1,7 @@
 #ifndef __MULTILANG_H__
 #define __MULTILANG_H__
 
+#include <stdexcept>
 #include <string>
 
 #ifdef _MSC_VER

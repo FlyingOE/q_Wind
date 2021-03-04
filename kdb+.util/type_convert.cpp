@@ -270,7 +270,7 @@ q::tm_ext q::q2tm(K data) throw(std::runtime_error) {
 			throw std::runtime_error("+/-inf time");
 		}
 		else {
-			Cookbook::gt_r((data->i == ni) ? 0. : data->i / (24 * 60 * 60 * 1000.), &result);
+			Cookbook::gt_r((data->i == ni) ? 0. : data->i / (1000. * 60 * 60 * 24), &result);
 		}
 		break;
 	case -KZ:
@@ -316,7 +316,7 @@ std::vector<q::tm_ext> q::qList2tm(K data) throw(std::runtime_error) {
 				throw std::runtime_error("+/-inf time in list");
 			}
 			else {
-				Cookbook::gt_r((d == ni) ? 0. : d / (24 * 60 * 60 * 1000.), &result[i]);
+				Cookbook::gt_r((d == ni) ? 0. : d / (1000. * 60 * 60 * 24), &result[i]);
 			}
 		}
 		break;
@@ -651,7 +651,7 @@ F q::DATE2q(::DATE date) throw(std::runtime_error) {
 	// # days since 1899.12.30
 	J nDays1899 = static_cast<J>(std::floor(date));
 	// Seconds since midnight
-	F nSecs = (date - nDays1899) * (60L * 60 * 24);
+	F nSecs = (date - nDays1899) * J(60 * 60 * 24);
 	// # days since 0000.01.01
 	J nDaysAbs = nDays1899 + 693959L;
 	// Known: 0000.01.01 was a Saturday
@@ -698,12 +698,13 @@ F q::DATE2q(::DATE date) throw(std::runtime_error) {
 	// Special handling for leap years before/on/after yyyyy.02.29
 	bool feb29 = false;
 	if ((nYearsIn4Year == 0) && leapIn4Year) {	// A leap year
-		if (nDaysInYear == MONTH_DAYS[2] + 1) {
+		const int FEB = MONTH_DAYS[2] + 1;
+		if (nDaysInYear == FEB) {
 			feb29 = true;
 			tm.tm_mon = 2 - 1;
 			tm.tm_mday = 29;
 		}
-		else if (nDaysInYear > MONTH_DAYS[2] + 1) {
+		else if (nDaysInYear > FEB) {
 			--nDaysInYear;
 		}
 	}

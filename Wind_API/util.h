@@ -2,6 +2,7 @@
 #define __WIND_API__UTIL_H__
 #pragma comment(lib, "WindQuantData.lib")
 
+#include <stdexcept>
 #include <iosfwd>
 #include <string>
 #include <vector>

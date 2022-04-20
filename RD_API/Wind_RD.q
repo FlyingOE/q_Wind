@@ -10,6 +10,9 @@ if[()~key`.odbc;
     @[system;"l odbc.k";{'"Failed to load odbc.k: ",x}]
     ];
 
+/ Number of rows to insert per batch in {@see .rd.bulkload}.
+BULK_SIZE:1000;     /max for T-SQL
+
 /q) h:.rd.login`DSN_name
 /q) h:.rd.login"DRIVER=SQL Server;SERVER=...;DATABASE=filesync;UID=...;PWD=...;"
 /q) h:.rd.login"DSN=DSN name;...;"
@@ -68,19 +71,30 @@ use:{[h;db]
         impl.stringize query
     ]};
 
+/@see .rd.BULK_SIZE
 /q) .rd.bulkload[h][`Table;dataset]    /NOTE: dataset must have same column names & compatible types as in Table!
 .rd.bulkload:{[h;tbl;data]
-    templ:"INSERT INTO %1 (",(","sv"%",/:string 2+til c),") ",
-            "VALUES (",(","sv"%",/:string 2+c+til c:count cols data),");";
-    qry:enlist[templ],/:enlist each tbl,/:cols[data],/:value each 
-        ![data;();0b;a!string,/:a:exec c from meta data where t="s"];    /make sure no sym columns
-    @[.rd.eval h;"BEGIN TRANSACTION";{[x;h]    /SQL Server
-        .rd.eval[h]"START TRANSACTION";        /MySQL | Oracle
-        }[;h]];
-    @[each[.rd.eval h];qry,enlist["COMMIT"];{[x;h]
-        .rd.eval[h]"ROLLBACK;";
-        'x}[;h]];
-    :count data    };
+    query_templ:"INSERT INTO %1 (",(","sv"%",/:string 2+til count cols data),") VALUES ";
+    query:.rd.prepare(query_templ;tbl,cols data);
+
+    value_templ:"(",(","sv"%",/:string 1+til count cols data),")";
+    batches:(0N;.rd.BULK_SIZE)#
+        ![data;();0b;a!string,/:a:exec c from meta data where t="s"];   /make sure no sym columns
+    batches:{[templ;batch]
+        (.rd.prepare enlist[templ],enlist value@)each batch
+      }/:[value_templ;batches];
+
+    @[.rd.eval[h];"BEGIN TRANSACTION";                  /SQL Server
+        {[x;h] .rd.eval[h]"START TRANSACTION" }[;h]     /MySQL | Oracle
+     ];
+    @[{[h;query;batch] .rd.eval[h] query,(","sv batch),";" }[h;query;]';
+        batches;
+        {[x;h] .rd.eval[h]"ROLLBACK;"; 'x }[;h]
+     ];
+    @[.rd.eval h;"COMMIT;";{'x}];
+
+    :count data;
+  };
 
 //=============================================================================
 
@@ -91,7 +105,7 @@ impl.stringize:{
       t<0h;
         $[null x;                   /0N? => NULL
             "NULL";
-          t=-10h;l                  /"C" => 'C'
+          t=-10h;                   /"C" => 'C'
             .z.s enlist x;
           t=-14h;                   /YYYY.MM.DD => 'YYYYMMDD'
             "'",string[x][0 1 2 3 5 6 8 9],"'";

@@ -98,25 +98,35 @@ use:{[h;db]
 
 //=============================================================================
 
-/ Convert q value into ANSI SQL-compatible strings
+/ Convert q value into ANSI SQL/ODBC-compatible strings
 impl.stringize:{
     $[-11h=t:type x;                /`column => "column"
         "\"",string[x],"\"";
       t<0h;
         $[null x;                   /0N? => NULL
             "NULL";
-          t=-10h;                   /"C" => 'C'
-            .z.s enlist x;
-          t=-14h;                   /YYYY.MM.DD => 'YYYYMMDD'
-            "'",string[x][0 1 2 3 5 6 8 9],"'";
           t in -5 -6 -7h;           /remove suffix from integral values
             {$[last[x]in"hij";-1_x;x]}.Q.s1 x;
           t in -8 -9h;              /remove suffix from and add decimal point to floating-point values 
             {x,$[any".e"in x;"";"."]}{$[last[x]in"ef";-1_x;x]}.Q.s1 x;
+          t=-10h;                   /"C" => 'C'
+            .z.s enlist x;
+          t=-12h;                   /YYYY.MM.DDDhh:mm:ss.n*9 => {ts'YYYY-MM-DD hh:mm:ss.n*6'}
+            "{ts'",(-3_@[;10;:;" "]@[string x;4 7;:;"-"]),"'}";
+          t=-14h;                   /YYYY.MM.DD => {d'YYYY-MM-DD'}
+            "{d'",@[string x;4 7;:;"-"],"'}";
+          t=-15h;                   /YYYY.MM.DDThh:mm:ss.n*3 => {ts'YYYY-MM-DD hh:mm:ss.n*3'}
+            "{ts'",(@[;10;:;" "]@[string x;4 7;:;"-"]),"'}";
+          t=-16h;
+            '"nyi: cannot map timespan (",.Q.s1[x],") to SQL";
+          t=-17h;                   /hh:mm => {t'hh:mm:00'}
+            "{t'",string[x],":00'}";
+          t in -18 -19h;            /hh:mm:ss.n*3 => {t'hh:mm:ss.n*3'}
+            "{t'",string[x],"'}";
           /default;
             .Q.s1 x];
-      10h=t;                        /"string's" => 'string''s'
-        "'",ssr[x;"'";"''"],"'";
+      10h=t;                        /"string's" => N'string''s'
+        "N'",ssr[x;"'";"''"],"'";
       11h=t;                        /`schema`table`column => "schema"."table"."column"
         "."sv .z.s'[x];
       /default                      /("CFFEX";"SZSE") => ('CFFEX','SZSE')
@@ -133,16 +143,3 @@ impl.textEncoding:{
 //=============================================================================
 \
 __EOD__
-
-\l Wind_RD.q
-h:.rd.start`:.rd.connect;
-.rd.use[h]`filesync;
-.rd.tables h
-.rd.views h
-
-.rd.eval[h]("sp_columns %1";`AShareEODPrices)
-
-.rd.eval[h]("SELECT trade_dt,s_info_windcode,s_dq_open,s_dq_high,s_dq_low,s_dq_close,s_dq_tradestatus,s_dq_pctchange FROM %1 WHERE TRADE_DT=%2";
-    (`AShareEODPrices;.z.D-1)   )
-
-.rd.logout h
